@@ -21,7 +21,10 @@ class Settings(BaseSettings):
     
     @property
     def cors_origins_list(self) -> List[str]:
-        return [origin.strip() for origin in self.CORS_ORIGINS.split(",")]
+        """Parse CORS origins and strip trailing slashes."""
+        origins = [origin.strip().rstrip('/') for origin in self.CORS_ORIGINS.split(",")]
+        # Filter out empty strings
+        return [origin for origin in origins if origin]
     
     # Google Gemini API
     GOOGLE_API_KEY: str = ""
