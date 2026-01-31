@@ -199,15 +199,56 @@ export const resumeApi = {
         return response.data
     },
     getCurrent: async () => {
-        const response = await api.get('/api/v1/resume')
+        const response = await api.get('/api/v1/resume/current')
         return response.data
     },
     update: async (data: any) => {
-        const response = await api.put('/api/v1/resume', data)
+        const response = await api.put('/api/v1/resume/update', data)
         return response.data
     },
     tailor: async (data: { job_description: string }) => {
         const response = await api.post('/api/v1/resume/tailor', data)
+        return response.data
+    },
+    validate: async () => {
+        const response = await api.get('/api/v1/resume/validate')
+        return response.data
+    },
+    optimizeSection: async (data: { section_type: string; content: any; target_role?: string }) => {
+        const response = await api.post('/api/v1/resume/optimize-section', data)
+        return response.data
+    },
+    // Version Management
+    getVersions: async () => {
+        const response = await api.get('/api/v1/resume/versions')
+        return response.data
+    },
+    getVersion: async (versionId: string) => {
+        const response = await api.get(`/api/v1/resume/versions/${versionId}`)
+        return response.data
+    },
+    createDraft: async (data: { draft_name: string; job_description?: string; base_version_id?: string }) => {
+        const response = await api.post('/api/v1/resume/versions/create', data)
+        return response.data
+    },
+    setActiveVersion: async (versionId: string) => {
+        const response = await api.post(`/api/v1/resume/versions/${versionId}/activate`)
+        return response.data
+    },
+    updateVersion: async (versionId: string, data: any) => {
+        const response = await api.put(`/api/v1/resume/versions/${versionId}`, data)
+        return response.data
+    },
+    updateDraftMetadata: async (versionId: string, data: { draft_name?: string; job_description?: string }) => {
+        const response = await api.patch(`/api/v1/resume/versions/${versionId}/metadata`, data)
+        return response.data
+    },
+    deleteVersion: async (versionId: string) => {
+        const response = await api.delete(`/api/v1/resume/versions/${versionId}`)
+        return response.data
+    },
+    regenerate: async (data?: { version_id?: string; regenerate_summary?: boolean; regenerate_from_profile?: boolean }) => {
+        const response = await api.post('/api/v1/resume/regenerate', data || {})
         return response.data
     },
 }

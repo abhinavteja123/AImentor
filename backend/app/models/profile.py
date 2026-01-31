@@ -5,7 +5,7 @@ User Profile Model
 import uuid
 from datetime import datetime
 from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, Text
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import relationship
 from app.database.postgres import Base
 
@@ -39,6 +39,19 @@ class UserProfile(Base):
     linkedin_url = Column(String(255), nullable=True)
     github_url = Column(String(255), nullable=True)
     portfolio_url = Column(String(255), nullable=True)
+    
+    # Contact Info
+    phone = Column(String(50), nullable=True)
+    location = Column(String(255), nullable=True)
+    website_url = Column(String(255), nullable=True)
+    
+    # Resume Data (stored here and synced to resume)
+    education_data = Column(JSONB, nullable=True)  # List of education items
+    experience_data = Column(JSONB, nullable=True)  # List of experience items
+    projects_data = Column(JSONB, nullable=True)  # List of project items
+    certifications_data = Column(JSONB, nullable=True)  # List of certifications
+    extracurricular_data = Column(JSONB, nullable=True)  # List of activities
+    technical_skills_data = Column(JSONB, nullable=True)  # Technical skills by category
     
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow)

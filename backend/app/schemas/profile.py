@@ -3,7 +3,7 @@ Profile Schemas for Onboarding
 """
 
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 from uuid import UUID
 from pydantic import BaseModel, Field
 
@@ -66,6 +66,17 @@ class ProfileUpdate(BaseModel):
     linkedin_url: Optional[str] = None
     github_url: Optional[str] = None
     portfolio_url: Optional[str] = None
+    # Contact Info
+    phone: Optional[str] = None
+    location: Optional[str] = None
+    website_url: Optional[str] = None
+    # Resume Data
+    education_data: Optional[List[Dict[str, Any]]] = None
+    experience_data: Optional[List[Dict[str, Any]]] = None
+    projects_data: Optional[List[Dict[str, Any]]] = None
+    certifications_data: Optional[List[Dict[str, Any]]] = None
+    extracurricular_data: Optional[List[Dict[str, Any]]] = None
+    technical_skills_data: Optional[Dict[str, List[str]]] = None
 
 
 class ProfileResponse(BaseModel):
@@ -82,6 +93,15 @@ class ProfileResponse(BaseModel):
     linkedin_url: Optional[str]
     github_url: Optional[str]
     portfolio_url: Optional[str]
+    phone: Optional[str] = None
+    location: Optional[str] = None
+    website_url: Optional[str] = None
+    education_data: Optional[List[Dict[str, Any]]] = None
+    experience_data: Optional[List[Dict[str, Any]]] = None
+    projects_data: Optional[List[Dict[str, Any]]] = None
+    certifications_data: Optional[List[Dict[str, Any]]] = None
+    extracurricular_data: Optional[List[Dict[str, Any]]] = None
+    technical_skills_data: Optional[Dict[str, List[str]]] = None
     profile_completion_percentage: int
     onboarding_completed: Optional[datetime]
     created_at: datetime
