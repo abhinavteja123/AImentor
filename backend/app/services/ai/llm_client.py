@@ -1,11 +1,11 @@
 """
-LLM Client - DeepSeek Integration
+LLM Client - Google Gemini Integration
 """
 
 import json
 import logging
 from typing import Optional, Dict, Any, List
-from openai import AsyncOpenAI
+import google.generativeai as genai
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 from app.config import settings
@@ -15,16 +15,42 @@ logger = logging.getLogger(__name__)
 
 class LLMClient:
     """
-    LLM Client using DeepSeek API.
-    DeepSeek is compatible with OpenAI API format.
+    LLM Client using Google Gemini API.
+    Uses gemini-2.0-flash-exp model for fast, efficient responses.
     """
     
     def __init__(self):
-        self.client = AsyncOpenAI(
-            api_key=settings.DEEPSEEK_API_KEY,
-            base_url=settings.DEEPSEEK_BASE_URL
-        )
-        self.model = settings.DEEPSEEK_MODEL
+        # Configure Gemini API
+        genai.configure(api_key=settings.GOOGLE_API_KEY)
+        self.model_name = "gemini-2.5-flash-preview-09-2025"
+        
+        # Generation config for better responses
+        self.generation_config = {
+            "temperature": 0.7,
+            "top_p": 0.95,
+            "top_k": 40,
+            "max_output_tokens": 2048,
+        }
+        
+        # Safety settings (permissive for educational content)
+        self.safety_settings = [
+            {
+                "category": "HARM_CATEGORY_HARASSMENT",
+                "threshold": "BLOCK_NONE"
+            },
+            {
+                "category": "HARM_CATEGORY_HATE_SPEECH",
+                "threshold": "BLOCK_NONE"
+            },
+            {
+                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                "threshold": "BLOCK_NONE"
+            },
+            {
+                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                "threshold": "BLOCK_NONE"
+            },
+        ]
     
     @retry(
         stop=stop_after_attempt(3),
@@ -39,7 +65,7 @@ class LLMClient:
         response_format: Optional[str] = None
     ) -> str:
         """
-        Generate a completion using DeepSeek.
+        Generate a completion using Google Gemini.
         
         Args:
             system_prompt: System message for context
@@ -52,25 +78,26 @@ class LLMClient:
             Generated text response
         """
         try:
-            messages = [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
-            ]
+            # Create model instance
+            model = genai.GenerativeModel(
+                model_name=self.model_name,
+                generation_config={
+                    **self.generation_config,
+                    "temperature": temperature,
+                    "max_output_tokens": max_tokens,
+                },
+                safety_settings=self.safety_settings,
+                system_instruction=system_prompt
+            )
             
-            kwargs = {
-                "model": self.model,
-                "messages": messages,
-                "temperature": temperature,
-                "max_tokens": max_tokens
-            }
-            
-            # DeepSeek supports JSON mode
+            # Add JSON instruction if needed
             if response_format == "json":
-                kwargs["response_format"] = {"type": "json_object"}
+                user_prompt = f"{user_prompt}\n\nRespond with valid JSON only, no markdown formatting."
             
-            response = await self.client.chat.completions.create(**kwargs)
+            # Generate response
+            response = await model.generate_content_async(user_prompt)
             
-            content = response.choices[0].message.content
+            content = response.text
             
             logger.debug(f"LLM Response: {content[:200]}...")
             
@@ -124,7 +151,17 @@ Provide a helpful, personalized response."""
         )
         
         try:
-            return json.loads(response)
+            # Clean response - remove markdown code blocks if present
+            cleaned = response.strip()
+            if cleaned.startswith("```json"):
+                cleaned = cleaned[7:]
+            if cleaned.startswith("```"):
+                cleaned = cleaned[3:]
+            if cleaned.endswith("```"):
+                cleaned = cleaned[:-3]
+            cleaned = cleaned.strip()
+            
+            return json.loads(cleaned)
         except json.JSONDecodeError:
             # Try to extract JSON from response
             start = response.find("{")
@@ -141,16 +178,48 @@ Provide a helpful, personalized response."""
     ) -> str:
         """
         Multi-turn chat completion.
+        
+        Args:
+            messages: List of message dicts with 'role' and 'content'
+            temperature: Creativity level
+            max_tokens: Max response length
+            
+        Returns:
+            Assistant's response
         """
         try:
-            response = await self.client.chat.completions.create(
-                model=self.model,
-                messages=messages,
-                temperature=temperature,
-                max_tokens=max_tokens
+            # Extract system message if present
+            system_instruction = None
+            chat_messages = []
+            
+            for msg in messages:
+                if msg["role"] == "system":
+                    system_instruction = msg["content"]
+                elif msg["role"] == "user":
+                    chat_messages.append({"role": "user", "parts": [msg["content"]]})
+                elif msg["role"] == "assistant":
+                    chat_messages.append({"role": "model", "parts": [msg["content"]]})
+            
+            # Create model
+            model = genai.GenerativeModel(
+                model_name=self.model_name,
+                generation_config={
+                    **self.generation_config,
+                    "temperature": temperature,
+                    "max_output_tokens": max_tokens,
+                },
+                safety_settings=self.safety_settings,
+                system_instruction=system_instruction
             )
             
-            return response.choices[0].message.content
+            # Start chat with history
+            chat = model.start_chat(history=chat_messages[:-1] if len(chat_messages) > 1 else [])
+            
+            # Send last message
+            last_message = chat_messages[-1]["parts"][0] if chat_messages else ""
+            response = await chat.send_message_async(last_message)
+            
+            return response.text
             
         except Exception as e:
             logger.error(f"Chat Error: {str(e)}")

@@ -21,8 +21,8 @@ python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
 bcrypt==4.1.2
 
-# AI/ML - Lightweight (using OpenAI API directly)
-openai==1.10.0
+# AI/ML - Google Gemini
+google-generativeai==0.8.3
 httpx==0.26.0
 
 # Utils

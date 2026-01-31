@@ -23,10 +23,9 @@ class Settings(BaseSettings):
     def cors_origins_list(self) -> List[str]:
         return [origin.strip() for origin in self.CORS_ORIGINS.split(",")]
     
-    # DeepSeek API
-    DEEPSEEK_API_KEY: str = ""
-    DEEPSEEK_MODEL: str = "deepseek-chat"
-    DEEPSEEK_BASE_URL: str = "https://api.deepseek.com"
+    # Google Gemini API
+    GOOGLE_API_KEY: str = ""
+    GEMINI_MODEL: str = "gemini-2.0-flash-exp"
     
     # PostgreSQL Database
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/aimentor"

@@ -153,8 +153,8 @@ export default function ChatPage() {
                             >
                                 <div className={`flex items-start space-x-3 max-w-[80%] ${message.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
                                     <div className={`p-2 rounded-xl shrink-0 ${message.role === 'user'
-                                            ? 'bg-primary text-white'
-                                            : 'bg-muted'
+                                        ? 'bg-primary text-white'
+                                        : 'bg-muted'
                                         }`}>
                                         {message.role === 'user' ? (
                                             <User className="h-5 w-5" />
@@ -163,13 +163,13 @@ export default function ChatPage() {
                                         )}
                                     </div>
                                     <Card className={`p-4 ${message.role === 'user'
-                                            ? 'bg-primary text-white'
-                                            : 'bg-muted'
+                                        ? 'bg-primary text-white'
+                                        : 'bg-muted'
                                         }`}>
                                         <p className="whitespace-pre-wrap">{message.content}</p>
                                         <p className={`text-xs mt-2 ${message.role === 'user'
-                                                ? 'text-white/70'
-                                                : 'text-muted-foreground'
+                                            ? 'text-white/70'
+                                            : 'text-muted-foreground'
                                             }`}>
                                             {new Date(message.timestamp).toLocaleTimeString([], {
                                                 hour: '2-digit',
@@ -240,7 +240,7 @@ export default function ChatPage() {
                     </Button>
                 </form>
                 <p className="text-xs text-center text-muted-foreground mt-2">
-                    Powered by DeepSeek AI • Your conversations help personalize your journey
+                    Powered by Google Gemini Flash • Your conversations help personalize your journey
                 </p>
             </div>
         </div>
