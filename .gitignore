@@ -39,3 +39,4 @@ redis_data/
 .coverage
 htmlcov/
 coverage/
+.vercel

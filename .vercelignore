@@ -1,0 +1,71 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+chroma_db/
+postgres_data/
+mongo_data/
+redis_data/
+
+# Logs
+*.log
+logs/
+logs.md
+
+# Scripts
+scripts/
+*.sh
+*.bat
+
+# Documentation (optional - keep if you want docs deployed)
+*.md
+!README.md
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Build artifacts (backend specific)
+backend/dist/
+backend/build/
+backend/*.egg-info/
+
+# Git
+.git/
+.gitignore
