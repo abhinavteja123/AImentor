@@ -7,8 +7,8 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database.postgres import get_db
-from app.schemas.skill import (
+from ...database.postgres import get_db
+from ...schemas.skill import (
     SkillMasterResponse,
     SkillGapAnalysisRequest,
     SkillGapAnalysisResponse,
@@ -18,10 +18,10 @@ from app.schemas.skill import (
     SkillRecommendationsResponse,
     BulkAddSkillsRequest
 )
-from app.services.skill_service import SkillService
-from app.services.ai.skill_analyzer import SkillAnalyzer
-from app.utils.security import get_current_user
-from app.models.user import User
+from ...services.skill_service import SkillService
+from ...services.ai.skill_analyzer import SkillAnalyzer
+from ...utils.security import get_current_user
+from ...models.user import User
 
 router = APIRouter()
 

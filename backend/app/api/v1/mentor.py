@@ -7,16 +7,16 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database.postgres import get_db
-from app.schemas.mentor import (
+from ...database.postgres import get_db
+from ...schemas.mentor import (
     ChatMessage,
     ChatResponse,
     ChatSessionResponse,
     ChatSessionListResponse
 )
-from app.services.ai.chat_engine import MentorChatEngine
-from app.utils.security import get_current_user
-from app.models.user import User
+from ...services.ai.chat_engine import MentorChatEngine
+from ...utils.security import get_current_user
+from ...models.user import User
 
 router = APIRouter()
 

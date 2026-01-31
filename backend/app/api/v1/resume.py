@@ -8,8 +8,8 @@ from fastapi.responses import StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 
-from app.database.postgres import get_db
-from app.schemas.resume import (
+from ...database.postgres import get_db
+from ...schemas.resume import (
     ResumeResponse,
     ResumeTailorRequest,
     ResumeTailorResponse,
@@ -24,9 +24,9 @@ from app.schemas.resume import (
     RegenerateResumeRequest,
     UpdateDraftRequest
 )
-from app.services.resume_service import ResumeService
-from app.utils.security import get_current_user
-from app.models.user import User
+from ...services.resume_service import ResumeService
+from ...utils.security import get_current_user
+from ...models.user import User
 
 router = APIRouter()
 

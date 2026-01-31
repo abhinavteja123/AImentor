@@ -5,16 +5,16 @@ Profile API Endpoints
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database.postgres import get_db
-from app.schemas.profile import (
+from ...database.postgres import get_db
+from ...schemas.profile import (
     ProfileCreate,
     ProfileUpdate,
     ProfileResponse,
     OnboardingData
 )
-from app.services.profile_service import ProfileService
-from app.utils.security import get_current_user
-from app.models.user import User
+from ...services.profile_service import ProfileService
+from ...utils.security import get_current_user
+from ...models.user import User
 
 router = APIRouter()
 

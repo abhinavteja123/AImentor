@@ -7,7 +7,7 @@ from datetime import datetime, date
 from sqlalchemy import Column, String, Integer, DateTime, Date, ForeignKey, Float, Text, ARRAY
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import relationship
-from app.database.postgres import Base
+from ..database.postgres import Base
 
 
 class SkillMaster(Base):

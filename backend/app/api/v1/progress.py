@@ -7,16 +7,16 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database.postgres import get_db
-from app.schemas.progress import (
+from ...database.postgres import get_db
+from ...schemas.progress import (
     TaskCompleteRequest,
     TaskSkipRequest,
     ProgressStatsResponse,
     ProgressLogResponse
 )
-from app.services.progress_service import ProgressService
-from app.utils.security import get_current_user
-from app.models.user import User
+from ...services.progress_service import ProgressService
+from ...utils.security import get_current_user
+from ...models.user import User
 
 router = APIRouter()
 

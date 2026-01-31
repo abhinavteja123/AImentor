@@ -4,7 +4,7 @@ PostgreSQL Database Connection using SQLAlchemy Async
 
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
-from app.config import settings
+from ..config import settings
 
 # Create async engine
 engine = create_async_engine(
@@ -34,7 +34,7 @@ async def init_db():
     """Initialize database - create tables."""
     async with engine.begin() as conn:
         # Import models to register them
-        from app.models import user, profile, skill, roadmap, progress, resume
+        from ..models import user, profile, skill, roadmap, progress, resume
         await conn.run_sync(Base.metadata.create_all)
 
 

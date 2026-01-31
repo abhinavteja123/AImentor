@@ -11,10 +11,10 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.models.roadmap import Roadmap, RoadmapTask
-from app.models.profile import UserProfile
-from app.services.ai.llm_client import get_llm_client
-from app.services.ai.skill_analyzer import SkillAnalyzer
+from ...models.roadmap import Roadmap, RoadmapTask
+from ...models.profile import UserProfile
+from .llm_client import get_llm_client
+from .skill_analyzer import SkillAnalyzer
 
 logger = logging.getLogger(__name__)
 

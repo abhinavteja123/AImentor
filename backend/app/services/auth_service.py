@@ -10,18 +10,18 @@ from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.config import settings
-from app.models.user import User
-from app.models.profile import UserProfile
-from app.schemas.user import TokenResponse
-from app.utils.security import (
+from ..config import settings
+from ..models.user import User
+from ..models.profile import UserProfile
+from ..schemas.user import TokenResponse
+from ..utils.security import (
     hash_password, 
     verify_password, 
     create_access_token, 
     create_refresh_token,
     decode_token
 )
-from app.database.redis_client import blacklist_token
+from ..database.redis_client import blacklist_token
 
 
 class AuthService:

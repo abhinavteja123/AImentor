@@ -12,18 +12,18 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.models.resume import Resume
-from app.models.user import User
-from app.models.profile import UserProfile
-from app.models.skill import UserSkill, SkillMaster
-from app.schemas.resume import (
+from ..models.resume import Resume
+from ..models.user import User
+from ..models.profile import UserProfile
+from ..models.skill import UserSkill, SkillMaster
+from ..schemas.resume import (
     ResumeUpdateRequest,
     ATSOptimizationRequest,
     ATSOptimizationResponse,
     MissingSection,
     ResumeValidationResponse
 )
-from app.services.ai.llm_client import LLMClient
+from .ai.llm_client import LLMClient
 
 
 class ResumeService:

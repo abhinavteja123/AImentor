@@ -7,7 +7,7 @@ from datetime import datetime, date
 from sqlalchemy import Column, String, Integer, DateTime, Date, ForeignKey, Float, Text, Boolean
 from sqlalchemy.dialects.postgresql import UUID, JSONB, ARRAY
 from sqlalchemy.orm import relationship
-from app.database.postgres import Base
+from ..database.postgres import Base
 
 
 class Roadmap(Base):

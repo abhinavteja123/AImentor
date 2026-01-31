@@ -7,7 +7,7 @@ from datetime import datetime
 from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, Text, Boolean
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import relationship
-from app.database.postgres import Base
+from ..database.postgres import Base
 
 
 class Resume(Base):

@@ -11,7 +11,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.models.roadmap import Roadmap, RoadmapTask
+from ..models.roadmap import Roadmap, RoadmapTask
 
 
 class RoadmapService:

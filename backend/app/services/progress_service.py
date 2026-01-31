@@ -10,10 +10,10 @@ from fastapi import HTTPException, status
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.progress import ProgressLog, Achievement, UserStreak
-from app.models.roadmap import RoadmapTask, Roadmap
-from app.models.skill import UserSkill
-from app.services.roadmap_service import RoadmapService
+from ..models.progress import ProgressLog, Achievement, UserStreak
+from ..models.roadmap import RoadmapTask, Roadmap
+from ..models.skill import UserSkill
+from .roadmap_service import RoadmapService
 
 
 class ProgressService:

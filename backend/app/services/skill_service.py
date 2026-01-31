@@ -10,7 +10,7 @@ from sqlalchemy import select, func, delete, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.models.skill import SkillMaster, UserSkill
+from ..models.skill import SkillMaster, UserSkill
 
 
 class SkillService:

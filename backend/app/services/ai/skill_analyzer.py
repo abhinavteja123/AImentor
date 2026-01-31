@@ -10,9 +10,9 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.models.skill import SkillMaster, UserSkill, RoleTemplate
-from app.models.profile import UserProfile
-from app.services.ai.llm_client import get_llm_client
+from ...models.skill import SkillMaster, UserSkill, RoleTemplate
+from ...models.profile import UserProfile
+from .llm_client import get_llm_client
 
 logger = logging.getLogger(__name__)
 

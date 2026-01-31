@@ -3,7 +3,7 @@ Redis Connection for Caching and Sessions
 """
 
 import redis.asyncio as redis
-from app.config import settings
+from ..config import settings
 
 # Redis client instance
 _redis_client: redis.Redis = None

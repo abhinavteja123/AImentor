@@ -11,9 +11,9 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.models.profile import UserProfile
-from app.models.skill import SkillMaster, UserSkill
-from app.schemas.profile import OnboardingData, ProfileUpdate, ProfileResponse
+from ..models.profile import UserProfile
+from ..models.skill import SkillMaster, UserSkill
+from ..schemas.profile import OnboardingData, ProfileUpdate, ProfileResponse
 
 
 class ProfileService:

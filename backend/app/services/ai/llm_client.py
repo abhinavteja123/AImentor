@@ -8,7 +8,7 @@ from typing import Optional, Dict, Any, List
 import google.generativeai as genai
 from tenacity import retry, stop_after_attempt, wait_exponential
 
-from app.config import settings
+from ...config import settings
 
 logger = logging.getLogger(__name__)
 

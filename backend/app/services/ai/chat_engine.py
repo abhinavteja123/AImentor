@@ -11,13 +11,13 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.models.user import User
-from app.models.profile import UserProfile
-from app.models.roadmap import Roadmap
-from app.models.skill import UserSkill
-from app.models.progress import UserStreak
-from app.database.mongodb import get_chat_sessions_collection
-from app.services.ai.llm_client import get_llm_client
+from ...models.user import User
+from ...models.profile import UserProfile
+from ...models.roadmap import Roadmap
+from ...models.skill import UserSkill
+from ...models.progress import UserStreak
+from ...database.mongodb import get_chat_sessions_collection
+from .llm_client import get_llm_client
 
 logger = logging.getLogger(__name__)
 

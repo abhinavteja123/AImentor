@@ -13,10 +13,10 @@ from passlib.context import CryptContext
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.config import settings
-from app.database.postgres import get_db
-from app.database.redis_client import is_token_blacklisted
-from app.models.user import User
+from ..config import settings
+from ..database.postgres import get_db
+from ..database.redis_client import is_token_blacklisted
+from ..models.user import User
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

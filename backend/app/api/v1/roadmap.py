@@ -7,17 +7,17 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database.postgres import get_db
-from app.schemas.roadmap import (
+from ...database.postgres import get_db
+from ...schemas.roadmap import (
     RoadmapGenerateRequest,
     RoadmapResponse,
     RoadmapWeekResponse,
     RoadmapRegenerateRequest
 )
-from app.services.roadmap_service import RoadmapService
-from app.services.ai.roadmap_generator import RoadmapGenerator
-from app.utils.security import get_current_user
-from app.models.user import User
+from ...services.roadmap_service import RoadmapService
+from ...services.ai.roadmap_generator import RoadmapGenerator
+from ...utils.security import get_current_user
+from ...models.user import User
 
 router = APIRouter()
 

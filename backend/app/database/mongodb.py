@@ -3,7 +3,7 @@ MongoDB Connection using Motor (async driver)
 """
 
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
-from app.config import settings
+from ..config import settings
 
 # MongoDB client instance
 _client: AsyncIOMotorClient = None

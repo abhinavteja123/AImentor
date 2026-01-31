@@ -8,13 +8,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.config import settings
-from app.database.postgres import init_db, close_db
-from app.database.mongodb import init_mongodb, close_mongodb
-from app.database.redis_client import init_redis, close_redis
+from .config import settings
+from .database.postgres import init_db, close_db
+from .database.mongodb import init_mongodb, close_mongodb
+from .database.redis_client import init_redis, close_redis
 
 # Import API routers
-from app.api.v1 import auth, profile, skills, roadmap, progress, mentor, resume
+from .api.v1 import auth, profile, skills, roadmap, progress, mentor, resume
 
 # Configure logging
 logging.basicConfig(
