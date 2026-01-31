@@ -147,12 +147,12 @@ export const roadmapApi = {
 
 // Progress API
 export const progressApi = {
-    completeTask: async (data: { task_id: string; time_spent: number; notes?: string }) => {
-        const response = await api.post('/api/v1/progress/complete', data)
+    completeTask: async (data: { task_id: string; time_spent: number; difficulty_rating?: number; confidence_rating?: number; notes?: string }) => {
+        const response = await api.post('/api/v1/progress/task/complete', data)
         return response.data
     },
     skipTask: async (data: { task_id: string; reason: string }) => {
-        const response = await api.post('/api/v1/progress/skip', data)
+        const response = await api.post('/api/v1/progress/task/skip', data)
         return response.data
     },
     getStats: async () => {
@@ -202,8 +202,8 @@ export const resumeApi = {
         const response = await api.put('/api/v1/resume', data)
         return response.data
     },
-    tailor: async (jobDescription: string) => {
-        const response = await api.post('/api/v1/resume/tailor', { job_description: jobDescription })
+    tailor: async (data: { job_description: string }) => {
+        const response = await api.post('/api/v1/resume/tailor', data)
         return response.data
     },
 }
