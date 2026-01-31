@@ -16,7 +16,8 @@ import {
     ChevronRight,
     Sparkles,
     User,
-    Menu
+    Menu,
+    Target
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/lib/store'
@@ -24,6 +25,7 @@ import { useAuthStore } from '@/lib/store'
 const navItems = [
     { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { href: '/dashboard/roadmap', icon: Map, label: 'Roadmap' },
+    { href: '/dashboard/skills', icon: Target, label: 'Skills' },
     { href: '/dashboard/progress', icon: TrendingUp, label: 'Progress' },
     { href: '/dashboard/chat', icon: MessageSquare, label: 'AI Mentor' },
     { href: '/dashboard/resume', icon: FileText, label: 'Resume' },

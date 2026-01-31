@@ -19,8 +19,9 @@ import { progressApi, roadmapApi, profileApi } from '@/lib/api'
 const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/dashboard/roadmap', label: 'My Roadmap', icon: Target },
+    { href: '/dashboard/skills', label: 'Skills', icon: TrendingUp },
     { href: '/dashboard/chat', label: 'AI Mentor', icon: MessageCircle },
-    { href: '/dashboard/progress', label: 'Progress', icon: TrendingUp },
+    { href: '/dashboard/progress', label: 'Progress', icon: BookOpen },
     { href: '/dashboard/resume', label: 'Resume', icon: FileText },
     { href: '/dashboard/profile', label: 'Profile', icon: User },
 ]

@@ -100,23 +100,82 @@ export const profileApi = {
 
 // Skills API
 export const skillsApi = {
-    getSkills: async (category?: string, search?: string) => {
+    // Master skills database
+    getMasterSkills: async (category?: string, search?: string, limit?: number) => {
         const params = new URLSearchParams()
         if (category) params.append('category', category)
         if (search) params.append('search', search)
-        const response = await api.get(`/api/v1/skills?${params}`)
+        if (limit) params.append('limit', limit.toString())
+        const response = await api.get(`/api/v1/skills/master?${params}`)
         return response.data
     },
     getCategories: async () => {
         const response = await api.get('/api/v1/skills/categories')
         return response.data
     },
+    
+    // User skills management
     getUserSkills: async () => {
-        const response = await api.get('/api/v1/skills/mine')
+        const response = await api.get('/api/v1/skills/user-skills')
         return response.data
     },
+    addSkill: async (data: { 
+        skill_id?: string; 
+        skill_name?: string; 
+        category?: string;
+        proficiency_level?: number;
+        target_proficiency?: number;
+        confidence_rating?: number;
+        notes?: string;
+    }) => {
+        const response = await api.post('/api/v1/skills/user-skills', data)
+        return response.data
+    },
+    bulkAddSkills: async (skills: Array<{ skill_name: string; category?: string; proficiency_level?: number }>) => {
+        const response = await api.post('/api/v1/skills/user-skills/bulk', { skills })
+        return response.data
+    },
+    updateSkill: async (skillId: string, data: {
+        proficiency_level?: number;
+        target_proficiency?: number;
+        confidence_rating?: number;
+        notes?: string;
+        practice_hours?: number;
+    }) => {
+        const response = await api.put(`/api/v1/skills/user-skills/${skillId}`, data)
+        return response.data
+    },
+    removeSkill: async (skillId: string) => {
+        const response = await api.delete(`/api/v1/skills/user-skills/${skillId}`)
+        return response.data
+    },
+    logPractice: async (skillId: string, hours: number) => {
+        const response = await api.post(`/api/v1/skills/user-skills/${skillId}/practice?hours=${hours}`)
+        return response.data
+    },
+    
+    // AI-powered analysis
     analyzeSkillGap: async (targetRole: string) => {
-        const response = await api.post('/api/v1/skills/analyze', { target_role: targetRole })
+        const response = await api.post('/api/v1/skills/analyze-gap', { target_role: targetRole })
+        return response.data
+    },
+    getRecommendations: async () => {
+        const response = await api.get('/api/v1/skills/recommendations')
+        return response.data
+    },
+    getTrendingSkills: async (category?: string, limit?: number) => {
+        const params = new URLSearchParams()
+        if (category) params.append('category', category)
+        if (limit) params.append('limit', limit.toString())
+        const response = await api.get(`/api/v1/skills/trending?${params}`)
+        return response.data
+    },
+    assessProficiency: async (skillName: string) => {
+        const response = await api.post(`/api/v1/skills/assess-proficiency?skill_name=${encodeURIComponent(skillName)}`)
+        return response.data
+    },
+    compareRoles: async (role1: string, role2: string) => {
+        const response = await api.post(`/api/v1/skills/compare-roles?role1=${encodeURIComponent(role1)}&role2=${encodeURIComponent(role2)}`)
         return response.data
     },
 }
