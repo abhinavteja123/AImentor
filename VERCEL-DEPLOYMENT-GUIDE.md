@@ -153,7 +153,7 @@ cd C:\Users\ABHINAV TEJA\Downloads\AImentor
 
 # Login if not already
 vercel login
-
+# OK
 # Deploy to preview first (recommended)
 vercel
 
