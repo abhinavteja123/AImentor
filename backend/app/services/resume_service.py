@@ -246,6 +246,73 @@ Return ONLY the professional summary text, no additional formatting or explanati
         
         return resume
     
+    async def sync_from_profile(self, user_id: UUID) -> Resume:
+        """Sync resume data from user profile."""
+        # Get user with profile
+        result = await self.db.execute(
+            select(User)
+            .options(selectinload(User.profile))
+            .where(User.id == user_id)
+        )
+        user = result.scalar_one_or_none()
+        
+        if not user or not user.profile:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Complete onboarding first"
+            )
+        
+        profile = user.profile
+        resume = await self.get_current_resume(user_id)
+        
+        if not resume:
+            resume = Resume(
+                user_id=user_id,
+                version=1,
+                is_active=True,
+                summary="",
+                contact_info={"email": user.email}
+            )
+            self.db.add(resume)
+            await self.db.flush()
+        
+        # Sync data from profile to resume
+        if profile.education_data:
+            resume.education_section = profile.education_data
+        
+        if profile.experience_data:
+            resume.experience_section = profile.experience_data
+        
+        if profile.projects_data:
+            resume.projects_section = profile.projects_data
+        
+        if profile.certifications_data:
+            resume.certifications_section = profile.certifications_data
+        
+        if profile.extracurricular_data:
+            resume.extracurricular_section = profile.extracurricular_data
+        
+        if profile.technical_skills_data:
+            resume.technical_skills_section = profile.technical_skills_data
+        
+        # Sync contact info
+        resume.contact_info = {
+            "email": user.email,
+            "phone": profile.phone,
+            "location": profile.location,
+            "linkedin_url": profile.linkedin_url,
+            "github_url": profile.github_url,
+            "portfolio_url": profile.portfolio_url,
+            "website": profile.website_url
+        }
+        
+        resume.updated_at = datetime.utcnow()
+        
+        await self.db.commit()
+        await self.db.refresh(resume)
+        
+        return resume
+    
     async def tailor_resume_to_job(
         self, 
         user_id: UUID, 

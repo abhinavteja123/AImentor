@@ -251,4 +251,8 @@ export const resumeApi = {
         const response = await api.post('/api/v1/resume/regenerate', data || {})
         return response.data
     },
+    syncFromProfile: async () => {
+        const response = await api.post('/api/v1/resume/sync-from-profile')
+        return response.data
+    },
 }

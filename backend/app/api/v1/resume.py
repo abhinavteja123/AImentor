@@ -62,6 +62,21 @@ async def generate_resume(
     return resume
 
 
+@router.post("/sync-from-profile", response_model=ResumeResponse)
+async def sync_from_profile(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Sync resume data from user profile.
+    This pulls education, experience, projects, etc. from the profile
+    and updates the resume accordingly.
+    """
+    resume_service = ResumeService(db)
+    resume = await resume_service.sync_from_profile(current_user.id)
+    return resume
+
+
 @router.put("/update", response_model=ResumeResponse)
 async def update_resume(
     updates: ResumeUpdateRequest,
