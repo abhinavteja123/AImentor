@@ -143,12 +143,20 @@ Provide a helpful, personalized response."""
         """
         Generate a JSON response.
         """
+        logger.info("Calling Gemini API for JSON generation...")
+        logger.debug(f"System prompt length: {len(system_prompt)}")
+        logger.debug(f"User prompt length: {len(user_prompt)}")
+        
         response = await self.generate_completion(
             system_prompt=system_prompt,
             user_prompt=user_prompt,
             temperature=temperature,
-            response_format="json"
+            response_format="json",
+            max_tokens=4000  # Increase token limit for detailed roadmaps
         )
+        
+        logger.info(f"Received response of length: {len(response)}")
+        logger.debug(f"Raw response preview: {response[:500]}...")
         
         try:
             # Clean response - remove markdown code blocks if present
@@ -161,14 +169,24 @@ Provide a helpful, personalized response."""
                 cleaned = cleaned[:-3]
             cleaned = cleaned.strip()
             
-            return json.loads(cleaned)
-        except json.JSONDecodeError:
+            result = json.loads(cleaned)
+            logger.info("Successfully parsed JSON response")
+            return result
+            
+        except json.JSONDecodeError as e:
+            logger.warning(f"Initial JSON parse failed: {e}")
             # Try to extract JSON from response
             start = response.find("{")
             end = response.rfind("}") + 1
             if start != -1 and end > start:
-                return json.loads(response[start:end])
-            raise ValueError("Could not parse JSON response")
+                try:
+                    result = json.loads(response[start:end])
+                    logger.info("Successfully extracted and parsed JSON from response")
+                    return result
+                except json.JSONDecodeError as e2:
+                    logger.error(f"JSON extraction also failed: {e2}")
+                    logger.error(f"Response content: {response[:1000]}")
+            raise ValueError(f"Could not parse JSON response: {e}")
     
     async def chat_completion(
         self,

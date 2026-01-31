@@ -7,7 +7,7 @@ import {
     FileText, Download, Edit, Wand2, Copy, ExternalLink,
     Mail, Phone, MapPin, Github, Linkedin, Globe,
     Loader2, CheckCircle2, Star, Briefcase, GraduationCap,
-    Code, Sparkles, RefreshCw, Eye, Pencil
+    Code, Sparkles, RefreshCw, Eye, Pencil, ArrowLeft
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -166,7 +166,17 @@ export default function ResumePage() {
     if (!resume) {
         return (
             <div className="min-h-screen bg-background p-6">
-                <div className="max-w-2xl mx-auto pt-20">
+                {/* Back Button */}
+                <Button
+                    variant="ghost"
+                    onClick={() => router.push('/dashboard')}
+                    className="mb-4"
+                >
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Back to Dashboard
+                </Button>
+                
+                <div className="max-w-2xl mx-auto pt-10">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -236,6 +246,16 @@ export default function ResumePage() {
 
     return (
         <div className="min-h-screen bg-background p-4 md:p-6">
+            {/* Back Button */}
+            <Button
+                variant="ghost"
+                onClick={() => router.push('/dashboard')}
+                className="mb-4"
+            >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Dashboard
+            </Button>
+            
             {/* Header */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}

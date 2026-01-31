@@ -6,13 +6,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
     Map, ChevronLeft, ChevronRight, Calendar, Clock, CheckCircle2,
     Circle, Play, BookOpen, Code, Video, Target, Sparkles, AlertCircle,
-    Trophy, Loader2, RefreshCw, SkipForward
+    Trophy, Loader2, RefreshCw, SkipForward, ArrowLeft
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { useAuthStore } from '@/lib/store'
-import { roadmapApi, progressApi } from '@/lib/api'
+import { roadmapApi, progressApi, profileApi } from '@/lib/api'
 import toast from 'react-hot-toast'
 
 interface Task {
@@ -21,17 +21,28 @@ interface Task {
     task_description: string
     task_type: string
     estimated_duration: number
-    difficulty_level: number
+    difficulty: number
     status: string
     resources?: any[]
     learning_objectives?: string[]
     success_criteria?: string
 }
 
+interface DayData {
+    day_number: number
+    tasks: Task[]
+    total_duration: number
+    completed_count: number
+}
+
 interface Week {
     week_number: number
     focus_area: string
-    tasks: Task[]
+    learning_objectives: string[]
+    days: DayData[]
+    total_tasks: number
+    completed_tasks: number
+    completion_percentage: number
 }
 
 interface Roadmap {
@@ -221,7 +232,17 @@ export default function RoadmapPage() {
     if (!roadmap) {
         return (
             <div className="min-h-screen bg-background p-6">
-                <div className="max-w-2xl mx-auto pt-20">
+                {/* Back Button */}
+                <Button
+                    variant="ghost"
+                    onClick={() => router.push('/dashboard')}
+                    className="mb-4"
+                >
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Back to Dashboard
+                </Button>
+                
+                <div className="max-w-2xl mx-auto pt-10">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -286,6 +307,16 @@ export default function RoadmapPage() {
     // Roadmap exists - show it
     return (
         <div className="min-h-screen bg-background p-4 md:p-6">
+            {/* Back Button */}
+            <Button
+                variant="ghost"
+                onClick={() => router.push('/dashboard')}
+                className="mb-4"
+            >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Dashboard
+            </Button>
+            
             {/* Header */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
@@ -390,7 +421,7 @@ export default function RoadmapPage() {
                                                 Week {selectedWeek}: {weekData.focus_area || 'Learning'}
                                             </CardTitle>
                                             <CardDescription>
-                                                {weekData.tasks?.length || 0} tasks to complete
+                                                {weekData.total_tasks || 0} tasks to complete • {weekData.completed_tasks || 0} done
                                             </CardDescription>
                                         </div>
                                         {selectedWeek === (roadmap.current_week || 1) && (
@@ -402,107 +433,122 @@ export default function RoadmapPage() {
                                 </CardHeader>
                             </Card>
 
-                            {/* Tasks */}
-                            <div className="grid gap-4">
-                                {weekData.tasks?.map((task, idx) => {
-                                    const TaskIcon = taskTypeIcons[task.task_type] || BookOpen
-                                    const gradient = taskTypeColors[task.task_type] || 'from-gray-500 to-gray-600'
-                                    const isComplete = task.status === 'completed'
-                                    const isSkipped = task.status === 'skipped'
+                            {/* Tasks by Day */}
+                            <div className="space-y-6">
+                                {weekData.days && weekData.days.length > 0 ? (
+                                    weekData.days.map((day) => (
+                                        <div key={day.day_number}>
+                                            <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                                                <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-bold">
+                                                    {day.day_number}
+                                                </span>
+                                                Day {day.day_number}
+                                                <span className="text-sm font-normal text-muted-foreground">
+                                                    ({day.completed_count}/{day.tasks?.length || 0} tasks)
+                                                </span>
+                                            </h3>
+                                            <div className="grid gap-3 ml-10">
+                                                {day.tasks?.map((task, idx) => {
+                                                    const TaskIcon = taskTypeIcons[task.task_type] || BookOpen
+                                                    const gradient = taskTypeColors[task.task_type] || 'from-gray-500 to-gray-600'
+                                                    const isComplete = task.status === 'completed'
+                                                    const isSkipped = task.status === 'skipped'
 
-                                    return (
-                                        <motion.div
-                                            key={task.id}
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: idx * 0.05 }}
-                                        >
-                                            <Card className={`transition-all ${isComplete ? 'border-emerald-500/50 bg-emerald-500/5' :
-                                                    isSkipped ? 'border-orange-500/50 bg-orange-500/5 opacity-60' :
-                                                        'hover:border-primary/50'
-                                                }`}>
-                                                <CardContent className="pt-6">
-                                                    <div className="flex items-start gap-4">
-                                                        {/* Status Icon */}
-                                                        <div className={`p-3 rounded-xl bg-gradient-to-br ${gradient} flex-shrink-0`}>
-                                                            <TaskIcon className="h-5 w-5 text-white" />
-                                                        </div>
+                                                    return (
+                                                        <motion.div
+                                                            key={task.id}
+                                                            initial={{ opacity: 0, y: 20 }}
+                                                            animate={{ opacity: 1, y: 0 }}
+                                                            transition={{ delay: idx * 0.05 }}
+                                                        >
+                                                            <Card className={`transition-all ${isComplete ? 'border-emerald-500/50 bg-emerald-500/5' :
+                                                                    isSkipped ? 'border-orange-500/50 bg-orange-500/5 opacity-60' :
+                                                                        'hover:border-primary/50'
+                                                                }`}>
+                                                                <CardContent className="py-4">
+                                                                    <div className="flex items-start gap-4">
+                                                                        {/* Status Icon */}
+                                                                        <div className={`p-2 rounded-lg bg-gradient-to-br ${gradient} flex-shrink-0`}>
+                                                                            <TaskIcon className="h-4 w-4 text-white" />
+                                                                        </div>
 
-                                                        {/* Content */}
-                                                        <div className="flex-1 min-w-0">
-                                                            <div className="flex items-start justify-between gap-4">
-                                                                <div>
-                                                                    <h3 className={`font-semibold ${isComplete ? 'line-through text-muted-foreground' : ''}`}>
-                                                                        {task.task_title}
-                                                                    </h3>
-                                                                    <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
-                                                                        {task.task_description}
-                                                                    </p>
-                                                                </div>
+                                                                        {/* Content */}
+                                                                        <div className="flex-1 min-w-0">
+                                                                            <div className="flex items-start justify-between gap-4">
+                                                                                <div>
+                                                                                    <h4 className={`font-medium ${isComplete ? 'line-through text-muted-foreground' : ''}`}>
+                                                                                        {task.task_title}
+                                                                                    </h4>
+                                                                                    <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                                                                                        {task.task_description}
+                                                                                    </p>
+                                                                                </div>
 
-                                                                {/* Actions */}
-                                                                {!isComplete && !isSkipped && (
-                                                                    <div className="flex items-center gap-2 flex-shrink-0">
-                                                                        <Button
-                                                                            size="sm"
-                                                                            variant="ghost"
-                                                                            onClick={() => handleSkipTask(task.id)}
-                                                                        >
-                                                                            <SkipForward className="h-4 w-4" />
-                                                                        </Button>
-                                                                        <Button
-                                                                            size="sm"
-                                                                            onClick={() => handleCompleteTask(task.id)}
-                                                                            disabled={completingTask === task.id}
-                                                                            className="gradient-primary text-white"
-                                                                        >
-                                                                            {completingTask === task.id ? (
-                                                                                <Loader2 className="h-4 w-4 animate-spin" />
-                                                                            ) : (
-                                                                                <>
-                                                                                    <CheckCircle2 className="h-4 w-4 mr-1" />
-                                                                                    Done
-                                                                                </>
-                                                                            )}
-                                                                        </Button>
+                                                                                {/* Actions */}
+                                                                                {!isComplete && !isSkipped && (
+                                                                                    <div className="flex items-center gap-2 flex-shrink-0">
+                                                                                        <Button
+                                                                                            size="sm"
+                                                                                            variant="ghost"
+                                                                                            onClick={() => handleSkipTask(task.id)}
+                                                                                        >
+                                                                                            <SkipForward className="h-4 w-4" />
+                                                                                        </Button>
+                                                                                        <Button
+                                                                                            size="sm"
+                                                                                            onClick={() => handleCompleteTask(task.id)}
+                                                                                            disabled={completingTask === task.id}
+                                                                                            className="gradient-primary text-white"
+                                                                                        >
+                                                                                            {completingTask === task.id ? (
+                                                                                                <Loader2 className="h-4 w-4 animate-spin" />
+                                                                                            ) : (
+                                                                                                <>
+                                                                                                    <CheckCircle2 className="h-4 w-4 mr-1" />
+                                                                                                    Done
+                                                                                                </>
+                                                                                            )}
+                                                                                        </Button>
+                                                                                    </div>
+                                                                                )}
+
+                                                                                {isComplete && (
+                                                                                    <CheckCircle2 className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                                                                                )}
+                                                                            </div>
+
+                                                                            {/* Meta */}
+                                                                            <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+                                                                                <span className="flex items-center gap-1">
+                                                                                    <Clock className="h-3 w-3" />
+                                                                                    {task.estimated_duration} min
+                                                                                </span>
+                                                                                <span className="capitalize px-2 py-0.5 rounded bg-muted">
+                                                                                    {task.task_type}
+                                                                                </span>
+                                                                                <span className="flex items-center gap-1">
+                                                                                    {Array.from({ length: 5 }, (_, i) => (
+                                                                                        <span
+                                                                                            key={i}
+                                                                                            className={`w-1.5 h-1.5 rounded-full ${i < (task.difficulty || 3)
+                                                                                                    ? 'bg-primary'
+                                                                                                    : 'bg-muted-foreground/30'
+                                                                                                }`}
+                                                                                        />
+                                                                                    ))}
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                )}
-
-                                                                {isComplete && (
-                                                                    <CheckCircle2 className="h-6 w-6 text-emerald-500 flex-shrink-0" />
-                                                                )}
-                                                            </div>
-
-                                                            {/* Meta */}
-                                                            <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
-                                                                <span className="flex items-center gap-1">
-                                                                    <Clock className="h-4 w-4" />
-                                                                    {task.estimated_duration} min
-                                                                </span>
-                                                                <span className="capitalize px-2 py-0.5 rounded bg-muted text-xs">
-                                                                    {task.task_type}
-                                                                </span>
-                                                                <span className="flex items-center gap-1">
-                                                                    {Array.from({ length: 5 }, (_, i) => (
-                                                                        <span
-                                                                            key={i}
-                                                                            className={`w-1.5 h-1.5 rounded-full ${i < task.difficulty_level
-                                                                                    ? 'bg-primary'
-                                                                                    : 'bg-muted-foreground/30'
-                                                                                }`}
-                                                                        />
-                                                                    ))}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </CardContent>
-                                            </Card>
-                                        </motion.div>
-                                    )
-                                })}
-
-                                {(!weekData.tasks || weekData.tasks.length === 0) && (
+                                                                </CardContent>
+                                                            </Card>
+                                                        </motion.div>
+                                                    )
+                                                })}
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
                                     <Card>
                                         <CardContent className="py-12 text-center">
                                             <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />

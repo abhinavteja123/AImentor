@@ -6,8 +6,9 @@ import { motion } from 'framer-motion'
 import {
     TrendingUp, Clock, Target, Flame, Award, Calendar,
     BarChart3, CheckCircle2, Loader2, Star, Trophy,
-    Zap, BookOpen, Code, Medal
+    Zap, BookOpen, Code, Medal, ArrowLeft
 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { useAuthStore } from '@/lib/store'
@@ -128,6 +129,16 @@ export default function ProgressPage() {
 
     return (
         <div className="min-h-screen bg-background p-4 md:p-6">
+            {/* Back Button */}
+            <Button
+                variant="ghost"
+                onClick={() => router.push('/dashboard')}
+                className="mb-4"
+            >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Dashboard
+            </Button>
+            
             {/* Header */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
