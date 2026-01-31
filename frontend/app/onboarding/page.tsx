@@ -67,10 +67,35 @@ export default function OnboardingPage() {
     }
 
     const handleSubmit = async () => {
+        // Final validation before submission
+        if (!data.goalRole || data.goalRole.trim() === '') {
+            toast.error('Please select or enter your career goal')
+            setStep(0)
+            return
+        }
+        
+        if (!data.experienceLevel) {
+            toast.error('Please select your experience level')
+            setStep(1)
+            return
+        }
+        
+        if (data.timePerDay <= 0) {
+            toast.error('Please set your daily time commitment')
+            setStep(2)
+            return
+        }
+        
+        if (!data.preferredLearningStyle) {
+            toast.error('Please select your preferred learning style')
+            setStep(3)
+            return
+        }
+        
         setIsSubmitting(true)
         try {
             await profileApi.completeOnboarding({
-                goal_role: data.goalRole,
+                goal_role: data.goalRole.trim(),
                 experience_level: data.experienceLevel,
                 time_per_day: data.timePerDay,
                 preferred_learning_style: data.preferredLearningStyle,

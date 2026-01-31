@@ -80,7 +80,7 @@ class LLMClient:
         try:
             # Create model instance
             model = genai.GenerativeModel(
-                model_name=self.model_name,
+                model_name="gemini-2.5-flash-preview-09-2025",
                 generation_config={
                     **self.generation_config,
                     "temperature": temperature,

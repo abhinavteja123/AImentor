@@ -37,11 +37,26 @@ class RoadmapGenerator:
         """
         Generate a personalized learning roadmap.
         """
+        # Validate target_role
+        if not target_role or target_role.strip() == "" or target_role.lower() == "none":
+            raise ValueError(
+                "Target role is required. Please complete your profile with your career goal first."
+            )
+        
         # Get user profile
         result = await self.db.execute(
             select(UserProfile).where(UserProfile.user_id == user_id)
         )
         profile = result.scalar_one_or_none()
+        
+        # Validate profile has required fields
+        if profile:
+            if not profile.goal_role or profile.goal_role.lower() == "none":
+                raise ValueError(
+                    "Your profile doesn't have a career goal set. Please update your profile first."
+                )
+            # Use profile's goal_role if available
+            target_role = profile.goal_role
         
         # Get skill gap analysis
         skill_analysis = await self.skill_analyzer.analyze_skill_gap(
@@ -285,6 +300,21 @@ Generate for first 4 weeks with 5-6 days each, 2-3 tasks per day fitting the {da
         
         if not old_roadmap:
             raise ValueError("Roadmap not found")
+        
+        # Validate target role
+        if not old_roadmap.target_role or old_roadmap.target_role.lower() == "none":
+            # Try to get from user profile
+            profile_result = await self.db.execute(
+                select(UserProfile).where(UserProfile.user_id == user_id)
+            )
+            profile = profile_result.scalar_one_or_none()
+            
+            if not profile or not profile.goal_role or profile.goal_role.lower() == "none":
+                raise ValueError(
+                    "Cannot regenerate roadmap: No valid career goal found. Please update your profile first."
+                )
+            
+            old_roadmap.target_role = profile.goal_role
         
         # Mark old as abandoned
         old_roadmap.status = "abandoned"

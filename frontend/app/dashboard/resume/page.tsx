@@ -102,7 +102,16 @@ export default function ResumePage() {
             setResume(data)
             toast.success('Resume generated successfully!')
         } catch (error: any) {
-            toast.error(error.response?.data?.detail || 'Failed to generate resume')
+            const detail = error.response?.data?.detail
+            let errorMessage = 'Failed to generate resume'
+            if (typeof detail === 'string') {
+                errorMessage = detail
+            } else if (Array.isArray(detail) && detail.length > 0) {
+                errorMessage = detail[0]?.msg || 'Validation error'
+            } else if (typeof detail === 'object' && detail?.msg) {
+                errorMessage = detail.msg
+            }
+            toast.error(errorMessage)
         } finally {
             setIsGenerating(false)
         }

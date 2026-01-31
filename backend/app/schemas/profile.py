@@ -17,25 +17,26 @@ class SkillInput(BaseModel):
 class OnboardingData(BaseModel):
     """Schema for onboarding data."""
     # Step 1: Goal Setting
-    goal_role: str
+    goal_role: str = Field(..., min_length=2, max_length=255, description="Target career role (required)")
     
     # Step 2: Experience Level
-    experience_level: str = Field(pattern="^(beginner|intermediate|advanced)$")
+    experience_level: str = Field(..., pattern="^(beginner|intermediate|advanced)$", description="Experience level (required)")
     
     # Step 3: Education
     current_education: Optional[str] = None
     graduation_year: Optional[int] = None
     
     # Step 4: Time Commitment
-    time_per_day: int = Field(ge=15, le=480, default=60)  # 15 min to 8 hours
+    time_per_day: int = Field(..., ge=15, le=480, description="Daily time commitment in minutes (required)")  # 15 min to 8 hours
     
     # Step 5: Current Skills
     current_skills: Optional[List[SkillInput]] = []
     
     # Step 6: Learning Style
     preferred_learning_style: str = Field(
+        ...,
         pattern="^(visual|reading|hands-on|mixed)$",
-        default="mixed"
+        description="Preferred learning style (required)"
     )
 
 

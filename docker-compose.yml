@@ -71,6 +71,7 @@ services:
       - MONGODB_DB=ai_mentor
       - REDIS_URL=redis://redis:6379
       - DEBUG=true
+      - PYTHONUNBUFFERED=1
     depends_on:
       postgres:
         condition: service_healthy
@@ -79,7 +80,9 @@ services:
       redis:
         condition: service_healthy
     volumes:
-      - ./backend/app:/app/app
+      - ./backend:/app
+      - /app/__pycache__
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     networks:
       - ai_mentor_network
 
@@ -93,12 +96,15 @@ services:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=100
+      - WATCHPACK_POLLING=true
     depends_on:
       - backend
     volumes:
-      - ./frontend/app:/app/app
-      - ./frontend/components:/app/components
-      - ./frontend/lib:/app/lib
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
     networks:
       - ai_mentor_network
 

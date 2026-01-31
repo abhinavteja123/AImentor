@@ -114,16 +114,62 @@ export default function RoadmapPage() {
     const handleGenerateRoadmap = async () => {
         setIsGenerating(true)
         try {
+            // Fetch user profile first
+            const profile = await profileApi.getProfile()
+            
+            if (!profile.goal_role) {
+                toast.error('Please complete your profile with a career goal first')
+                router.push('/onboarding')
+                return
+            }
+            
             const data = await roadmapApi.generate({
-                target_role: 'Full Stack Developer',
+                target_role: profile.goal_role,
                 duration_weeks: 12,
-                intensity: 'moderate'
+                intensity: 'medium'
             })
             setRoadmap(data)
             setSelectedWeek(1)
             toast.success('Roadmap generated successfully!')
         } catch (error: any) {
-            toast.error(error.response?.data?.detail || 'Failed to generate roadmap')
+            const detail = error.response?.data?.detail
+            let errorMessage = 'Failed to generate roadmap'
+            if (typeof detail === 'string') {
+                errorMessage = detail
+            } else if (Array.isArray(detail) && detail.length > 0) {
+                errorMessage = detail[0]?.msg || 'Validation error'
+            } else if (typeof detail === 'object' && detail?.msg) {
+                errorMessage = detail.msg
+            }
+            toast.error(errorMessage)
+        } finally {
+            setIsGenerating(false)
+        }
+    }
+
+    const handleRegenerateRoadmap = async () => {
+        if (!roadmap) return
+        setIsGenerating(true)
+        try {
+            const data = await roadmapApi.regenerate({
+                roadmap_id: roadmap.id,
+                feedback: 'User requested regeneration',
+                adjustments: {}
+            })
+            setRoadmap(data)
+            setSelectedWeek(1)
+            toast.success('Roadmap regenerated successfully!')
+        } catch (error: any) {
+            const detail = error.response?.data?.detail
+            let errorMessage = 'Failed to regenerate roadmap'
+            if (typeof detail === 'string') {
+                errorMessage = detail
+            } else if (Array.isArray(detail) && detail.length > 0) {
+                errorMessage = detail[0]?.msg || 'Validation error'
+            } else if (typeof detail === 'object' && detail?.msg) {
+                errorMessage = detail.msg
+            }
+            toast.error(errorMessage)
         } finally {
             setIsGenerating(false)
         }
@@ -254,8 +300,17 @@ export default function RoadmapPage() {
                         </p>
                     </div>
                     <div className="flex items-center gap-3">
-                        <Button variant="outline" size="sm">
-                            <RefreshCw className="h-4 w-4 mr-2" />
+                        <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={handleRegenerateRoadmap}
+                            disabled={isGenerating}
+                        >
+                            {isGenerating ? (
+                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            ) : (
+                                <RefreshCw className="h-4 w-4 mr-2" />
+                            )}
                             Regenerate
                         </Button>
                     </div>

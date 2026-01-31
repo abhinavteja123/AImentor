@@ -120,12 +120,12 @@ interface OnboardingState {
 
 const initialOnboardingData = {
     goalRole: '',
-    experienceLevel: 'beginner',
+    experienceLevel: '',
     currentEducation: '',
     graduationYear: null,
     timePerDay: 60,
     currentSkills: [],
-    preferredLearningStyle: 'mixed',
+    preferredLearningStyle: '',
 }
 
 export const useOnboardingStore = create<OnboardingState>((set) => ({

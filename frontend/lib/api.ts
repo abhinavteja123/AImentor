@@ -85,11 +85,11 @@ export const authApi = {
 // Profile API
 export const profileApi = {
     getProfile: async () => {
-        const response = await api.get('/api/v1/profile')
+        const response = await api.get('/api/v1/profile/me')
         return response.data
     },
     updateProfile: async (data: any) => {
-        const response = await api.put('/api/v1/profile', data)
+        const response = await api.put('/api/v1/profile/update', data)
         return response.data
     },
     completeOnboarding: async (data: any) => {
@@ -125,6 +125,10 @@ export const skillsApi = {
 export const roadmapApi = {
     generate: async (data: { target_role: string; duration_weeks: number; intensity: string }) => {
         const response = await api.post('/api/v1/roadmap/generate', data)
+        return response.data
+    },
+    regenerate: async (data: { roadmap_id: string; feedback?: string; adjustments?: any }) => {
+        const response = await api.put('/api/v1/roadmap/regenerate', data)
         return response.data
     },
     getCurrent: async () => {

@@ -28,6 +28,25 @@ class ProfileService:
         data: OnboardingData
     ) -> ProfileResponse:
         """Create or update profile from onboarding data."""
+        # Validate required fields
+        if not data.goal_role or data.goal_role.strip() == "" or data.goal_role.lower() == "none":
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Career goal is required. Please specify your target role."
+            )
+        
+        if not data.experience_level:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Experience level is required."
+            )
+        
+        if not data.preferred_learning_style:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Preferred learning style is required."
+            )
+        
         # Get existing profile
         result = await self.db.execute(
             select(UserProfile).where(UserProfile.user_id == user_id)
@@ -39,7 +58,7 @@ class ProfileService:
             self.db.add(profile)
         
         # Update profile fields
-        profile.goal_role = data.goal_role
+        profile.goal_role = data.goal_role.strip()
         profile.experience_level = data.experience_level
         profile.current_education = data.current_education
         profile.graduation_year = data.graduation_year

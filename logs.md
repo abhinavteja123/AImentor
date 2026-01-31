@@ -1,0 +1,497 @@
+Failed to load resource: the server responded with a status of 404 (Not Found)Understand this error
+:8000/api/v1/roadmap/current:1  Failed to load resource: the server responded with a status of 404 (Not Found)Understand this error
+api.ts:131  GET http://localhost:8000/api/v1/roadmap/current 404 (Not Found)
+dispatchXhrRequest @ xhr.js:169
+xhr @ xhr.js:24
+dispatchRequest @ dispatchRequest.js:51
+Promise.then
+_request @ Axios.js:141
+request @ Axios.js:36
+Axios.<computed> @ Axios.js:190
+wrap @ bind.js:14
+getCurrent @ api.ts:131
+fetchRoadmap @ page.tsx:94
+eval @ page.tsx:83
+commitHookEffectListMount @ react-dom.development.js:18071
+commitHookPassiveMountEffects @ react-dom.development.js:19742
+commitPassiveMountOnFiber @ react-dom.development.js:19826
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19824
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19918
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:19808
+commitPassiveMountOnFiber @ react-dom.development.js:19832
+commitPassiveMountEffects @ react-dom.development.js:19799
+flushPassiveEffectsImpl @ react-dom.development.js:22446
+flushPassiveEffects @ react-dom.development.js:22398
+eval @ react-dom.development.js:22188
+workLoop @ scheduler.development.js:200
+flushWork @ scheduler.development.js:178
+performWorkUntilDeadline @ scheduler.development.js:416Understand this error
+api.ts:131  GET http://localhost:8000/api/v1/roadmap/current 404 (Not Found)
+dispatchXhrRequest @ xhr.js:169
+xhr @ xhr.js:24
+dispatchRequest @ dispatchRequest.js:51
+Promise.then
+_request @ Axios.js:141
+request @ Axios.js:36
+Axios.<computed> @ Axios.js:190
+wrap @ bind.js:14
+getCurrent @ api.ts:131
+fetchRoadmap @ page.tsx:94
+eval @ page.tsx:83
+commitHookEffectListMount @ react-dom.development.js:18071
+invokePassiveEffectMountInDEV @ react-dom.development.js:20423
+invokeEffectsInDev @ react-dom.development.js:22728
+legacyCommitDoubleInvokeEffectsInDEV @ react-dom.development.js:22715
+commitDoubleInvokeEffectsInDEV @ react-dom.development.js:22700
+flushPassiveEffectsImpl @ react-dom.development.js:22459
+flushPassiveEffects @ react-dom.development.js:22398
+eval @ react-dom.development.js:22188
+workLoop @ scheduler.development.js:200
+flushWork @ scheduler.development.js:178
+performWorkUntilDeadline @ scheduler.development.js:416Understand this error
+api.ts:127  POST http://localhost:8000/api/v1/roadmap/generate 422 (Unprocessable Entity)
+dispatchXhrRequest @ xhr.js:169
+xhr @ xhr.js:24
+dispatchRequest @ dispatchRequest.js:51
+Promise.then
+_request @ Axios.js:141
+request @ Axios.js:36
+httpMethod @ Axios.js:204
+wrap @ bind.js:14
+generate @ api.ts:127
+handleGenerateRoadmap @ page.tsx:117
+callCallback @ react-dom.development.js:17629
+invokeGuardedCallbackImpl @ react-dom.development.js:17667
+invokeGuardedCallback @ react-dom.development.js:17729
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:17741
+executeDispatch @ react-dom.development.js:27186
+processDispatchQueueItemsInOrder @ react-dom.development.js:27206
+processDispatchQueue @ react-dom.development.js:27215
+dispatchEventsForPlugins @ react-dom.development.js:27223
+eval @ react-dom.development.js:27378
+batchedUpdates$1 @ react-dom.development.js:21180
+batchedUpdates @ react-dom.development.js:24349
+dispatchEventForPluginEventSystem @ react-dom.development.js:27377
+dispatchEvent @ react-dom.development.js:25416
+dispatchDiscreteEvent @ react-dom.development.js:25392Understand this error
+react-dom.development.js:7984 Uncaught Error: Objects are not valid as a React child (found: object with keys {type, loc, msg, input, ctx, url}). If you meant to render a collection of children, use an array instead.
+    at throwOnInvalidObjectType (react-dom.development.js:7984:19)
+    at createChild (react-dom.development.js:8202:21)
+    at reconcileChildrenArray (react-dom.development.js:8437:41)
+    at reconcileChildFibersImpl (react-dom.development.js:8765:32)
+    at reconcileChildFibers (react-dom.development.js:8809:39)
+    at reconcileChildren (react-dom.development.js:13708:40)
+    at updateHostComponent$1 (react-dom.development.js:14482:13)
+    at beginWork$1 (react-dom.development.js:15970:28)
+    at HTMLUnknownElement.callCallback (react-dom.development.js:17629:30)
+    at Object.invokeGuardedCallbackImpl (react-dom.development.js:17667:30)
+    at invokeGuardedCallback (react-dom.development.js:17729:39)
+    at beginWork (react-dom.development.js:22805:21)
+    at performUnitOfWork (react-dom.development.js:21852:24)
+    at workLoopSync (react-dom.development.js:21617:17)
+    at renderRootSync (react-dom.development.js:21584:21)
+    at performConcurrentWorkOnRoot (react-dom.development.js:20841:84)
+    at workLoop (scheduler.development.js:200:48)
+    at flushWork (scheduler.development.js:178:28)
+    at MessagePort.performWorkUntilDeadline (scheduler.development.js:416:35)
+throwOnInvalidObjectType @ react-dom.development.js:7984
+createChild @ react-dom.development.js:8202
+reconcileChildrenArray @ react-dom.development.js:8437
+reconcileChildFibersImpl @ react-dom.development.js:8765
+reconcileChildFibers @ react-dom.development.js:8809
+reconcileChildren @ react-dom.development.js:13708
+updateHostComponent$1 @ react-dom.development.js:14482
+beginWork$1 @ react-dom.development.js:15970
+callCallback @ react-dom.development.js:17629
+invokeGuardedCallbackImpl @ react-dom.development.js:17667
+invokeGuardedCallback @ react-dom.development.js:17729
+beginWork @ react-dom.development.js:22805
+performUnitOfWork @ react-dom.development.js:21852
+workLoopSync @ react-dom.development.js:21617
+renderRootSync @ react-dom.development.js:21584
+performConcurrentWorkOnRoot @ react-dom.development.js:20841
+workLoop @ scheduler.development.js:200
+flushWork @ scheduler.development.js:178
+performWorkUntilDeadline @ scheduler.development.js:416Understand this error
+redirect-boundary.js:57 Uncaught Error: Objects are not valid as a React child (found: object with keys {type, loc, msg, input, ctx, url}). If you meant to render a collection of children, use an array instead.
+    at throwOnInvalidObjectType (react-dom.development.js:7984:19)
+    at createChild (react-dom.development.js:8202:21)
+    at reconcileChildrenArray (react-dom.development.js:8437:41)
+    at reconcileChildFibersImpl (react-dom.development.js:8765:32)
+    at reconcileChildFibers (react-dom.development.js:8809:39)
+    at reconcileChildren (react-dom.development.js:13708:40)
+    at updateHostComponent$1 (react-dom.development.js:14482:13)
+    at beginWork$1 (react-dom.development.js:15970:28)
+    at beginWork (react-dom.development.js:22789:28)
+    at performUnitOfWork (react-dom.development.js:21852:24)
+    at workLoopSync (react-dom.development.js:21617:17)
+    at renderRootSync (react-dom.development.js:21584:21)
+    at performConcurrentWorkOnRoot (react-dom.development.js:20841:84)
+    at workLoop (scheduler.development.js:200:48)
+    at flushWork (scheduler.development.js:178:28)
+    at MessagePort.performWorkUntilDeadline (scheduler.development.js:416:35)
+throwOnInvalidObjectType @ react-dom.development.js:7984
+createChild @ react-dom.development.js:8202
+reconcileChildrenArray @ react-dom.development.js:8437
+reconcileChildFibersImpl @ react-dom.development.js:8765
+reconcileChildFibers @ react-dom.development.js:8809
+reconcileChildren @ react-dom.development.js:13708
+updateHostComponent$1 @ react-dom.development.js:14482
+beginWork$1 @ react-dom.development.js:15970
+beginWork @ react-dom.development.js:22789
+performUnitOfWork @ react-dom.development.js:21852
+workLoopSync @ react-dom.development.js:21617
+renderRootSync @ react-dom.development.js:21584
+performConcurrentWorkOnRoot @ react-dom.development.js:20841
+workLoop @ scheduler.development.js:200
+flushWork @ scheduler.development.js:178
+performWorkUntilDeadline @ scheduler.development.js:416Understand this error
+not-found-boundary.js:37 Uncaught Error: Objects are not valid as a React child (found: object with keys {type, loc, msg, input, ctx, url}). If you meant to render a collection of children, use an array instead.
+    at throwOnInvalidObjectType (react-dom.development.js:7984:19)
+    at createChild (react-dom.development.js:8202:21)
+    at reconcileChildrenArray (react-dom.development.js:8437:41)
+    at reconcileChildFibersImpl (react-dom.development.js:8765:32)
+    at reconcileChildFibers (react-dom.development.js:8809:39)
+    at reconcileChildren (react-dom.development.js:13708:40)
+    at updateHostComponent$1 (react-dom.development.js:14482:13)
+    at beginWork$1 (react-dom.development.js:15970:28)
+    at beginWork (react-dom.development.js:22789:28)
+    at performUnitOfWork (react-dom.development.js:21852:24)
+    at workLoopSync (react-dom.development.js:21617:17)
+    at renderRootSync (react-dom.development.js:21584:21)
+    at performConcurrentWorkOnRoot (react-dom.development.js:20841:84)
+    at workLoop (scheduler.development.js:200:48)
+    at flushWork (scheduler.development.js:178:28)
+    at MessagePort.performWorkUntilDeadline (scheduler.development.js:416:35)
+throwOnInvalidObjectType @ react-dom.development.js:7984
+createChild @ react-dom.development.js:8202
+reconcileChildrenArray @ react-dom.development.js:8437
+reconcileChildFibersImpl @ react-dom.development.js:8765
+reconcileChildFibers @ react-dom.development.js:8809
+reconcileChildren @ react-dom.development.js:13708
+updateHostComponent$1 @ react-dom.development.js:14482
+beginWork$1 @ react-dom.development.js:15970
+beginWork @ react-dom.development.js:22789
+performUnitOfWork @ react-dom.development.js:21852
+workLoopSync @ react-dom.development.js:21617
+renderRootSync @ react-dom.development.js:21584
+performConcurrentWorkOnRoot @ react-dom.development.js:20841
+workLoop @ scheduler.development.js:200
+flushWork @ scheduler.development.js:178
+performWorkUntilDeadline @ scheduler.development.js:416Understand this error
+react-dom.development.js:7984 Uncaught Error: Objects are not valid as a React child (found: object with keys {type, loc, msg, input, ctx, url}). If you meant to render a collection of children, use an array instead.
+    at throwOnInvalidObjectType (react-dom.development.js:7984:19)
+    at createChild (react-dom.development.js:8202:21)
+    at reconcileChildrenArray (react-dom.development.js:8437:41)
+    at reconcileChildFibersImpl (react-dom.development.js:8765:32)
+    at reconcileChildFibers (react-dom.development.js:8809:39)
+    at reconcileChildren (react-dom.development.js:13708:40)
+    at updateHostComponent$1 (react-dom.development.js:14482:13)
+    at beginWork$1 (react-dom.development.js:15970:28)
+    at HTMLUnknownElement.callCallback (react-dom.development.js:17629:30)
+    at Object.invokeGuardedCallbackImpl (react-dom.development.js:17667:30)
+    at invokeGuardedCallback (react-dom.development.js:17729:39)
+    at beginWork (react-dom.development.js:22805:21)
+    at performUnitOfWork (react-dom.development.js:21852:24)
+    at workLoopSync (react-dom.development.js:21617:17)
+    at renderRootSync (react-dom.development.js:21584:21)
+    at recoverFromConcurrentError (react-dom.development.js:20917:30)
+    at performConcurrentWorkOnRoot (react-dom.development.js:20871:46)
+    at workLoop (scheduler.development.js:200:48)
+    at flushWork (scheduler.development.js:178:28)
+    at MessagePort.performWorkUntilDeadline (scheduler.development.js:416:35)
+throwOnInvalidObjectType @ react-dom.development.js:7984
+createChild @ react-dom.development.js:8202
+reconcileChildrenArray @ react-dom.development.js:8437
+reconcileChildFibersImpl @ react-dom.development.js:8765
+reconcileChildFibers @ react-dom.development.js:8809
+reconcileChildren @ react-dom.development.js:13708
+updateHostComponent$1 @ react-dom.development.js:14482
+beginWork$1 @ react-dom.development.js:15970
+callCallback @ react-dom.development.js:17629
+invokeGuardedCallbackImpl @ react-dom.development.js:17667
+invokeGuardedCallback @ react-dom.development.js:17729
+beginWork @ react-dom.development.js:22805
+performUnitOfWork @ react-dom.development.js:21852
+workLoopSync @ react-dom.development.js:21617
+renderRootSync @ react-dom.development.js:21584
+recoverFromConcurrentError @ react-dom.development.js:20917
+performConcurrentWorkOnRoot @ react-dom.development.js:20871
+workLoop @ scheduler.development.js:200
+flushWork @ scheduler.development.js:178
+performWorkUntilDeadline @ scheduler.development.js:416Understand this error
+redirect-boundary.js:57 Uncaught Error: Objects are not valid as a React child (found: object with keys {type, loc, msg, input, ctx, url}). If you meant to render a collection of children, use an array instead.
+    at throwOnInvalidObjectType (react-dom.development.js:7984:19)
+    at createChild (react-dom.development.js:8202:21)
+    at reconcileChildrenArray (react-dom.development.js:8437:41)
+    at reconcileChildFibersImpl (react-dom.development.js:8765:32)
+    at reconcileChildFibers (react-dom.development.js:8809:39)
+    at reconcileChildren (react-dom.development.js:13708:40)
+    at updateHostComponent$1 (react-dom.development.js:14482:13)
+    at beginWork$1 (react-dom.development.js:15970:28)
+    at beginWork (react-dom.development.js:22789:28)
+    at performUnitOfWork (react-dom.development.js:21852:24)
+    at workLoopSync (react-dom.development.js:21617:17)
+    at renderRootSync (react-dom.development.js:21584:21)
+    at recoverFromConcurrentError (react-dom.development.js:20917:30)
+    at performConcurrentWorkOnRoot (react-dom.development.js:20871:46)
+    at workLoop (scheduler.development.js:200:48)
+    at flushWork (scheduler.development.js:178:28)
+    at MessagePort.performWorkUntilDeadline (scheduler.development.js:416:35)
+throwOnInvalidObjectType @ react-dom.development.js:7984
+createChild @ react-dom.development.js:8202
+reconcileChildrenArray @ react-dom.development.js:8437
+reconcileChildFibersImpl @ react-dom.development.js:8765
+reconcileChildFibers @ react-dom.development.js:8809
+reconcileChildren @ react-dom.development.js:13708
+updateHostComponent$1 @ react-dom.development.js:14482
+beginWork$1 @ react-dom.development.js:15970
+beginWork @ react-dom.development.js:22789
+performUnitOfWork @ react-dom.development.js:21852
+workLoopSync @ react-dom.development.js:21617
+renderRootSync @ react-dom.development.js:21584
+recoverFromConcurrentError @ react-dom.development.js:20917
+performConcurrentWorkOnRoot @ react-dom.development.js:20871
+workLoop @ scheduler.development.js:200
+flushWork @ scheduler.development.js:178
+performWorkUntilDeadline @ scheduler.development.js:416Understand this error
+not-found-boundary.js:37 Uncaught Error: Objects are not valid as a React child (found: object with keys {type, loc, msg, input, ctx, url}). If you meant to render a collection of children, use an array instead.
+    at throwOnInvalidObjectType (react-dom.development.js:7984:19)
+    at createChild (react-dom.development.js:8202:21)
+    at reconcileChildrenArray (react-dom.development.js:8437:41)
+    at reconcileChildFibersImpl (react-dom.development.js:8765:32)
+    at reconcileChildFibers (react-dom.development.js:8809:39)
+    at reconcileChildren (react-dom.development.js:13708:40)
+    at updateHostComponent$1 (react-dom.development.js:14482:13)
+    at beginWork$1 (react-dom.development.js:15970:28)
+    at beginWork (react-dom.development.js:22789:28)
+    at performUnitOfWork (react-dom.development.js:21852:24)
+    at workLoopSync (react-dom.development.js:21617:17)
+    at renderRootSync (react-dom.development.js:21584:21)
+    at recoverFromConcurrentError (react-dom.development.js:20917:30)
+    at performConcurrentWorkOnRoot (react-dom.development.js:20871:46)
+    at workLoop (scheduler.development.js:200:48)
+    at flushWork (scheduler.development.js:178:28)
+    at MessagePort.performWorkUntilDeadline (scheduler.development.js:416:35)
+throwOnInvalidObjectType @ react-dom.development.js:7984
+createChild @ react-dom.development.js:8202
+reconcileChildrenArray @ react-dom.development.js:8437
+reconcileChildFibersImpl @ react-dom.development.js:8765
+reconcileChildFibers @ react-dom.development.js:8809
+reconcileChildren @ react-dom.development.js:13708
+updateHostComponent$1 @ react-dom.development.js:14482
+beginWork$1 @ react-dom.development.js:15970
+beginWork @ react-dom.development.js:22789
+performUnitOfWork @ react-dom.development.js:21852
+workLoopSync @ react-dom.development.js:21617
+renderRootSync @ react-dom.development.js:21584
+recoverFromConcurrentError @ react-dom.development.js:20917
+performConcurrentWorkOnRoot @ react-dom.development.js:20871
+workLoop @ scheduler.development.js:200
+flushWork @ scheduler.development.js:178
+performWorkUntilDeadline @ scheduler.development.js:416Understand this error
+app-index.js:35 The above error occurred in the <NotFoundErrorBoundary> component:
+
+    at NotFoundErrorBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/not-found-boundary.js:76:9)
+    at NotFoundBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/not-found-boundary.js:84:11)
+    at DevRootNotFoundBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/dev-root-not-found-boundary.js:33:11)
+    at ReactDevOverlay (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/react-dev-overlay/internal/ReactDevOverlay.js:84:9)
+    at HotReload (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/react-dev-overlay/hot-reloader-client.js:307:11)
+    at Router (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/app-router.js:181:11)
+    at ErrorBoundaryHandler (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/error-boundary.js:114:9)
+    at ErrorBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/error-boundary.js:161:11)
+    at AppRouter (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/app-router.js:536:13)
+    at ServerRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/app-index.js:129:11)
+    at RSCComponent
+    at Root (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/app-index.js:145:11)
+
+React will try to recreate this component tree from scratch using the error boundary you provided, ReactDevOverlay.
+window.console.error @ app-index.js:35
+console.error @ hydration-error-info.js:41
+logCapturedError @ react-dom.development.js:13282
+callback @ react-dom.development.js:13331
+callCallback @ react-dom.development.js:7440
+commitCallbacks @ react-dom.development.js:7480
+commitClassCallbacks @ react-dom.development.js:18255
+commitLayoutEffectOnFiber @ react-dom.development.js:18336
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18323
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18457
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18457
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18457
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18457
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18457
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18323
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18331
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18323
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18323
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18323
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18323
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18323
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18457
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18457
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18457
+recursivelyTraverseLayoutEffects @ react-dom.development.js:19560
+commitLayoutEffectOnFiber @ react-dom.development.js:18345
+commitLayoutEffects @ react-dom.development.js:19549
+commitRootImpl @ react-dom.development.js:22229
+commitRoot @ react-dom.development.js:22114
+commitRootWhenReady @ react-dom.development.js:21044
+finishConcurrentRender @ react-dom.development.js:21015
+performConcurrentWorkOnRoot @ react-dom.development.js:20885
+workLoop @ scheduler.development.js:200
+flushWork @ scheduler.development.js:178
+performWorkUntilDeadline @ scheduler.development.js:416Understand this error
