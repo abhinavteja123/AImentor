@@ -30,15 +30,27 @@ async def lifespan(app: FastAPI):
     # Startup
     logger.info("🚀 Starting AI Life Mentor Backend...")
     
-    # Initialize databases
-    await init_db()
-    logger.info("✅ PostgreSQL connected")
+    # Initialize databases with error handling
+    try:
+        await init_db()
+        logger.info("✅ PostgreSQL connected")
+    except Exception as e:
+        logger.error(f"❌ PostgreSQL connection failed: {e}")
+        raise  # PostgreSQL is critical, so raise
     
-    await init_mongodb()
-    logger.info("✅ MongoDB connected")
+    # MongoDB is optional (for chat features)
+    try:
+        await init_mongodb()
+        logger.info("✅ MongoDB connected")
+    except Exception as e:
+        logger.warning(f"⚠️  MongoDB connection failed (non-critical): {str(e)[:100]}")
     
-    await init_redis()
-    logger.info("✅ Redis connected")
+    # Redis is optional (for caching)
+    try:
+        await init_redis()
+        logger.info("✅ Redis connected")
+    except Exception as e:
+        logger.warning(f"⚠️  Redis connection failed (non-critical): {str(e)[:100]}")
     
     logger.info(f"🎯 {settings.APP_NAME} v{settings.APP_VERSION} is ready!")
     
@@ -46,9 +58,21 @@ async def lifespan(app: FastAPI):
     
     # Shutdown
     logger.info("🛑 Shutting down AI Life Mentor Backend...")
-    await close_db()
-    await close_mongodb()
-    await close_redis()
+    try:
+        await close_db()
+    except Exception as e:
+        logger.error(f"Error closing PostgreSQL: {e}")
+    
+    try:
+        await close_mongodb()
+    except Exception as e:
+        logger.warning(f"Error closing MongoDB: {e}")
+    
+    try:
+        await close_redis()
+    except Exception as e:
+        logger.warning(f"Error closing Redis: {e}")
+    
     logger.info("👋 Goodbye!")
 
 

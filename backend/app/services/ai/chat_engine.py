@@ -16,7 +16,7 @@ from ...models.profile import UserProfile
 from ...models.roadmap import Roadmap
 from ...models.skill import UserSkill
 from ...models.progress import UserStreak
-from ...database.mongodb import get_chat_sessions_collection
+from ...database.mongodb import get_chat_sessions_collection, is_mongodb_available
 from .llm_client import get_llm_client
 
 logger = logging.getLogger(__name__)
@@ -270,8 +270,15 @@ Current intent: {intent}"""
         limit: int = 10
     ) -> List[Dict]:
         """Get chat history from MongoDB."""
+        if not is_mongodb_available():
+            logger.warning("MongoDB not available, returning empty history")
+            return []
+            
         try:
             collection = get_chat_sessions_collection()
+            if collection is None:
+                return []
+                
             session = await collection.find_one({"session_id": session_id})
             
             if session and "messages" in session:
@@ -290,9 +297,15 @@ Current intent: {intent}"""
         context_used: Dict
     ):
         """Save conversation to MongoDB."""
+        if not is_mongodb_available():
+            logger.warning("MongoDB not available, conversation not saved")
+            return
+            
         try:
             collection = get_chat_sessions_collection()
-            
+            if collection is None:
+                return
+                
             messages = [
                 {
                     "role": "user",
@@ -333,9 +346,15 @@ Current intent: {intent}"""
         limit: int = 20
     ) -> List[Dict]:
         """Get list of chat sessions."""
+        if not is_mongodb_available():
+            logger.warning("MongoDB not available, returning empty sessions list")
+            return []
+            
         try:
             collection = get_chat_sessions_collection()
-            
+            if collection is None:
+                return []
+                
             cursor = collection.find(
                 {"user_id": str(user_id)}
             ).sort("updated_at", -1).limit(limit)
@@ -361,9 +380,15 @@ Current intent: {intent}"""
         user_id: UUID
     ) -> Optional[Dict]:
         """Get full session with messages."""
+        if not is_mongodb_available():
+            logger.warning("MongoDB not available, session not found")
+            return None
+            
         try:
             collection = get_chat_sessions_collection()
-            
+            if collection is None:
+                return None
+                
             session = await collection.find_one({
                 "session_id": session_id,
                 "user_id": str(user_id)
