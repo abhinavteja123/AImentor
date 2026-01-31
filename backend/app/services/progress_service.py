@@ -168,6 +168,25 @@ class ProgressService:
         )
         achievements = result.scalars().all()
         
+        # Get skill growth data with skill names
+        from app.models.skill import SkillMaster
+        result = await self.db.execute(
+            select(UserSkill, SkillMaster.skill_name)
+            .join(SkillMaster, UserSkill.skill_id == SkillMaster.id)
+            .where(UserSkill.user_id == user_id)
+            .order_by(UserSkill.proficiency_level.desc())
+        )
+        user_skills = result.all()
+        
+        skill_growth = [
+            {
+                "skill_name": row[1],  # SkillMaster.skill_name
+                "proficiency_level": row[0].proficiency_level or 0,  # UserSkill.proficiency_level
+                "last_practiced": row[0].updated_at.isoformat() if row[0].updated_at else None
+            }
+            for row in user_skills
+        ]
+        
         return {
             "total_learning_time": total_time,
             "total_tasks_completed": total_completed,
@@ -177,7 +196,7 @@ class ProgressService:
             "streak": streak_info,
             "weekly_stats": weekly_stats,
             "recent_achievements": achievements,
-            "skill_growth": []
+            "skill_growth": skill_growth
         }
     
     async def get_activity_history(

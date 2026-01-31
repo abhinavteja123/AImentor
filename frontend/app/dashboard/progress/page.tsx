@@ -17,37 +17,64 @@ import { progressApi } from '@/lib/api'
 interface Stats {
     total_learning_time: number
     total_tasks_completed: number
-    total_tasks_skipped: number
+    total_tasks: number
+    skills_acquired: number
+    current_roadmap_progress: number
     streak: {
         current_streak: number
         longest_streak: number
-        streak_history: any[]
+        last_activity_date: string | null
     }
-    skills_progress: any[]
+    weekly_stats: {
+        tasks_completed: number
+        time_spent: number
+        skills_practiced: number
+        average_difficulty: number
+        average_confidence: number
+    }
     recent_achievements: any[]
-    weekly_activity: any[]
+    skill_growth: any[]
+}
+
+interface Activity {
+    date: string
+    tasks_completed: number
+    time_spent: number
+    activity_level: number
+}
+
+interface Achievement {
+    id: string
+    achievement_type: string
+    achievement_name: string
+    description: string
+    icon: string
+    earned_at: string
 }
 
 const statCards = [
     { key: 'streak', icon: Flame, label: 'Current Streak', color: 'from-orange-500 to-red-500', suffix: ' days' },
     { key: 'time', icon: Clock, label: 'Total Learning Time', color: 'from-blue-500 to-cyan-500', suffix: 'h' },
     { key: 'tasks', icon: CheckCircle2, label: 'Tasks Completed', color: 'from-emerald-500 to-teal-500', suffix: '' },
-    { key: 'skills', icon: Target, label: 'Skills Progress', color: 'from-purple-500 to-indigo-500', suffix: '' },
+    { key: 'skills', icon: Target, label: 'Skills Acquired', color: 'from-purple-500 to-indigo-500', suffix: '' },
 ]
 
-const achievements = [
-    { id: 1, name: 'First Step', description: 'Complete your first task', icon: Star, earned: true },
-    { id: 2, name: 'Week Warrior', description: 'Complete all tasks in a week', icon: Trophy, earned: true },
-    { id: 3, name: 'Streak Master', description: '7-day learning streak', icon: Flame, earned: false },
-    { id: 4, name: 'Code Ninja', description: 'Complete 10 coding tasks', icon: Code, earned: false },
-    { id: 5, name: 'Speed Learner', description: 'Complete 5 tasks in one day', icon: Zap, earned: false },
-    { id: 6, name: 'Bookworm', description: 'Complete 20 reading tasks', icon: BookOpen, earned: false },
-]
+const achievementIcons: { [key: string]: any } = {
+    'first_step': Star,
+    'week_warrior': Trophy,
+    'streak_master': Flame,
+    'code_ninja': Code,
+    'speed_learner': Zap,
+    'bookworm': BookOpen,
+    'default': Award
+}
 
 export default function ProgressPage() {
     const router = useRouter()
     const { isAuthenticated, checkAuth } = useAuthStore()
     const [stats, setStats] = useState<Stats | null>(null)
+    const [activity, setActivity] = useState<Activity[]>([])
+    const [achievements, setAchievements] = useState<Achievement[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
@@ -61,25 +88,44 @@ export default function ProgressPage() {
     }, [isAuthenticated, isLoading, router])
 
     useEffect(() => {
-        fetchStats()
+        if (isAuthenticated) {
+            fetchAllData()
+        }
     }, [isAuthenticated])
 
-    const fetchStats = async () => {
+    const fetchAllData = async () => {
+        setIsLoading(true)
         try {
-            const data = await progressApi.getStats()
-            setStats(data)
+            const [statsData, activityData, achievementsData] = await Promise.all([
+                progressApi.getStats(),
+                progressApi.getActivity(365),
+                progressApi.getAchievements()
+            ])
+            setStats(statsData)
+            setActivity(activityData.activity || [])
+            setAchievements(achievementsData.achievements || [])
         } catch (error) {
-            console.error('Failed to fetch stats:', error)
-            // Set default stats
+            console.error('Failed to fetch data:', error)
+            // Set default values
             setStats({
                 total_learning_time: 0,
                 total_tasks_completed: 0,
-                total_tasks_skipped: 0,
-                streak: { current_streak: 0, longest_streak: 0, streak_history: [] },
-                skills_progress: [],
+                total_tasks: 0,
+                skills_acquired: 0,
+                current_roadmap_progress: 0,
+                streak: { current_streak: 0, longest_streak: 0, last_activity_date: null },
+                weekly_stats: {
+                    tasks_completed: 0,
+                    time_spent: 0,
+                    skills_practiced: 0,
+                    average_difficulty: 0,
+                    average_confidence: 0
+                },
                 recent_achievements: [],
-                weekly_activity: []
+                skill_growth: []
             })
+            setActivity([])
+            setAchievements([])
         } finally {
             setIsLoading(false)
         }
@@ -105,27 +151,30 @@ export default function ProgressPage() {
             case 'tasks':
                 return stats?.total_tasks_completed || 0
             case 'skills':
-                return stats?.skills_progress?.length || 0
+                return stats?.skills_acquired || 0
             default:
                 return 0
         }
     }
 
-    // Generate mock activity data for the heatmap
-    const generateActivityData = () => {
+    // Fill in missing days for activity heatmap
+    const getActivityData = () => {
+        const activityMap = new Map(activity.map(a => [a.date, a]))
         const data = []
         for (let i = 0; i < 365; i++) {
             const date = new Date()
             date.setDate(date.getDate() - i)
+            const dateStr = date.toISOString().split('T')[0]
+            const dayActivity = activityMap.get(dateStr)
             data.push({
-                date: date.toISOString().split('T')[0],
-                count: Math.random() > 0.3 ? Math.floor(Math.random() * 5) : 0
+                date: dateStr,
+                count: dayActivity?.activity_level || 0
             })
         }
         return data.reverse()
     }
 
-    const activityData = generateActivityData()
+    const activityData = getActivityData()
 
     return (
         <div className="min-h-screen bg-background p-4 md:p-6">
@@ -290,9 +339,9 @@ export default function ProgressPage() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {stats?.skills_progress && stats.skills_progress.length > 0 ? (
+                        {stats?.skill_growth && stats.skill_growth.length > 0 ? (
                             <div className="space-y-4">
-                                {stats.skills_progress.map((skill: any, idx: number) => (
+                                {stats.skill_growth.map((skill: any, idx: number) => (
                                     <div key={idx}>
                                         <div className="flex justify-between text-sm mb-1">
                                             <span className="font-medium">{skill.skill_name}</span>
@@ -334,31 +383,36 @@ export default function ProgressPage() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                            {achievements.map((achievement) => (
-                                <div
-                                    key={achievement.id}
-                                    className={`text-center p-4 rounded-xl transition-all ${achievement.earned
-                                            ? 'bg-primary/10 border border-primary/30'
-                                            : 'bg-muted/50 opacity-50'
-                                        }`}
-                                >
-                                    <div className={`w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-2 ${achievement.earned
-                                            ? 'bg-gradient-to-br from-amber-400 to-orange-500'
-                                            : 'bg-muted-foreground/20'
-                                        }`}>
-                                        <achievement.icon className={`h-6 w-6 ${achievement.earned ? 'text-white' : 'text-muted-foreground'
-                                            }`} />
-                                    </div>
-                                    <p className={`text-sm font-medium ${!achievement.earned && 'text-muted-foreground'}`}>
-                                        {achievement.name}
-                                    </p>
-                                    <p className="text-xs text-muted-foreground mt-1">
-                                        {achievement.description}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
+                        {achievements.length > 0 ? (
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                                {achievements.map((achievement) => {
+                                    const IconComponent = achievementIcons[achievement.achievement_type] || achievementIcons['default']
+                                    return (
+                                        <div
+                                            key={achievement.id}
+                                            className="text-center p-4 rounded-xl transition-all bg-primary/10 border border-primary/30"
+                                        >
+                                            <div className="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-2 bg-gradient-to-br from-amber-400 to-orange-500">
+                                                <IconComponent className="h-6 w-6 text-white" />
+                                            </div>
+                                            <p className="text-sm font-medium">
+                                                {achievement.achievement_name}
+                                            </p>
+                                            <p className="text-xs text-muted-foreground mt-1">
+                                                {achievement.description}
+                                            </p>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        ) : (
+                            <div className="text-center py-8">
+                                <Award className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                                <p className="text-muted-foreground">
+                                    Complete milestones to unlock achievements
+                                </p>
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
             </motion.div>
@@ -381,19 +435,19 @@ export default function ProgressPage() {
                         <div className="grid md:grid-cols-3 gap-6">
                             <div className="text-center py-4">
                                 <div className="text-3xl font-bold text-primary">
-                                    {Math.floor(Math.random() * 10) + 5}
+                                    {stats?.weekly_stats?.tasks_completed || 0}
                                 </div>
                                 <p className="text-sm text-muted-foreground">Tasks Completed</p>
                             </div>
                             <div className="text-center py-4">
                                 <div className="text-3xl font-bold text-emerald-500">
-                                    {Math.floor(Math.random() * 5) + 2}h
+                                    {Math.round((stats?.weekly_stats?.time_spent || 0) / 60)}h
                                 </div>
                                 <p className="text-sm text-muted-foreground">Learning Time</p>
                             </div>
                             <div className="text-center py-4">
                                 <div className="text-3xl font-bold text-orange-500">
-                                    {Math.floor(Math.random() * 3) + 1}
+                                    {stats?.weekly_stats?.skills_practiced || 0}
                                 </div>
                                 <p className="text-sm text-muted-foreground">Skills Practiced</p>
                             </div>
