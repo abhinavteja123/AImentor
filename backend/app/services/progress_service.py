@@ -169,7 +169,7 @@ class ProgressService:
         achievements = result.scalars().all()
         
         # Get skill growth data with skill names
-        from app.models.skill import SkillMaster
+        from ..models.skill import SkillMaster
         result = await self.db.execute(
             select(UserSkill, SkillMaster.skill_name)
             .join(SkillMaster, UserSkill.skill_id == SkillMaster.id)

@@ -11,7 +11,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.postgres import AsyncSessionLocal, init_db
-from app.models.skill import SkillMaster, RoleTemplate
+from ..models.skill import SkillMaster, RoleTemplate
 
 
 # Skills data organized by category

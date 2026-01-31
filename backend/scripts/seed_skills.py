@@ -16,7 +16,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app.database.postgres import AsyncSessionLocal
-from app.models.skill import SkillMaster
+from ..models.skill import SkillMaster
 
 
 # Skills data organized by category
