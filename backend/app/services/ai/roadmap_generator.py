@@ -349,10 +349,9 @@ class RoadmapGenerator:
         topic_details = self._get_detailed_topics_for_skill(phase["skills"], target_role)
         
         system_prompt = f"""You are a world-class {target_role} educator creating a step-by-step learning curriculum.
-Your task is to create SPECIFIC, ACTIONABLE tasks that tell students EXACTLY what to do.
-DO NOT use generic phrases like "Learn the basics" or "Study fundamentals".
-Instead, be SPECIFIC: "Create a variables.js file and practice declaring let, const, var with 10 examples".
-Return ONLY valid JSON - no explanations, no markdown."""
+Create SPECIFIC, ACTIONABLE tasks with exact instructions.
+CRITICAL: Return ONLY valid, complete JSON. No markdown, no explanations, no truncation.
+Ensure all JSON strings are properly escaped and terminated."""
 
         user_prompt = f"""Create a DETAILED {num_weeks}-week curriculum (Weeks {start_week}-{end_week}) for becoming a **{target_role}**.
 
@@ -436,14 +435,29 @@ Generate {num_weeks} weeks with 7 days each. Make every task SPECIFIC and ACTION
 
         try:
             logger.info(f"Generating phase {phase['phase_name']} (weeks {start_week}-{end_week}) with 7 days/week...")
-            result = await self.llm.generate_json(system_prompt, user_prompt)
+            result = await self.llm.generate_json(
+                system_prompt, 
+                user_prompt,
+                max_tokens=8192  # Ensure enough tokens for complete response
+            )
             
-            if "weeks" in result and result["weeks"]:
-                logger.info(f"Successfully generated {len(result['weeks'])} weeks for {phase['phase_name']}")
-                return result
-            else:
+            # Validate response structure
+            if not isinstance(result, dict):
+                logger.error(f"Response is not a dict: {type(result)}")
+                raise ValueError("Invalid response format")
+            
+            if "weeks" not in result or not result["weeks"]:
                 logger.warning(f"AI response missing weeks for {phase['phase_name']}, using defaults")
                 return self._generate_default_phase_weeks(target_role, phase, daily_minutes)
+            
+            # Validate weeks structure
+            for week in result["weeks"]:
+                if "days" not in week or not week["days"]:
+                    logger.warning(f"Week {week.get('week_number')} missing days")
+                    raise ValueError("Invalid week structure")
+            
+            logger.info(f"Successfully generated {len(result['weeks'])} weeks for {phase['phase_name']}")
+            return result
                 
         except Exception as e:
             logger.error(f"Error generating phase {phase['phase_name']}: {str(e)}")

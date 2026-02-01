@@ -30,7 +30,7 @@ class LLMClient:
             "temperature": 0.7,
             "top_p": 0.95,
             "top_k": 40,
-            "max_output_tokens": 2048,
+            "max_output_tokens": 65536,  # Increased for detailed roadmaps
         }
         
         # Safety settings (permissive for educational content)
@@ -139,55 +139,87 @@ Provide a helpful, personalized response."""
         self,
         system_prompt: str,
         user_prompt: str,
-        temperature: float = 0.7
+        temperature: float = 0.7,
+        max_tokens: int = 8192
     ) -> Dict[str, Any]:
         """
-        Generate a JSON response.
+        Generate a JSON response using Gemini's native JSON mode.
         """
         logger.info("Calling Gemini API for JSON generation...")
         logger.debug(f"System prompt length: {len(system_prompt)}")
         logger.debug(f"User prompt length: {len(user_prompt)}")
         
-        response = await self.generate_completion(
-            system_prompt=system_prompt,
-            user_prompt=user_prompt,
-            temperature=temperature,
-            response_format="json",
-            max_tokens=4000  # Increase token limit for detailed roadmaps
-        )
-        
-        logger.info(f"Received response of length: {len(response)}")
-        logger.debug(f"Raw response preview: {response[:500]}...")
-        
         try:
-            # Clean response - remove markdown code blocks if present
-            cleaned = response.strip()
-            if cleaned.startswith("```json"):
-                cleaned = cleaned[7:]
-            if cleaned.startswith("```"):
-                cleaned = cleaned[3:]
-            if cleaned.endswith("```"):
-                cleaned = cleaned[:-3]
-            cleaned = cleaned.strip()
+            # Create model instance with JSON response format
+            model = genai.GenerativeModel(
+                model_name=self.model_name,
+                generation_config={
+                    "temperature": temperature,
+                    "top_p": 0.95,
+                    "top_k": 40,
+                    "max_output_tokens": max_tokens,
+                    "response_mime_type": "application/json",  # Force JSON output
+                },
+                safety_settings=self.safety_settings,
+                system_instruction=system_prompt
+            )
             
-            result = json.loads(cleaned)
-            logger.info("Successfully parsed JSON response")
-            return result
+            # Generate response
+            response = await model.generate_content_async(user_prompt)
+            content = response.text
             
-        except json.JSONDecodeError as e:
-            logger.warning(f"Initial JSON parse failed: {e}")
-            # Try to extract JSON from response
-            start = response.find("{")
-            end = response.rfind("}") + 1
-            if start != -1 and end > start:
+            logger.info(f"Received response of length: {len(content)}")
+            logger.debug(f"Raw response preview: {content[:500]}...")
+            
+            # Parse JSON - should be clean since we used JSON mime type
+            try:
+                result = json.loads(content)
+                logger.info("Successfully parsed JSON response")
+                return result
+            except json.JSONDecodeError as e:
+                logger.warning(f"JSON parse failed: {e}")
+                
+                # Fallback: Try to clean and extract JSON
+                cleaned = content.strip()
+                
+                # Remove markdown code blocks if present
+                if cleaned.startswith("```json"):
+                    cleaned = cleaned[7:]
+                elif cleaned.startswith("```"):
+                    cleaned = cleaned[3:]
+                if cleaned.endswith("```"):
+                    cleaned = cleaned[:-3]
+                cleaned = cleaned.strip()
+                
+                # Try parsing cleaned version
                 try:
-                    result = json.loads(response[start:end])
-                    logger.info("Successfully extracted and parsed JSON from response")
+                    result = json.loads(cleaned)
+                    logger.info("Successfully parsed cleaned JSON")
                     return result
-                except json.JSONDecodeError as e2:
-                    logger.error(f"JSON extraction also failed: {e2}")
-                    logger.error(f"Response content: {response[:1000]}")
-            raise ValueError(f"Could not parse JSON response: {e}")
+                except json.JSONDecodeError:
+                    pass
+                
+                # Last resort: Extract JSON object from response
+                start = content.find("{")
+                end = content.rfind("}") + 1
+                if start != -1 and end > start:
+                    try:
+                        result = json.loads(content[start:end])
+                        logger.info("Successfully extracted JSON from response")
+                        return result
+                    except json.JSONDecodeError as e2:
+                        logger.error(f"JSON extraction failed: {e2}")
+                
+                # If truncated, try to fix common JSON issues
+                logger.error(f"All JSON parsing attempts failed")
+                logger.error(f"Response length: {len(content)}, requested max_tokens: {max_tokens}")
+                logger.error(f"Response preview (first 500 chars): {content[:500]}")
+                logger.error(f"Response end (last 500 chars): {content[-500:]}")
+                raise ValueError(f"Could not parse JSON response: {e}. Response may be truncated or invalid.")
+                
+        except Exception as e:
+            logger.error(f"LLM JSON generation error: {str(e)}")
+            raise
     
     async def chat_completion(
         self,
