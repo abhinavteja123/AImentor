@@ -221,6 +221,100 @@ Provide a helpful, personalized response."""
             logger.error(f"LLM JSON generation error: {str(e)}")
             raise
     
+    async def generate_json_batched(
+        self,
+        system_prompt: str,
+        batch_prompts: List[str],
+        temperature: float = 0.7,
+        max_tokens: int = 16384
+    ) -> List[Dict[str, Any]]:
+        """
+        Generate JSON responses in batches using a chat session.
+        This maintains context across batches and prevents token limit issues.
+        
+        Args:
+            system_prompt: System instruction for the model
+            batch_prompts: List of prompts, one per batch
+            temperature: Creativity level
+            max_tokens: Max tokens per batch response
+            
+        Returns:
+            List of parsed JSON responses, one per batch
+        """
+        logger.info(f"Starting batched JSON generation with {len(batch_prompts)} batches")
+        
+        try:
+            # Create model with JSON output
+            model = genai.GenerativeModel(
+                model_name=self.model_name,
+                generation_config={
+                    "temperature": temperature,
+                    "top_p": 0.95,
+                    "top_k": 40,
+                    "max_output_tokens": max_tokens,
+                    "response_mime_type": "application/json",
+                },
+                safety_settings=self.safety_settings,
+                system_instruction=system_prompt
+            )
+            
+            # Start chat session (model will remember previous outputs)
+            chat = model.start_chat(history=[])
+            
+            results = []
+            for i, prompt in enumerate(batch_prompts):
+                logger.info(f"Processing batch {i+1}/{len(batch_prompts)}")
+                logger.debug(f"Batch {i+1} prompt length: {len(prompt)} chars")
+                
+                # Send message in the ongoing chat
+                response = await chat.send_message_async(prompt)
+                content = response.text
+                
+                logger.info(f"Batch {i+1} response length: {len(content)} chars")
+                
+                # Parse JSON
+                try:
+                    result = json.loads(content)
+                    logger.info(f"Batch {i+1} JSON parsed successfully")
+                    results.append(result)
+                except json.JSONDecodeError as e:
+                    logger.warning(f"Batch {i+1} JSON parse failed: {e}")
+                    # Try cleaning
+                    cleaned = content.strip()
+                    if cleaned.startswith("```json"):
+                        cleaned = cleaned[7:]
+                    elif cleaned.startswith("```"):
+                        cleaned = cleaned[3:]
+                    if cleaned.endswith("```"):
+                        cleaned = cleaned[:-3]
+                    cleaned = cleaned.strip()
+                    
+                    try:
+                        result = json.loads(cleaned)
+                        logger.info(f"Batch {i+1} cleaned JSON parsed successfully")
+                        results.append(result)
+                    except json.JSONDecodeError:
+                        # Extract JSON object
+                        start = content.find("{")
+                        end = content.rfind("}") + 1
+                        if start != -1 and end > start:
+                            try:
+                                result = json.loads(content[start:end])
+                                logger.info(f"Batch {i+1} extracted JSON parsed successfully")
+                                results.append(result)
+                            except json.JSONDecodeError:
+                                logger.error(f"Batch {i+1} all parsing attempts failed")
+                                raise ValueError(f"Batch {i+1}: Could not parse JSON response")
+                        else:
+                            raise ValueError(f"Batch {i+1}: No JSON object found in response")
+            
+            logger.info(f"Completed all {len(results)} batches successfully")
+            return results
+            
+        except Exception as e:
+            logger.error(f"Batched JSON generation error: {str(e)}")
+            raise
+    
     async def chat_completion(
         self,
         messages: List[Dict[str, str]],

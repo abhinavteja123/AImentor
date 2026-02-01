@@ -339,7 +339,7 @@ class RoadmapGenerator:
         learning_style: str,
         all_skills: List[str]
     ) -> Dict[str, Any]:
-        """Generate weeks for a specific learning phase using AI with 7 days per week."""
+        """Generate weeks for a specific learning phase using AI with batched requests."""
         
         start_week = phase["start_week"]
         end_week = phase["end_week"]
@@ -348,12 +348,91 @@ class RoadmapGenerator:
         # Get detailed topic breakdown for this phase
         topic_details = self._get_detailed_topics_for_skill(phase["skills"], target_role)
         
+        # BATCHING STRATEGY: Generate 3 weeks at a time to avoid token limits
+        batch_size = 3
+        all_weeks = []
+        all_milestones = []
+        
+        # Generate weeks in batches
+        for batch_start in range(start_week, end_week + 1, batch_size):
+            batch_end = min(batch_start + batch_size - 1, end_week)
+            batch_num_weeks = batch_end - batch_start + 1
+            
+            logger.info(f"Generating batch: weeks {batch_start}-{batch_end} ({batch_num_weeks} weeks)")
+            
+            # Create sliding window context from last batch
+            context_text = ""
+            if all_weeks:
+                # Include last 2 days of previous week as context
+                last_week = all_weeks[-1]
+                last_days = last_week.get("days", [])[-2:] if last_week.get("days") else []
+                if last_days:
+                    context_text = f"\n\n## CONTEXT - End of Week {batch_start - 1}:\n"
+                    for day in last_days:
+                        context_text += f"Day {day['day_number']}: {', '.join([t['title'] for t in day.get('tasks', [])])}\n"
+                    context_text += f"\n**Continue from here, maintaining consistency and progression.**\n"
+            
+            batch_result = await self._generate_week_batch(
+                target_role=target_role,
+                batch_start=batch_start,
+                batch_end=batch_end,
+                phase=phase,
+                topic_details=topic_details,
+                daily_minutes=daily_minutes,
+                experience_level=experience_level,
+                learning_style=learning_style,
+                context_text=context_text
+            )
+            
+            # Extract weeks and milestones from batch
+            all_weeks.extend(batch_result.get("weeks", []))
+            all_milestones.extend(batch_result.get("milestones", []))
+        
+        return {
+            "weeks": all_weeks,
+            "milestones": all_milestones
+        }
+    
+    async def _generate_week_batch(
+        self,
+        target_role: str,
+        batch_start: int,
+        batch_end: int,
+        phase: Dict[str, Any],
+        topic_details: str,
+        daily_minutes: int,
+        experience_level: str,
+        learning_style: str,
+        context_text: str = ""
+    ) -> Dict[str, Any]:
+        """Generate a batch of weeks (typically 3) using AI."""
+        
+        batch_num_weeks = batch_end - batch_start + 1
+        
+    async def _generate_week_batch(
+        self,
+        target_role: str,
+        batch_start: int,
+        batch_end: int,
+        phase: Dict[str, Any],
+        topic_details: str,
+        daily_minutes: int,
+        experience_level: str,
+        learning_style: str,
+        context_text: str = ""
+    ) -> Dict[str, Any]:
+        """Generate a batch of weeks (typically 3) using AI."""
+        
+        batch_num_weeks = batch_end - batch_start + 1
+        
         system_prompt = f"""You are a world-class {target_role} educator creating a step-by-step learning curriculum.
 Create SPECIFIC, ACTIONABLE tasks with exact instructions.
 CRITICAL: Return ONLY valid, complete JSON. No markdown, no explanations, no truncation.
 Ensure all JSON strings are properly escaped and terminated."""
 
-        user_prompt = f"""Create a DETAILED {num_weeks}-week curriculum (Weeks {start_week}-{end_week}) for becoming a **{target_role}**.
+        user_prompt = f"""{context_text}
+
+Create a DETAILED {batch_num_weeks}-week curriculum (Weeks {batch_start}-{batch_end}) for becoming a **{target_role}**.
 
 ## Phase: {phase["phase_name"]}
 - **Skills to teach**: {', '.join(phase["skills"])}
@@ -394,8 +473,8 @@ Ensure all JSON strings are properly escaped and terminated."""
 {{
   "weeks": [
     {{
-      "week_number": {start_week},
-      "focus_area": "Week {start_week}: [SPECIFIC TOPIC - e.g., 'HTML Structure & Semantic Elements']",
+      "week_number": {batch_start},
+      "focus_area": "Week {batch_start}: [SPECIFIC TOPIC - e.g., 'HTML Structure & Semantic Elements']",
       "learning_objectives": ["Build a complete webpage with 5+ sections", "Use all semantic HTML5 tags correctly"],
       "days": [
         {{
@@ -422,7 +501,7 @@ Ensure all JSON strings are properly escaped and terminated."""
   ],
   "milestones": [
     {{
-      "week_number": {end_week},
+      "week_number": {batch_end},
       "title": "[SPECIFIC ACHIEVEMENT] - e.g., 'Built 3 complete webpages with responsive design'",
       "description": "Completed projects that demonstrate mastery of {', '.join(phase['skills'])}",
       "skills_demonstrated": {phase["skills"]},
@@ -431,37 +510,32 @@ Ensure all JSON strings are properly escaped and terminated."""
   ]
 }}
 
-Generate {num_weeks} weeks with 7 days each. Make every task SPECIFIC and ACTIONABLE for a {target_role}."""
+Generate {batch_num_weeks} weeks with 7 days each. Make every task SPECIFIC and ACTIONABLE for a {target_role}."""
 
         try:
-            logger.info(f"Generating phase {phase['phase_name']} (weeks {start_week}-{end_week}) with 7 days/week...")
+            logger.info(f"Generating weeks {batch_start}-{batch_end} using AI (batch of {batch_num_weeks})")
+            
             result = await self.llm.generate_json(
-                system_prompt, 
-                user_prompt,
-                max_tokens=8192  # Ensure enough tokens for complete response
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                temperature=0.7,
+                max_tokens=8192  # Smaller batch = fits in token limit
             )
             
-            # Validate response structure
-            if not isinstance(result, dict):
-                logger.error(f"Response is not a dict: {type(result)}")
-                raise ValueError("Invalid response format")
+            logger.info(f"Successfully generated {len(result.get('weeks', []))} weeks")
             
-            if "weeks" not in result or not result["weeks"]:
-                logger.warning(f"AI response missing weeks for {phase['phase_name']}, using defaults")
-                return self._generate_default_phase_weeks(target_role, phase, daily_minutes)
-            
-            # Validate weeks structure
-            for week in result["weeks"]:
-                if "days" not in week or not week["days"]:
-                    logger.warning(f"Week {week.get('week_number')} missing days")
-                    raise ValueError("Invalid week structure")
-            
-            logger.info(f"Successfully generated {len(result['weeks'])} weeks for {phase['phase_name']}")
             return result
                 
         except Exception as e:
-            logger.error(f"Error generating phase {phase['phase_name']}: {str(e)}")
-            return self._generate_default_phase_weeks(target_role, phase, daily_minutes)
+            logger.error(f"AI generation failed for weeks {batch_start}-{batch_end}: {str(e)}")
+            logger.warning(f"Falling back to default roadmap for weeks {batch_start}-{batch_end}")
+            
+            # Fallback to structured default
+            return self._generate_default_phase_weeks(
+                target_role=target_role,
+                phase={**phase, "start_week": batch_start, "end_week": batch_end},
+                daily_minutes=daily_minutes
+            )
     
     def _get_detailed_topics_for_skill(self, skills: List[str], target_role: str) -> str:
         """Get detailed topic breakdown for skills."""
