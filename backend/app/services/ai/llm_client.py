@@ -22,7 +22,8 @@ class LLMClient:
     def __init__(self):
         # Configure Gemini API
         genai.configure(api_key=settings.GOOGLE_API_KEY)
-        self.model_name = "gemini-2.5-flash-preview-09-2025"
+        # Using gemini-2.0-flash (available model with good quota limits)
+        self.model_name = "gemini-2.0-flash"
         
         # Generation config for better responses
         self.generation_config = {
@@ -80,7 +81,7 @@ class LLMClient:
         try:
             # Create model instance
             model = genai.GenerativeModel(
-                model_name="gemini-2.5-flash-preview-09-2025",
+                model_name=self.model_name,  # Use instance variable for consistency
                 generation_config={
                     **self.generation_config,
                     "temperature": temperature,
