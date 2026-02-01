@@ -314,4 +314,36 @@ export const resumeApi = {
         const response = await api.post('/api/v1/resume/sync-from-profile')
         return response.data
     },
+    // Export resume as PDF (LaTeX compiled)
+    exportPDF: async (versionId?: string): Promise<Blob> => {
+        const params = versionId ? `?version_id=${versionId}` : ''
+        const response = await api.get(`/api/v1/resume/export/pdf${params}`, {
+            responseType: 'blob'
+        })
+        return response.data
+    },
+    // Export resume as LaTeX source code
+    exportLaTeX: async (versionId?: string): Promise<Blob> => {
+        const params = versionId ? `?version_id=${versionId}` : ''
+        const response = await api.get(`/api/v1/resume/export/latex${params}`, {
+            responseType: 'blob'
+        })
+        return response.data
+    },
+    // Validate LaTeX compilation
+    validateLaTeX: async (): Promise<{ valid: boolean; message: string; pdf_size?: number }> => {
+        const response = await api.post('/api/v1/resume/validate-latex')
+        return response.data
+    },
+    // Download helper function
+    downloadFile: (blob: Blob, filename: string) => {
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = filename
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        window.URL.revokeObjectURL(url)
+    }
 }

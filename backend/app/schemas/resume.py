@@ -246,3 +246,58 @@ class UpdateDraftRequest(BaseModel):
     """Schema for updating draft metadata."""
     draft_name: Optional[str] = None
     job_description: Optional[str] = None
+
+
+# Export Schemas
+class ExportPDFRequest(BaseModel):
+    """Schema for PDF export request."""
+    version_id: Optional[UUID] = None
+    template: str = "modern"  # modern, classic, minimal
+
+
+class ExportPDFResponse(BaseModel):
+    """Schema for PDF export response."""
+    pdf_data: str  # Base64 encoded PDF
+    filename: str
+    format: str = "pdf"
+    template: str
+    version_id: str
+    generated_at: str
+
+
+class ExportLaTeXResponse(BaseModel):
+    """Schema for LaTeX export response."""
+    latex_source: str
+    template: str
+    version_id: str
+    generated_at: str
+
+
+class LaTeXValidationRequest(BaseModel):
+    """Schema for LaTeX validation request."""
+    latex_content: str
+
+
+class LaTeXValidationResponse(BaseModel):
+    """Schema for LaTeX validation response."""
+    is_valid: bool
+    errors: List[str]
+    warnings: List[str]
+    latex_length: int
+
+
+class ExportPreviewResponse(BaseModel):
+    """Schema for export preview response."""
+    id: str
+    version: int
+    summary: Optional[str]
+    skills_section: Optional[Dict[str, Any]]
+    education_section: Optional[List[Dict[str, Any]]]
+    experience_section: Optional[List[Dict[str, Any]]]
+    projects_section: Optional[List[Dict[str, Any]]]
+    certifications_section: Optional[List[Dict[str, Any]]]
+    contact_info: Optional[Dict[str, Any]]
+    created_at: str
+    updated_at: str
+    available_formats: List[str]
+    available_templates: List[str]

@@ -19,6 +19,8 @@ import toast from 'react-hot-toast'
 import ResumeDataForm from '@/components/resume/ResumeDataForm'
 import VersionManager from '@/components/resume/VersionManager'
 import EditResumeForm from '@/components/resume/EditResumeForm'
+import ResumePreview from '@/components/resume/ResumePreview'
+import JobTailoringPanel from '@/components/resume/JobTailoringPanel'
 
 interface ResumeData {
     id: string
@@ -333,14 +335,38 @@ export default function ResumePage() {
         }
     }
 
-    const handleExport = async (format: 'pdf' | 'docx') => {
+    const handleTailorUpdate = (updatedResume: any) => {
+        setResume(normalizeResumeData(updatedResume))
+        fetchVersions()
+    }
+
+    const handleExport = async (format: 'pdf' | 'docx' | 'latex') => {
         try {
-            toast.loading('Preparing download...', { id: 'export' })
-            // In a real implementation, this would call the export API
-            await new Promise(resolve => setTimeout(resolve, 1500))
-            toast.success(`Resume exported as ${format.toUpperCase()}`, { id: 'export' })
-        } catch (error) {
-            toast.error('Export failed', { id: 'export' })
+            toast.loading(`Preparing ${format.toUpperCase()} download...`, { id: 'export' })
+            
+            if (format === 'pdf') {
+                const blob = await resumeApi.exportPDF(resume?.id)
+                const filename = `${resume?.draft_name || 'Resume'}.pdf`
+                resumeApi.downloadFile(blob, filename)
+                toast.success('PDF downloaded successfully!', { id: 'export' })
+            } else if (format === 'latex') {
+                const blob = await resumeApi.exportLaTeX(resume?.id)
+                const filename = `${resume?.draft_name || 'Resume'}.tex`
+                resumeApi.downloadFile(blob, filename)
+                toast.success('LaTeX source downloaded!', { id: 'export' })
+            } else {
+                // DOCX - placeholder for future implementation
+                await new Promise(resolve => setTimeout(resolve, 1500))
+                toast.success(`Resume exported as ${format.toUpperCase()}`, { id: 'export' })
+            }
+        } catch (error: any) {
+            console.error('Export error:', error)
+            // If PDF export fails, try graceful fallback message
+            if (format === 'pdf' && error.response?.status === 500) {
+                toast.error('PDF generation requires LaTeX. Contact admin or try DOCX export.', { id: 'export' })
+            } else {
+                toast.error(`Export failed: ${error.response?.data?.detail || 'Unknown error'}`, { id: 'export' })
+            }
         }
     }
 
@@ -590,282 +616,15 @@ export default function ResumePage() {
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="max-w-4xl mx-auto"
+                    className="max-w-6xl mx-auto"
                 >
-                    <Card className="overflow-hidden">
-                        <CardContent className="p-8 print:p-0">
-                            {/* Header Section */}
-                            <div className="text-center border-b border-border pb-6 mb-6">
-                                <h1 className="text-3xl font-bold">
-                                    {user?.full_name || 'Your Name'}
-                                </h1>
-                                <p className="text-xl text-primary mt-1">
-                                    {profile?.goal_role || 'Software Developer'}
-                                </p>
-                                <div className="flex flex-wrap justify-center gap-4 mt-4 text-sm text-muted-foreground">
-                                    {resume.contact?.email && (
-                                        <span className="flex items-center gap-1">
-                                            <Mail className="h-4 w-4" />
-                                            {resume.contact.email}
-                                        </span>
-                                    )}
-                                    {resume.contact?.phone && (
-                                        <span className="flex items-center gap-1">
-                                            <Phone className="h-4 w-4" />
-                                            {resume.contact.phone}
-                                        </span>
-                                    )}
-                                    {resume.contact?.location && (
-                                        <span className="flex items-center gap-1">
-                                            <MapPin className="h-4 w-4" />
-                                            {resume.contact.location}
-                                        </span>
-                                    )}
-                                    {resume.contact?.github && (
-                                        <a href={resume.contact.github} className="flex items-center gap-1 hover:text-primary">
-                                            <Github className="h-4 w-4" />
-                                            GitHub
-                                        </a>
-                                    )}
-                                    {resume.contact?.linkedin && (
-                                        <a href={resume.contact.linkedin} className="flex items-center gap-1 hover:text-primary">
-                                            <Linkedin className="h-4 w-4" />
-                                            LinkedIn
-                                        </a>
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* Summary */}
-                            {resume.summary && (
-                                <section className="mb-6">
-                                    <h2 className="text-lg font-bold border-b border-border pb-2 mb-3">
-                                        Professional Summary
-                                    </h2>
-                                    <p className="text-muted-foreground">
-                                        {resume.summary}
-                                    </p>
-                                </section>
-                            )}
-
-                            {/* Skills */}
-                            {resume.skills_by_category && Object.keys(resume.skills_by_category).length > 0 && (
-                                <section className="mb-6">
-                                    <h2 className="text-lg font-bold border-b border-border pb-2 mb-3">
-                                        Skills
-                                    </h2>
-                                    <div className="grid md:grid-cols-2 gap-4">
-                                        {Object.entries(resume.skills_by_category).map(([category, skills]) => (
-                                            <div key={category}>
-                                                <h3 className="font-medium text-primary mb-2 capitalize">
-                                                    {category}
-                                                </h3>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {skills.map((skill, idx) => (
-                                                        <span
-                                                            key={idx}
-                                                            className="px-2 py-1 bg-muted rounded text-sm flex items-center gap-1"
-                                                        >
-                                                            {skill.name}
-                                                            {skill.proficiency >= 4 && (
-                                                                <Star className="h-3 w-3 text-amber-500" />
-                                                            )}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </section>
-                            )}
-
-                            {/* Experience */}
-                            {resume.experience && resume.experience.length > 0 && (
-                                <section className="mb-6">
-                                    <h2 className="text-lg font-bold border-b border-border pb-2 mb-3 flex items-center gap-2">
-                                        <Briefcase className="h-5 w-5" />
-                                        Experience
-                                    </h2>
-                                    <div className="space-y-4">
-                                        {resume.experience.map((exp, idx) => (
-                                            <div key={idx}>
-                                                <div className="flex justify-between items-start">
-                                                    <div>
-                                                        <h3 className="font-semibold">{exp.role}</h3>
-                                                        <p className="text-primary">{exp.company}</p>
-                                                    </div>
-                                                    <span className="text-sm text-muted-foreground">
-                                                        {exp.start_date} - {exp.end_date || 'Present'}
-                                                    </span>
-                                                </div>
-                                                {exp.highlights && exp.highlights.length > 0 && (
-                                                    <ul className="list-disc list-inside mt-2 text-muted-foreground space-y-1">
-                                                        {exp.highlights.map((h, i) => (
-                                                            <li key={i}>{h}</li>
-                                                        ))}
-                                                    </ul>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </section>
-                            )}
-
-                            {/* Projects */}
-                            {resume.projects && resume.projects.length > 0 && (
-                                <section className="mb-6">
-                                    <h2 className="text-lg font-bold border-b border-border pb-2 mb-3 flex items-center gap-2">
-                                        <Code className="h-5 w-5" />
-                                        Projects
-                                    </h2>
-                                    <div className="space-y-4">
-                                        {resume.projects.map((project, idx) => (
-                                            <div key={idx}>
-                                                <div className="flex items-start justify-between">
-                                                    <h3 className="font-semibold">{project.name}</h3>
-                                                    {project.url && (
-                                                        <a href={project.url} className="text-primary hover:underline text-sm flex items-center gap-1">
-                                                            <ExternalLink className="h-4 w-4" />
-                                                            View
-                                                        </a>
-                                                    )}
-                                                </div>
-                                                <p className="text-muted-foreground mt-1">{project.description}</p>
-                                                {project.technologies && (
-                                                    <div className="flex flex-wrap gap-1 mt-2">
-                                                        {project.technologies.map((tech, i) => (
-                                                            <span key={i} className="px-2 py-0.5 bg-primary/10 text-primary text-xs rounded">
-                                                                {tech}
-                                                            </span>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </section>
-                            )}
-
-                            {/* Education */}
-                            {resume.education && resume.education.length > 0 && (
-                                <section className="mb-6">
-                                    <h2 className="text-lg font-bold border-b border-border pb-2 mb-3 flex items-center gap-2">
-                                        <GraduationCap className="h-5 w-5" />
-                                        Education
-                                    </h2>
-                                    <div className="space-y-3">
-                                        {resume.education.map((edu, idx) => (
-                                            <div key={idx} className="flex justify-between">
-                                                <div>
-                                                    <h3 className="font-semibold">{edu.degree} in {edu.field}</h3>
-                                                    <p className="text-muted-foreground">{edu.institution}</p>
-                                                    {edu.cgpa && <p className="text-sm">CGPA: {edu.cgpa}</p>}
-                                                </div>
-                                                <span className="text-sm text-muted-foreground">
-                                                    {edu.start_year} - {edu.end_year || 'Present'}
-                                                </span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </section>
-                            )}
-
-                            {/* Technical Skills */}
-                            {resume.technical_skills && (
-                                <section className="mb-6">
-                                    <h2 className="text-lg font-bold border-b border-border pb-2 mb-3">
-                                        Technical Skills
-                                    </h2>
-                                    <div className="space-y-2">
-                                        {resume.technical_skills.languages && resume.technical_skills.languages.length > 0 && (
-                                            <div>
-                                                <strong className="text-primary">Languages:</strong>{' '}
-                                                {resume.technical_skills.languages.join(', ')}
-                                            </div>
-                                        )}
-                                        {resume.technical_skills.frameworks_and_tools && resume.technical_skills.frameworks_and_tools.length > 0 && (
-                                            <div>
-                                                <strong className="text-primary">Frameworks & Tools:</strong>{' '}
-                                                {resume.technical_skills.frameworks_and_tools.join(', ')}
-                                            </div>
-                                        )}
-                                        {resume.technical_skills.databases && resume.technical_skills.databases.length > 0 && (
-                                            <div>
-                                                <strong className="text-primary">Databases:</strong>{' '}
-                                                {resume.technical_skills.databases.join(', ')}
-                                            </div>
-                                        )}
-                                        {resume.technical_skills.cloud_platforms && resume.technical_skills.cloud_platforms.length > 0 && (
-                                            <div>
-                                                <strong className="text-primary">Cloud Platforms:</strong>{' '}
-                                                {resume.technical_skills.cloud_platforms.join(', ')}
-                                            </div>
-                                        )}
-                                    </div>
-                                </section>
-                            )}
-
-                            {/* Certifications */}
-                            {resume.certifications && resume.certifications.length > 0 && (
-                                <section className="mb-6">
-                                    <h2 className="text-lg font-bold border-b border-border pb-2 mb-3 flex items-center gap-2">
-                                        <Award className="h-5 w-5" />
-                                        Certifications
-                                    </h2>
-                                    <div className="space-y-2">
-                                        {resume.certifications.map((cert, idx) => (
-                                            <div key={idx} className="flex justify-between items-start">
-                                                <div>
-                                                    <span className="font-medium">{cert.name}</span>
-                                                    <span className="text-muted-foreground"> — {cert.issuer}</span>
-                                                    {cert.credential_url && (
-                                                        <a href={cert.credential_url} className="text-primary hover:underline ml-2 text-sm">
-                                                            <ExternalLink className="h-3 w-3 inline" />
-                                                        </a>
-                                                    )}
-                                                </div>
-                                                {cert.date_obtained && (
-                                                    <span className="text-sm text-muted-foreground">{cert.date_obtained}</span>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </section>
-                            )}
-
-                            {/* Extracurricular */}
-                            {resume.extracurricular && resume.extracurricular.length > 0 && (
-                                <section>
-                                    <h2 className="text-lg font-bold border-b border-border pb-2 mb-3 flex items-center gap-2">
-                                        <Users className="h-5 w-5" />
-                                        Extracurricular Activities
-                                    </h2>
-                                    <div className="space-y-4">
-                                        {resume.extracurricular.map((activity, idx) => (
-                                            <div key={idx}>
-                                                <div className="flex justify-between">
-                                                    <div>
-                                                        <h3 className="font-semibold">{activity.role}</h3>
-                                                        <p className="text-muted-foreground">{activity.organization}</p>
-                                                    </div>
-                                                    <span className="text-sm text-muted-foreground">
-                                                        {activity.start_date} - {activity.end_date || 'Present'}
-                                                    </span>
-                                                </div>
-                                                {activity.achievements && activity.achievements.length > 0 && (
-                                                    <ul className="list-disc list-inside mt-2 text-muted-foreground space-y-1">
-                                                        {activity.achievements.map((achievement, i) => (
-                                                            <li key={i}>{achievement}</li>
-                                                        ))}
-                                                    </ul>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </section>
-                            )}
-                        </CardContent>
-                    </Card>
+                    <ResumePreview
+                        resume={resume}
+                        profile={profile}
+                        userName={user?.full_name}
+                        onEdit={() => setShowEditForm(true)}
+                        onExport={handleExport}
+                    />
                 </motion.div>
             )}
 
@@ -877,19 +636,30 @@ export default function ResumePage() {
                 >
                     <Card>
                         <CardHeader>
-                            <CardTitle>Edit Your Resume</CardTitle>
+                            <CardTitle className="flex items-center gap-2">
+                                <Edit className="h-5 w-5 text-primary" />
+                                Edit Your Resume
+                            </CardTitle>
                             <CardDescription>
-                                Click on any section to edit. Changes are saved automatically.
+                                Update your resume sections, add new content, and customize your information.
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="text-center py-12">
-                            <Edit className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                            <p className="text-muted-foreground mb-4">
-                                Resume editing feature coming soon!
+                            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                                <Pencil className="h-10 w-10 text-primary" />
+                            </div>
+                            <h3 className="text-xl font-semibold mb-2">Ready to Edit?</h3>
+                            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                                Open the full editor to modify your education, experience, projects, skills, and more.
                             </p>
-                            <p className="text-sm text-muted-foreground">
-                                For now, your resume is automatically generated from your profile and learning progress.
-                            </p>
+                            <Button
+                                onClick={() => setShowEditForm(true)}
+                                className="gradient-primary text-white"
+                                size="lg"
+                            >
+                                <Edit className="h-4 w-4 mr-2" />
+                                Open Resume Editor
+                            </Button>
                         </CardContent>
                     </Card>
                 </motion.div>
@@ -899,100 +669,13 @@ export default function ResumePage() {
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="max-w-4xl mx-auto"
+                    className="max-w-6xl mx-auto"
                 >
-                    <Card className="mb-6">
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <Wand2 className="h-5 w-5 text-primary" />
-                                Tailor Resume for a Job
-                            </CardTitle>
-                            <CardDescription>
-                                Paste a job description and we'll customize your resume to match
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <textarea
-                                value={jobDescription}
-                                onChange={(e) => setJobDescription(e.target.value)}
-                                placeholder="Paste the job description here..."
-                                className="w-full h-40 p-4 rounded-lg border border-border bg-background resize-none focus:outline-none focus:ring-2 focus:ring-primary"
-                            />
-                            <Button
-                                onClick={handleTailorResume}
-                                disabled={isTailoring || !jobDescription.trim()}
-                                className="mt-4 gradient-primary text-white"
-                            >
-                                {isTailoring ? (
-                                    <>
-                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                        Analyzing...
-                                    </>
-                                ) : (
-                                    <>
-                                        <Sparkles className="mr-2 h-4 w-4" />
-                                        Analyze & Tailor
-                                    </>
-                                )}
-                            </Button>
-                        </CardContent>
-                    </Card>
-
-                    {tailorResult && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                        >
-                            <Card className="mb-6">
-                                <CardHeader>
-                                    <CardTitle>Match Analysis</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-4 mb-6">
-                                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
-                                            <span className="text-2xl font-bold text-white">
-                                                {tailorResult.match_score || 75}%
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <h3 className="text-lg font-semibold">Match Score</h3>
-                                            <p className="text-muted-foreground">
-                                                Your profile matches {tailorResult.match_score || 75}% of the job requirements
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    {tailorResult.matched_skills && (
-                                        <div className="mb-4">
-                                            <h4 className="font-medium mb-2">Matched Skills</h4>
-                                            <div className="flex flex-wrap gap-2">
-                                                {tailorResult.matched_skills.map((skill: string, idx: number) => (
-                                                    <span key={idx} className="px-3 py-1 bg-emerald-500/10 text-emerald-600 rounded-full text-sm flex items-center gap-1">
-                                                        <CheckCircle2 className="h-4 w-4" />
-                                                        {skill}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {tailorResult.suggestions && (
-                                        <div>
-                                            <h4 className="font-medium mb-2">Suggestions</h4>
-                                            <ul className="space-y-2">
-                                                {tailorResult.suggestions.map((suggestion: string, idx: number) => (
-                                                    <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
-                                                        <Star className="h-4 w-4 text-amber-500 flex-shrink-0 mt-0.5" />
-                                                        {suggestion}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-                    )}
+                    <JobTailoringPanel
+                        resume={resume}
+                        onUpdate={handleTailorUpdate}
+                        onRefreshVersions={fetchVersions}
+                    />
                 </motion.div>
             )}
         </div>

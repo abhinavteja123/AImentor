@@ -473,13 +473,13 @@ export default function RoadmapPage() {
                                                                         </div>
 
                                                                         {/* Content */}
-                                                                        <div className="flex-1 min-w-0">
+                                                                        <div className="flex-1 min-w-0 overflow-hidden">
                                                                             <div className="flex items-start justify-between gap-4">
-                                                                                <div>
+                                                                                <div className="flex-1 min-w-0">
                                                                                     <h4 className={`font-medium ${isComplete ? 'line-through text-muted-foreground' : ''}`}>
                                                                                         {task.task_title}
                                                                                     </h4>
-                                                                                    <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                                                                                    <p className="text-sm text-muted-foreground mt-1 whitespace-pre-line break-words">
                                                                                         {task.task_description}
                                                                                     </p>
                                                                                 </div>
