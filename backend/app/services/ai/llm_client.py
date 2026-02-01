@@ -22,8 +22,8 @@ class LLMClient:
     def __init__(self):
         # Configure Gemini API
         genai.configure(api_key=settings.GOOGLE_API_KEY)
-        # Using gemini-2.0-flash (available model with good quota limits)
-        self.model_name = "gemini-2.0-flash"
+        # Using gemini-2.5-flash-preview (newer model with better performance)
+        self.model_name = "gemini-2.5-flash-preview-09-2025"
         
         # Generation config for better responses
         self.generation_config = {

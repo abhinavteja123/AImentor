@@ -19,16 +19,21 @@ async def init_mongodb():
     global _client, _database, _connection_failed
     
     try:
-        # Configure Motor client with SSL settings for MongoDB Atlas
-        _client = AsyncIOMotorClient(
-            settings.MONGODB_URL,
-            serverSelectionTimeoutMS=5000,
-            connectTimeoutMS=5000,
-            socketTimeoutMS=5000,
-            retryWrites=True,
-            tlsAllowInvalidCertificates=False,
-            directConnection=False
-        )
+        # Configure Motor client - SSL settings only for MongoDB Atlas
+        # For local MongoDB, don't use SSL
+        connection_params = {
+            "serverSelectionTimeoutMS": 5000,
+            "connectTimeoutMS": 5000,
+            "socketTimeoutMS": 5000,
+            "retryWrites": True,
+        }
+        
+        # Only add SSL settings if connecting to MongoDB Atlas (remote)
+        if "mongodb+srv" in settings.MONGODB_URL or "ssl=true" in settings.MONGODB_URL.lower():
+            connection_params["tlsAllowInvalidCertificates"] = False
+            connection_params["directConnection"] = False
+        
+        _client = AsyncIOMotorClient(settings.MONGODB_URL, **connection_params)
         _database = _client[settings.MONGODB_DB]
         
         # Test connection with shorter timeout

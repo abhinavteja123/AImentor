@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     
     # Google Gemini API
     GOOGLE_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-2.0-flash-exp"
+    GEMINI_MODEL: str = "gemini-2.5-flash-preview-09-2025"
     
     # PostgreSQL Database
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/aimentor"
@@ -51,6 +51,7 @@ class Settings(BaseSettings):
     
     class Config:
         env_file = ".env"
+        env_file_encoding = "utf-8"
         case_sensitive = True
         extra = "ignore"  # Ignore extra fields like NEXT_PUBLIC_API_URL
 
