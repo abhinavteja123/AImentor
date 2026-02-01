@@ -204,16 +204,105 @@ Strategy: Data-driven + Template Filling
 
 ### Prerequisites
 
+**Option A: Docker (Recommended - Easiest)**
+1. **Docker Desktop** - [Download](https://www.docker.com/products/docker-desktop/)
+2. **Google Gemini API Key** - [Get one here](https://aistudio.google.com/)
+
+**Option B: Manual Setup**
 1. **Python 3.10+** - [Download](https://www.python.org/downloads/)
 2. **Node.js 18+** - [Download](https://nodejs.org/)
-3. **PostgreSQL 15+** - [Download](https://www.postgresql.org/download/) or use [Supabase](https://supabase.com/)
+3. **PostgreSQL 15+** - [Download](https://www.postgresql.org/download/) or use [Neon](https://neon.tech/)
 4. **MongoDB** - [Download](https://www.mongodb.com/try/download/community) or use [MongoDB Atlas](https://www.mongodb.com/atlas)
 5. **Redis** - [Download](https://redis.io/download/) or use [Upstash](https://upstash.com/)
-6. **DeepSeek API Key** - [Get one here](https://platform.deepseek.com/)
+6. **Google Gemini API Key** - [Get one here](https://aistudio.google.com/)
 
 ---
 
-## 📦 Backend Setup
+## 🐳 Quick Start with Docker (Recommended)
+
+### 1. Clone the repository
+```bash
+git clone <your-repository-url>
+cd AImentor
+```
+
+### 2. Configure environment variables
+
+Create `.env` file in the `backend` directory:
+
+```env
+# Google Gemini AI
+GOOGLE_API_KEY=your_gemini_api_key_here
+
+# PostgreSQL Database (Docker service name)
+DATABASE_URL=postgresql+asyncpg://postgres:postgres123@postgres:5432/ai_mentor
+
+# MongoDB (Docker service name)
+MONGODB_URL=mongodb://mongodb:27017
+MONGODB_DB=ai_mentor
+
+# Redis (Docker service name)
+REDIS_URL=redis://redis:6379
+
+# JWT Configuration
+JWT_SECRET_KEY=your_super_secret_32_character_key_here
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=1440
+REFRESH_TOKEN_EXPIRE_DAYS=30
+
+# Server Settings
+DEBUG=True
+CORS_ORIGINS=http://localhost:3000
+```
+
+Create `.env.local` file in the `frontend` directory:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+### 3. Start all services with Docker
+
+```bash
+# Build and start all services (backend, frontend, databases)
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Check services are running
+docker-compose ps
+```
+
+### 4. Initialize the database (first time only)
+
+```bash
+# Run database seeding
+docker-compose exec backend python -m scripts.seed_database
+docker-compose exec backend python -m scripts.seed_skills
+```
+
+### 5. Access the application
+
+✅ **Frontend**: http://localhost:3000  
+✅ **Backend API**: http://localhost:8000  
+✅ **API Docs**: http://localhost:8000/docs
+
+### Stop the application
+
+```bash
+# Stop all services
+docker-compose down
+
+# Stop and remove volumes (clean slate)
+docker-compose down -v
+```
+
+---
+
+## 📦 Manual Setup (Alternative)
+
+### Backend Setup
 
 ### 1. Navigate to backend directory
 
@@ -244,15 +333,15 @@ pip install -r requirements.txt
 Edit the `.env` file with your actual values:
 
 ```env
-# DeepSeek AI
-DEEPSEEK_API_KEY=your_deepseek_api_key_here
+# Google Gemini AI
+GOOGLE_API_KEY=your_gemini_api_key_here
 
 # PostgreSQL (use your local or cloud database URL)
-DATABASE_URL=postgresql+asyncpg://username:password@localhost:5432/ai_mentor
+DATABASE_URL=postgresql+asyncpg://username:password@localhost:5432/aimentor
 
 # MongoDB
 MONGODB_URL=mongodb://localhost:27017
-MONGODB_DB=ai_mentor
+MONGODB_DB=aimentor
 
 # Redis
 REDIS_URL=redis://localhost:6379
@@ -264,7 +353,7 @@ JWT_SECRET_KEY=your_super_secret_key_change_this_in_production
 ### 5. Create PostgreSQL database
 
 ```sql
-CREATE DATABASE ai_mentor;
+CREATE DATABASE aimentor;
 ```
 
 ### 6. Run the backend server
@@ -321,55 +410,13 @@ The frontend will be running at `http://localhost:3000`
 
 ---
 
-## 🗄️ Database Options
+## 🗄️ Cloud Database Setup (Production)
 
-### Option A: Local Databases (Development)
+For production or if you prefer cloud databases over Docker:
 
-1. **PostgreSQL**: Install locally and create database
-2. **MongoDB**: Install locally or use Docker
-3. **Redis**: Install locally or use Docker
-
-Docker compose for local databases:
-
-```yaml
-# docker-compose.yml
-version: '3.8'
-services:
-  postgres:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: ai_mentor
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-  mongodb:
-    image: mongo:7
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-
-  redis:
-    image: redis:7
-    ports:
-      - "6379:6379"
-
-volumes:
-  postgres_data:
-  mongo_data:
-```
-
-Run with: `docker-compose up -d`
-
-### Option B: Cloud Databases (Recommended for Production)
-
-1. **Supabase** (PostgreSQL): Free tier with 500MB
-   - Create project at https://supabase.com/
-   - Get connection string from Settings → Database
+1. **Neon** (PostgreSQL): Free tier with 500MB
+   - Create project at https://neon.tech/
+   - Get connection string from dashboard
 
 2. **MongoDB Atlas**: Free tier with 512MB
    - Create cluster at https://cloud.mongodb.com/
@@ -381,13 +428,15 @@ Run with: `docker-compose up -d`
 
 ---
 
-## 🔑 Getting DeepSeek API Key
+## 🔑 Getting Google Gemini API Key
 
-1. Go to https://platform.deepseek.com/
-2. Create an account
-3. Navigate to API Keys section
-4. Create a new API key
+1. Go to https://aistudio.google.com/
+2. Sign in with your Google account
+3. Click "Get API Key" in the left sidebar
+4. Create a new API key or use existing one
 5. Copy the key to your `.env` file
+
+**Note**: Free tier has quota limits. See [GEMINI-QUOTA-SOLUTION.md](docs/GEMINI-QUOTA-SOLUTION.md) for details.
 
 ---
 
@@ -599,7 +648,7 @@ For detailed information about the source code organization, architecture patter
 │   │   ├── models/          # SQLAlchemy models
 │   │   ├── schemas/         # Pydantic schemas
 │   │   ├── services/        # Business logic
-│   │   │   └── ai/          # AI services (DeepSeek)
+│   │   │   └── ai/          # AI services (Google Gemini)
 │   │   └── utils/           # Utilities
 │   ├── scripts/             # Database scripts
 │   ├── .env                 # Environment variables
