@@ -20,6 +20,17 @@ interface ResumePreviewProps {
     onExport: (format: 'pdf' | 'docx') => void
 }
 
+// Legacy JSONB rows may have strings where arrays are expected.
+// Coerce to string[] so .map() / .join() never crash the preview.
+const toArr = (val: unknown): string[] => {
+    if (Array.isArray(val)) return val.map(v => (typeof v === 'string' ? v : String(v))).filter(Boolean)
+    if (typeof val === 'string' && val.trim()) {
+        const parts = val.includes('\n') ? val.split('\n') : val.split(',')
+        return parts.map(p => p.trim().replace(/^[-•*\s]+/, '')).filter(Boolean)
+    }
+    return []
+}
+
 export default function ResumePreview({ 
     resume, 
     profile, 
@@ -266,7 +277,7 @@ export default function ResumePreview({
                                                     {category}
                                                 </h3>
                                                 <div className="flex flex-wrap gap-2">
-                                                    {skills.map((skill: any, idx: number) => (
+                                                    {(Array.isArray(skills) ? skills : toArr(skills)).map((skill: any, idx: number) => (
                                                         <span
                                                             key={idx}
                                                             className="px-2 py-1 bg-muted rounded text-sm flex items-center gap-1"
@@ -329,14 +340,11 @@ export default function ResumePreview({
                                             <p className="text-muted-foreground text-sm mt-1">
                                                 {project.description}
                                             </p>
-                                            {project.technologies && project.technologies.length > 0 && (
+                                            {toArr(project.technologies).length > 0 && (
                                                 <div className="flex flex-wrap gap-1 mt-2">
-                                                    {(Array.isArray(project.technologies) 
-                                                        ? project.technologies 
-                                                        : project.technologies.split(',')
-                                                    ).map((tech: string, i: number) => (
-                                                        <span 
-                                                            key={i} 
+                                                    {toArr(project.technologies).map((tech: string, i: number) => (
+                                                        <span
+                                                            key={i}
                                                             className="px-2 py-0.5 bg-primary/10 text-primary text-xs rounded"
                                                         >
                                                             {tech.trim()}
@@ -344,9 +352,9 @@ export default function ResumePreview({
                                                     ))}
                                                 </div>
                                             )}
-                                            {project.highlights && project.highlights.length > 0 && (
+                                            {toArr(project.highlights).length > 0 && (
                                                 <ul className="list-disc list-inside mt-2 text-sm text-muted-foreground space-y-1">
-                                                    {project.highlights.map((h: string, i: number) => (
+                                                    {toArr(project.highlights).map((h: string, i: number) => (
                                                         <li key={i}>{h}</li>
                                                     ))}
                                                 </ul>
@@ -386,9 +394,9 @@ export default function ResumePreview({
                                                     {exp.start_date} - {exp.end_date || 'Present'}
                                                 </span>
                                             </div>
-                                            {(exp.bullet_points || exp.highlights) && (
+                                            {toArr(exp.bullet_points || exp.highlights).length > 0 && (
                                                 <ul className="list-disc list-inside mt-2 text-muted-foreground space-y-1">
-                                                    {(exp.bullet_points || exp.highlights).map((h: string, i: number) => (
+                                                    {toArr(exp.bullet_points || exp.highlights).map((h: string, i: number) => (
                                                         <li key={i} className="text-sm">{h}</li>
                                                     ))}
                                                 </ul>
@@ -463,9 +471,9 @@ export default function ResumePreview({
                                                     {activity.start_date} - {activity.end_date || 'Present'}
                                                 </span>
                                             </div>
-                                            {activity.achievements && activity.achievements.length > 0 && (
+                                            {toArr(activity.achievements).length > 0 && (
                                                 <ul className="list-disc list-inside mt-2 text-muted-foreground space-y-1">
-                                                    {activity.achievements.map((achievement: string, i: number) => (
+                                                    {toArr(activity.achievements).map((achievement: string, i: number) => (
                                                         <li key={i} className="text-sm">{achievement}</li>
                                                     ))}
                                                 </ul>

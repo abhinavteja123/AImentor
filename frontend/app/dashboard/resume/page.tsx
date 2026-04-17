@@ -8,7 +8,7 @@ import {
     Mail, Phone, MapPin, Github, Linkedin, Globe,
     Loader2, CheckCircle2, Star, Briefcase, GraduationCap,
     Code, Sparkles, RefreshCw, Eye, Pencil, ArrowLeft, Award, Users,
-    Clock, Settings
+    Clock, Settings, UserCheck
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -557,9 +557,23 @@ export default function ResumePage() {
                         <Button
                             variant="outline"
                             size="sm"
+                            onClick={() => handleRegenerateResume(true)}
+                            disabled={isRegenerating}
+                            title="Pull fresh data from your profile"
+                        >
+                            {isRegenerating ? (
+                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            ) : (
+                                <UserCheck className="h-4 w-4 mr-2" />
+                            )}
+                            Sync from Profile
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="sm"
                             onClick={() => handleRegenerateResume(false)}
                             disabled={isRegenerating}
-                            title="Regenerate with AI"
+                            title="Regenerate summary with AI"
                         >
                             {isRegenerating ? (
                                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />

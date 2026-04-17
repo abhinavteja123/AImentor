@@ -155,55 +155,124 @@ Return ONLY the professional summary text, no additional formatting or explanati
                 "category": category
             })
         
+        profile = user.profile
+
         # If existing resume exists, update it instead of creating new
         if existing_resume:
             existing_resume.summary = await self._generate_summary(user, skills_section, existing_resume)
             existing_resume.skills_section = skills_section
+            self._apply_profile_data_to_resume(existing_resume, profile)
             if not existing_resume.education_section or len(existing_resume.education_section) == 0:
                 existing_resume.education_section = [{
-                    "institution": user.profile.current_education or "University",
+                    "institution": profile.current_education or "University",
                     "degree": "Bachelor's",
-                    "graduation_year": user.profile.graduation_year
-                }] if user.profile.current_education else []
-            if not existing_resume.contact_info:
-                existing_resume.contact_info = {
-                    "email": user.email,
-                    "linkedin_url": user.profile.linkedin_url,
-                    "github_url": user.profile.github_url,
-                    "portfolio_url": user.profile.portfolio_url
-                }
+                    "graduation_year": profile.graduation_year
+                }] if profile.current_education else []
+            existing_resume.contact_info = self._build_contact_info(user, profile)
             existing_resume.updated_at = datetime.utcnow()
             await self.db.commit()
             await self.db.refresh(existing_resume)
             return existing_resume
-        
+
         # Create new resume with AI-generated summary
         summary = await self._generate_summary(user, skills_section)
-        
+
         resume = Resume(
             user_id=user_id,
             version=1,
             is_active=True,
             summary=summary,
             skills_section=skills_section,
-            education_section=[{
-                "institution": user.profile.current_education or "University",
-                "degree": "Bachelor's",
-                "graduation_year": user.profile.graduation_year
-            }] if user.profile.current_education else [],
-            contact_info={
-                "email": user.email,
-                "linkedin_url": user.profile.linkedin_url,
-                "github_url": user.profile.github_url,
-                "portfolio_url": user.profile.portfolio_url
-            }
+            contact_info=self._build_contact_info(user, profile),
         )
-        
+        # Seed fallback education when profile has only the legacy current_education string.
+        if not profile.education_data and profile.current_education:
+            resume.education_section = [{
+                "institution": profile.current_education,
+                "degree": "Bachelor's",
+                "graduation_year": profile.graduation_year,
+            }]
+        self._apply_profile_data_to_resume(resume, profile)
+
         self.db.add(resume)
         await self.db.commit()
         await self.db.refresh(resume)
-        
+
         return resume
+
+    @staticmethod
+    def _apply_profile_data_to_resume(resume: Resume, profile) -> None:
+        """
+        Copy the structured *_data fields from the profile onto the matching
+        resume *_section fields. Only writes when the profile has content, so
+        manual edits to the resume aren't clobbered by empty profile entries.
+
+        Coerces known sharp edges (int years, comma-string arrays) so the
+        ResumeResponse pydantic schema doesn't 500 on type mismatches that the
+        LLM or a human editor may have introduced.
+        """
+        def _to_str(v):
+            return None if v is None else str(v)
+
+        def _to_str_list(v):
+            if v is None or v == "":
+                return []
+            if isinstance(v, list):
+                return [str(x).strip() for x in v if str(x).strip()]
+            if isinstance(v, str):
+                parts = v.split("\n") if "\n" in v else v.split(",")
+                return [p.strip(" -•*\t") for p in parts if p.strip()]
+            return [str(v).strip()]
+
+        if profile.education_data:
+            resume.education_section = [
+                {
+                    **e,
+                    "start_year": _to_str(e.get("start_year")),
+                    "end_year": _to_str(e.get("end_year")),
+                }
+                for e in profile.education_data
+            ]
+        if profile.experience_data:
+            resume.experience_section = [
+                {**e, "bullet_points": _to_str_list(e.get("bullet_points"))}
+                for e in profile.experience_data
+            ]
+        if profile.projects_data:
+            resume.projects_section = [
+                {
+                    **p,
+                    "technologies": _to_str_list(p.get("technologies")),
+                    "highlights": _to_str_list(p.get("highlights")),
+                }
+                for p in profile.projects_data
+            ]
+        if profile.certifications_data:
+            resume.certifications_section = profile.certifications_data
+        if profile.extracurricular_data:
+            resume.extracurricular_section = [
+                {**a, "achievements": _to_str_list(a.get("achievements"))}
+                for a in profile.extracurricular_data
+            ]
+        if profile.technical_skills_data:
+            # Coerce every category value into List[str] so TechnicalSkillsSection validates
+            resume.technical_skills_section = {
+                k: _to_str_list(v) for k, v in profile.technical_skills_data.items()
+            }
+
+    @staticmethod
+    def _build_contact_info(user, profile) -> dict:
+        """Unified contact-info builder so generate + sync + regenerate agree."""
+        return {
+            "name": user.full_name,
+            "email": user.email,
+            "phone": getattr(profile, "phone", None),
+            "location": getattr(profile, "location", None),
+            "linkedin_url": profile.linkedin_url,
+            "github_url": profile.github_url,
+            "portfolio_url": profile.portfolio_url,
+            "website": getattr(profile, "website_url", None),
+        }
     
     async def update_resume(
         self, 
@@ -1148,7 +1217,7 @@ Return ONLY the tailored summary text, no additional formatting."""
                 .where(UserSkill.user_id == user_id)
             )
             user_skills = result.scalars().all()
-            
+
             # Rebuild skills section
             skills_section = {}
             for us in user_skills:
@@ -1160,16 +1229,10 @@ Return ONLY the tailored summary text, no additional formatting."""
                     "proficiency": us.proficiency_level,
                     "category": category
                 })
-            
+
             resume.skills_section = skills_section
-            
-            # Update contact info
-            resume.contact_info = {
-                "email": user.email,
-                "linkedin_url": user.profile.linkedin_url,
-                "github_url": user.profile.github_url,
-                "portfolio_url": user.profile.portfolio_url
-            }
+            resume.contact_info = self._build_contact_info(user, user.profile)
+            self._apply_profile_data_to_resume(resume, user.profile)
         
         if regenerate_summary:
             # Regenerate summary using AI
@@ -1402,14 +1465,19 @@ Return ONLY the tailored summary text, no additional formatting."""
     def _prepare_resume_data_for_export(self, user: User, resume: Resume) -> dict:
         """
         Prepare resume data in the format expected by LaTeX generator.
-        
+
         Args:
             user: User model with profile
             resume: Resume model
-            
+
         Returns:
             dict with all resume sections properly formatted
         """
+        # Shared coercion with LaTeX generator so legacy rows where a list-
+        # field was stored as a string (or a list of single chars) can't slip
+        # through to the PDF renderer as char-by-char bullets.
+        _as_list = self.latex_generator._as_list
+
         profile = user.profile
         
         # Build contact info
@@ -1461,13 +1529,18 @@ Return ONLY the tailored summary text, no additional formatting."""
         experience = []
         if resume.experience_section:
             for exp in resume.experience_section:
+                bullets = (
+                    _as_list(exp.get("bullet_points"))
+                    or _as_list(exp.get("achievements"))
+                    or _as_list(exp.get("highlights"))
+                )
                 experience.append({
                     "company": exp.get("company", ""),
                     "role": exp.get("role", "") or exp.get("title", ""),
                     "location": exp.get("location", ""),
                     "start_date": exp.get("start_date", ""),
                     "end_date": exp.get("end_date", "Present"),
-                    "bullet_points": exp.get("bullet_points", []) or exp.get("achievements", []) or exp.get("highlights", []),
+                    "bullet_points": bullets,
                     "company_url": exp.get("company_url", "")
                 })
         
@@ -1478,10 +1551,10 @@ Return ONLY the tailored summary text, no additional formatting."""
                 projects.append({
                     "title": proj.get("title", "") or proj.get("name", ""),
                     "description": proj.get("description", ""),
-                    "technologies": proj.get("technologies", []),
+                    "technologies": _as_list(proj.get("technologies")),
                     "github_url": proj.get("github_url", ""),
                     "demo_url": proj.get("demo_url", "") or proj.get("url", ""),
-                    "highlights": proj.get("highlights", []) or proj.get("achievements", []),
+                    "highlights": _as_list(proj.get("highlights")) or _as_list(proj.get("achievements")),
                     "start_date": proj.get("start_date", ""),
                     "end_date": proj.get("end_date", "")
                 })
@@ -1507,7 +1580,7 @@ Return ONLY the tailored summary text, no additional formatting."""
                     "location": ext.get("location", ""),
                     "start_date": ext.get("start_date", ""),
                     "end_date": ext.get("end_date", ""),
-                    "achievements": ext.get("achievements", [])
+                    "achievements": _as_list(ext.get("achievements"))
                 })
         
         return {

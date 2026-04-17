@@ -81,7 +81,12 @@
       "Bash(venv/Scripts/python.exe -c \"from app.api.v1.profile import router; from app.services.resume_parser import extract_text_from_pdf, parse_profile_from_text; print\\('imports OK'\\)\")",
       "Bash(venv/Scripts/python.exe -m pip install \"pypdf>=5.0\")",
       "Bash(venv/Scripts/python.exe -c \"from app.api.v1.profile import router; from app.services.resume_parser import extract_text_from_pdf, parse_profile_from_text; from app.services.ai.llm_provider import FallbackChain, _log_attempt; print\\('all imports OK'\\)\")",
-      "Bash(venv/Scripts/python.exe -m pytest tests/ -q)"
+      "Bash(venv/Scripts/python.exe -m pytest tests/ -q)",
+      "Bash(venv/Scripts/python.exe -c \"from app.services.resume_service import ResumeService; print\\('OK'\\); print\\('has helpers:', hasattr\\(ResumeService, '_apply_profile_data_to_resume'\\), hasattr\\(ResumeService, '_build_contact_info'\\)\\)\")",
+      "Bash(venv/Scripts/python.exe -c ' *)",
+      "Bash(rm -f AGENTS.md GEMINI.md .cursorrules .windsurfrules AI-MENTOR-IMPLEMENTATION-GUIDE.md RESUME_SYSTEM_IMPLEMENTATION_PROMPT.md RESUME-IMPLEMENTATION.md HOT-RELOAD-SETUP.md latex.md logs.md MIGRATION-GUIDE.md verify-hot-reload.bat)",
+      "Bash(rm -f docs/BUILD-REPRODUCIBILITY.md docs/GEMINI-QUOTA-SOLUTION.md docs/README-UPDATE-SUMMARY.md docs/SOURCE-CODE-OVERVIEW.md)",
+      "Bash(rmdir docs *)"
     ]
   },
   "enableAllProjectMcpServers": true,

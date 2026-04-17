@@ -112,7 +112,7 @@ class LaTeXResumeGenerator:
         """Escape special LaTeX characters"""
         if not text:
             return ""
-        
+
         # Must escape backslash first
         text = str(text)
         replacements = [
@@ -127,10 +127,43 @@ class LaTeXResumeGenerator:
             ('~', r'\textasciitilde{}'),
             ('^', r'\^{}'),
         ]
-        
+
         for char, escaped in replacements:
             text = text.replace(char, escaped)
         return text
+
+    @staticmethod
+    def _as_list(val) -> list:
+        """
+        Coerce a field that SHOULD be a list[str] into one.
+
+        Handles three corruption modes seen in the wild:
+          1. Stored as a single string ("Developed foo, did bar") — split on
+             newlines first, then commas.
+          2. Stored as a list of single characters (['D','e','v',...]) — a
+             legacy row where `list(some_string)` was called upstream; rejoin
+             and re-split so we don't emit one bullet per letter.
+          3. Already a proper list[str] — pass through after stripping.
+
+        Without this coercion, the LaTeX generator iterates a string
+        character-by-character and renders each letter as its own bullet.
+        See PDF bug 2026-04-17.
+        """
+        if val is None or val == "":
+            return []
+        if isinstance(val, list):
+            cleaned = [str(x).strip() for x in val if x is not None and str(x).strip()]
+            # Detect list-of-chars corruption: every entry is a single char.
+            # Rejoin and re-split into real bullets.
+            if cleaned and all(len(x) == 1 for x in cleaned):
+                joined = "".join(str(x) for x in val if x is not None)
+                parts = joined.split("\n") if "\n" in joined else joined.split(",")
+                return [p.strip(" -•*\t") for p in parts if p.strip()]
+            return cleaned
+        if isinstance(val, str):
+            parts = val.split("\n") if "\n" in val else val.split(",")
+            return [p.strip(" -•*\t") for p in parts if p.strip()]
+        return [str(val).strip()]
     
     def format_date_range(self, start: str, end: str = None) -> str:
         """Format date range for LaTeX"""
@@ -193,8 +226,8 @@ class LaTeXResumeGenerator:
             latex += f"    {{{company}}}{{{date_range}}}\n"
             latex += f"    {{{role}}}{{{location}}}\n"
             
-            # Bullet points
-            bullet_points = exp.get('bullet_points', []) or exp.get('highlights', [])
+            # Bullet points — coerce to list even if stored as string
+            bullet_points = self._as_list(exp.get('bullet_points')) or self._as_list(exp.get('highlights'))
             if bullet_points:
                 latex += r"    \resumeItemListStart" + "\n"
                 for bullet in bullet_points:
@@ -217,14 +250,8 @@ class LaTeXResumeGenerator:
         
         for project in projects_list:
             title = self.escape_latex(project.get('title', '') or project.get('name', ''))
-            technologies = project.get('technologies', [])
-            
-            # Handle technologies
-            if isinstance(technologies, str):
-                tech_str = technologies
-            else:
-                tech_str = ", ".join(technologies) if technologies else ""
-            tech_str = self.escape_latex(tech_str)
+            technologies = self._as_list(project.get('technologies'))
+            tech_str = self.escape_latex(", ".join(technologies))
             
             # Date range
             start_date = project.get('start_date', '')
@@ -242,15 +269,15 @@ class LaTeXResumeGenerator:
             latex += f"  \\resumeProjectHeading{{{project_title}}}{{{date_range}}}\n"
             
             # Description as first bullet or highlights
-            highlights = project.get('highlights', [])
+            highlights = self._as_list(project.get('highlights'))
             description = project.get('description', '')
-            
+
             latex += r"    \resumeItemListStart" + "\n"
-            
+
             if description and not highlights:
                 escaped_desc = self.escape_latex(description)
                 latex += f"      \\resumeItem{{{escaped_desc}}}\n"
-            
+
             if highlights:
                 for highlight in highlights:
                     escaped_highlight = self.escape_latex(highlight)
@@ -265,37 +292,47 @@ class LaTeXResumeGenerator:
         """Generate technical skills section LaTeX"""
         if not technical_skills and not coursework:
             return ""
-        
-        latex = r"\section{Technical Skills}" + "\n"
-        latex += r"\begin{itemize}[leftmargin=0.15in, label={}]" + "\n"
-        latex += r"  \small{\item{" + "\n"
-        
-        skill_categories = {
+
+        # Coerce to dict-of-list[str] so the section never renders empty just
+        # because a category was stored as "Python, Go" string.
+        if not isinstance(technical_skills, dict):
+            technical_skills = {}
+        normalized: dict = {k: self._as_list(v) for k, v in technical_skills.items()}
+
+        labels = {
             'languages': 'Languages',
             'frameworks_and_tools': 'Frameworks \\& Tools',
             'frameworks': 'Frameworks',
             'tools': 'Tools',
             'databases': 'Databases',
             'cloud_platforms': 'Cloud Platforms',
-            'other': 'Other'
+            'other': 'Other',
         }
-        
+
         skill_lines = []
-        for key, label in skill_categories.items():
-            skills = technical_skills.get(key, [])
+        # Emit known categories first, in canonical order
+        for key, label in labels.items():
+            skills = normalized.get(key) or []
             if skills:
-                if isinstance(skills, str):
-                    skills_str = skills
-                else:
-                    skills_str = ", ".join(skills)
-                
-                escaped_skills = self.escape_latex(skills_str)
-                skill_lines.append(f"    \\textbf{{{label}:}} {escaped_skills}")
-        
+                escaped = self.escape_latex(", ".join(skills))
+                skill_lines.append(f"    \\textbf{{{label}:}} {escaped}")
+        # Any unknown keys get rendered under their own label so content isn't lost
+        for key, skills in normalized.items():
+            if key in labels or not skills:
+                continue
+            label = key.replace("_", " ").title()
+            escaped = self.escape_latex(", ".join(skills))
+            skill_lines.append(f"    \\textbf{{{label}:}} {escaped}")
+
+        if not skill_lines:
+            return ""
+
+        latex = r"\section{Technical Skills}" + "\n"
+        latex += r"\begin{itemize}[leftmargin=0.15in, label={}]" + "\n"
+        latex += r"  \small{\item{" + "\n"
         latex += " \\\\\n".join(skill_lines)
         latex += "\n  }}\n"
         latex += r"\end{itemize}" + "\n\n"
-        
         return latex
     
     def generate_certifications_section(self, certifications_list: list) -> str:
@@ -339,7 +376,7 @@ class LaTeXResumeGenerator:
             latex += f"  \\resumeSubheading{{{organization}}}{{{date_range}}}\n"
             latex += f"    {{{role}}}{{{location}}}\n"
             
-            achievements = activity.get('achievements', [])
+            achievements = self._as_list(activity.get('achievements'))
             if achievements:
                 latex += r"    \resumeItemListStart" + "\n"
                 for achievement in achievements:
