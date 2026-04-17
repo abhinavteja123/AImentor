@@ -96,6 +96,14 @@ export const profileApi = {
         const response = await api.post('/api/v1/profile/onboarding', data)
         return response.data
     },
+    parseResume: async (file: File): Promise<{ suggestions: Record<string, any>; extracted_field_count: number; text_length: number }> => {
+        const form = new FormData()
+        form.append('file', file)
+        const response = await api.post('/api/v1/profile/parse-resume', form, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        })
+        return response.data
+    },
 }
 
 // Skills API

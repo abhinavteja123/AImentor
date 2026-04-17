@@ -40,3 +40,5 @@ redis_data/
 htmlcov/
 coverage/
 .vercel
+# Added by code-review-graph
+.code-review-graph/

@@ -1,13 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
     User, Mail, Calendar, Clock, BookOpen, Target, Github,
     Linkedin, Globe, Edit2, Save, X, Loader2, ArrowLeft,
     Phone, MapPin, GraduationCap, Briefcase, Code, Award, Users,
-    Plus, Trash2, ChevronDown, ChevronUp, Settings
+    Plus, Trash2, ChevronDown, ChevronUp, Settings, Upload
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -32,6 +32,17 @@ const learningStyles = [
 
 type ActiveSection = 'profile' | 'contact' | 'education' | 'experience' | 'projects' | 'certifications' | 'extracurricular' | 'skills'
 
+// Defensive coerce: old rows may have strings where arrays are expected.
+// Backend sanitizer now normalizes on write, but legacy rows still need this.
+const toStringArray = (val: unknown): string[] => {
+    if (Array.isArray(val)) return val.map(v => String(v).trim()).filter(Boolean)
+    if (typeof val === 'string') {
+        const parts = val.includes('\n') ? val.split('\n') : val.split(',')
+        return parts.map(p => p.trim().replace(/^[-•*\s]+/, '')).filter(Boolean)
+    }
+    return []
+}
+
 export default function ProfilePage() {
     const router = useRouter()
     const { user, isAuthenticated, checkAuth } = useAuthStore()
@@ -42,6 +53,8 @@ export default function ProfilePage() {
     const [editData, setEditData] = useState<any>({})
     const [activeSection, setActiveSection] = useState<ActiveSection>('profile')
     const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['account', 'profile']))
+    const [isParsingResume, setIsParsingResume] = useState(false)
+    const fileInputRef = useRef<HTMLInputElement | null>(null)
 
     useEffect(() => {
         checkAuth()
@@ -114,6 +127,56 @@ export default function ProfilePage() {
     const handleCancel = () => {
         setIsEditing(false)
         initializeEditData(profile)
+    }
+
+    const handleResumeUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0]
+        if (!file) return
+        if (file.type !== 'application/pdf') {
+            toast.error('Please upload a PDF file.')
+            return
+        }
+
+        setIsParsingResume(true)
+        const toastId = toast.loading('Reading your resume…')
+        try {
+            const result = await profileApi.parseResume(file)
+            const suggestions = result.suggestions || {}
+            const fieldCount = Object.keys(suggestions).length
+
+            if (fieldCount === 0) {
+                toast.error('Could not extract profile details from this resume.', { id: toastId })
+                return
+            }
+
+            // Merge into editData — only overwrite empty fields, leave user edits intact.
+            setEditData((prev: any) => {
+                const next = { ...prev }
+                for (const [key, val] of Object.entries(suggestions)) {
+                    const current = next[key]
+                    const isEmpty =
+                        current === undefined ||
+                        current === null ||
+                        current === '' ||
+                        (Array.isArray(current) && current.length === 0)
+                    if (isEmpty) next[key] = val
+                }
+                return next
+            })
+            setIsEditing(true)
+            toast.success(
+                `Autofilled ${fieldCount} field${fieldCount === 1 ? '' : 's'} — review and save.`,
+                { id: toastId }
+            )
+        } catch (error: any) {
+            const detail = error.response?.data?.detail
+            toast.error(typeof detail === 'string' ? detail : 'Could not parse resume.', {
+                id: toastId,
+            })
+        } finally {
+            setIsParsingResume(false)
+            if (fileInputRef.current) fileInputRef.current.value = ''
+        }
     }
 
     const handleSave = async () => {
@@ -260,10 +323,36 @@ export default function ProfilePage() {
                         <p className="text-muted-foreground">Manage your account, preferences, and resume data</p>
                     </div>
                     {!isEditing ? (
-                        <Button onClick={handleEdit}>
-                            <Edit2 className="h-4 w-4 mr-2" />
-                            Edit Profile
-                        </Button>
+                        <div className="flex gap-2">
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="application/pdf"
+                                className="hidden"
+                                onChange={handleResumeUpload}
+                            />
+                            <Button
+                                variant="outline"
+                                onClick={() => fileInputRef.current?.click()}
+                                disabled={isParsingResume}
+                            >
+                                {isParsingResume ? (
+                                    <>
+                                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                        Reading…
+                                    </>
+                                ) : (
+                                    <>
+                                        <Upload className="h-4 w-4 mr-2" />
+                                        Upload Resume
+                                    </>
+                                )}
+                            </Button>
+                            <Button onClick={handleEdit}>
+                                <Edit2 className="h-4 w-4 mr-2" />
+                                Edit Profile
+                            </Button>
+                        </div>
                     ) : (
                         <div className="flex gap-2">
                             <Button variant="outline" onClick={handleCancel} disabled={isSaving}>
@@ -835,7 +924,7 @@ export default function ProfilePage() {
                                                                 />
                                                             ) : (
                                                                 <ul className="mt-1 list-disc list-inside text-sm">
-                                                                    {(exp.bullet_points || []).map((bp: string, i: number) => (
+                                                                    {toStringArray(exp.bullet_points).map((bp: string, i: number) => (
                                                                         <li key={i}>{bp}</li>
                                                                     ))}
                                                                 </ul>
@@ -916,7 +1005,11 @@ export default function ProfilePage() {
                                                                     placeholder="React, Node.js, PostgreSQL"
                                                                 />
                                                             ) : (
-                                                                <p className="mt-1">{(proj.technologies || []).join(', ') || '-'}</p>
+                                                                <p className="mt-1">{
+                                                                    Array.isArray(proj.technologies)
+                                                                        ? (proj.technologies.join(', ') || '-')
+                                                                        : (proj.technologies || '-')
+                                                                }</p>
                                                             )}
                                                         </div>
                                                         <div className="md:col-span-2">
@@ -981,7 +1074,7 @@ export default function ProfilePage() {
                                                                 />
                                                             ) : (
                                                                 <ul className="mt-1 list-disc list-inside text-sm">
-                                                                    {(proj.highlights || []).map((h: string, i: number) => (
+                                                                    {toStringArray(proj.highlights).map((h: string, i: number) => (
                                                                         <li key={i}>{h}</li>
                                                                     ))}
                                                                 </ul>
@@ -1188,7 +1281,7 @@ export default function ProfilePage() {
                                                                 />
                                                             ) : (
                                                                 <ul className="mt-1 list-disc list-inside text-sm">
-                                                                    {(act.achievements || []).map((a: string, i: number) => (
+                                                                    {toStringArray(act.achievements).map((a: string, i: number) => (
                                                                         <li key={i}>{a}</li>
                                                                     ))}
                                                                 </ul>
@@ -1244,15 +1337,15 @@ export default function ProfilePage() {
                                                     <Label>{category.label}</Label>
                                                     {isEditing ? (
                                                         <Input
-                                                            value={(editData.technical_skills_data?.[category.key] || []).join(', ')}
+                                                            value={toStringArray(editData.technical_skills_data?.[category.key]).join(', ')}
                                                             onChange={(e) => updateSkillCategory(category.key, e.target.value)}
                                                             placeholder={category.placeholder}
                                                             className="mt-1"
                                                         />
                                                     ) : (
                                                         <div className="mt-2 flex flex-wrap gap-2">
-                                                            {(profile.technical_skills_data?.[category.key] || []).length > 0 ? (
-                                                                (profile.technical_skills_data?.[category.key] || []).map((skill: string, i: number) => (
+                                                            {toStringArray(profile.technical_skills_data?.[category.key]).length > 0 ? (
+                                                                toStringArray(profile.technical_skills_data?.[category.key]).map((skill: string, i: number) => (
                                                                     <span key={i} className="px-2 py-1 bg-primary/10 text-primary rounded text-sm">{skill}</span>
                                                                 ))
                                                             ) : (

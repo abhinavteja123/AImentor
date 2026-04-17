@@ -10,7 +10,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .config import settings
 from .database.postgres import init_db, close_db
-from .database.mongodb import init_mongodb, close_mongodb
 from .database.redis_client import init_redis, close_redis
 
 # Import API routers
@@ -38,13 +37,6 @@ async def lifespan(app: FastAPI):
         logger.error(f"❌ PostgreSQL connection failed: {e}")
         raise  # PostgreSQL is critical, so raise
     
-    # MongoDB is optional (for chat features)
-    try:
-        await init_mongodb()
-        logger.info("✅ MongoDB connected")
-    except Exception as e:
-        logger.warning(f"⚠️  MongoDB connection failed (non-critical): {str(e)[:100]}")
-    
     # Redis is optional (for caching)
     try:
         await init_redis()
@@ -62,12 +54,7 @@ async def lifespan(app: FastAPI):
         await close_db()
     except Exception as e:
         logger.error(f"Error closing PostgreSQL: {e}")
-    
-    try:
-        await close_mongodb()
-    except Exception as e:
-        logger.warning(f"Error closing MongoDB: {e}")
-    
+
     try:
         await close_redis()
     except Exception as e:

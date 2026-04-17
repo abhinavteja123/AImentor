@@ -714,53 +714,70 @@ Return ONLY the summary text, no explanations or labels."""
         user_skills = result.scalars().all()
         
         missing_sections = []
-        
+
+        # The profile carries the authoritative user data (autofilled from resume
+        # upload or entered manually). The Resume row is just a rendered view
+        # generated from it — so the validator must fall through to profile data
+        # before declaring a section "missing", otherwise new users see the form
+        # even when their profile already has everything.
+        profile = user.profile
+        resume = await self.get_current_resume(user_id)
+
+        def _has(profile_field, resume_field=None):
+            pv = getattr(profile, profile_field, None)
+            if pv:
+                return True
+            if resume_field is not None and resume is not None:
+                rv = getattr(resume, resume_field, None)
+                if rv:
+                    return True
+            return False
+
         # Check Education
-        if not user.profile.current_education:
+        if not (profile.current_education or _has("education_data")):
             missing_sections.append(MissingSection(
                 section_name="education",
                 is_required=True,
                 prompt="Please provide your education details including institution name, degree, field of study, CGPA/percentage, and years attended.",
                 fields=["institution", "degree", "field_of_study", "start_year", "end_year", "cgpa", "location"]
             ))
-        
+
         # Check Experience/Internships
-        resume = await self.get_current_resume(user_id)
-        if not resume or not resume.experience_section or len(resume.experience_section) == 0:
+        if not _has("experience_data", "experience_section"):
             missing_sections.append(MissingSection(
                 section_name="experience",
                 is_required=False,
                 prompt="Add your work experience or internships including company name, role, location, dates, and key achievements (bullet points).",
                 fields=["company", "role", "location", "start_date", "end_date", "bullet_points", "company_url"]
             ))
-        
+
         # Check Projects
-        if not resume or not resume.projects_section or len(resume.projects_section) == 0:
+        if not _has("projects_data", "projects_section"):
             missing_sections.append(MissingSection(
                 section_name="projects",
                 is_required=True,
                 prompt="Add your projects including project name, description, technologies used, dates, and key highlights/achievements (bullet points).",
                 fields=["title", "description", "technologies", "start_date", "end_date", "highlights", "github_url", "demo_url"]
             ))
-        
+
         # Check Technical Skills
-        if not resume or not resume.technical_skills_section:
+        if not _has("technical_skills_data", "technical_skills_section"):
             missing_sections.append(MissingSection(
                 section_name="technical_skills",
                 is_required=True,
                 prompt="List your technical skills grouped by: Languages (Python, Java, etc.), Frameworks & Tools (React, Docker, etc.), Databases, Cloud Platforms, and Other.",
                 fields=["languages", "frameworks_and_tools", "databases", "cloud_platforms", "other"]
             ))
-        
+
         # Check Certifications
-        if not resume or not resume.certifications_section or len(resume.certifications_section) == 0:
+        if not _has("certifications_data", "certifications_section"):
             missing_sections.append(MissingSection(
                 section_name="certifications",
                 is_required=False,
                 prompt="Add your certifications including name, issuer, date obtained, and credential URL if available.",
                 fields=["name", "issuer", "date_obtained", "credential_url"]
             ))
-        
+
         # Check Contact Information
         if not user.email:
             missing_sections.append(MissingSection(
@@ -769,9 +786,9 @@ Return ONLY the summary text, no explanations or labels."""
                 prompt="Provide your contact information: email, phone number, location, and professional links (LinkedIn, GitHub, Portfolio).",
                 fields=["email", "phone", "location", "linkedin_url", "github_url", "portfolio_url", "website"]
             ))
-        
+
         # Check Extracurricular Activities
-        if not resume or not resume.extracurricular_section or len(resume.extracurricular_section) == 0:
+        if not _has("extracurricular_data", "extracurricular_section"):
             missing_sections.append(MissingSection(
                 section_name="extracurricular",
                 is_required=False,

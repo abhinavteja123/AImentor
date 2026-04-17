@@ -260,6 +260,15 @@ Create `.env.local` file in the `frontend` directory:
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
+Local (no Docker) path:
+  # backend  (from repo root)
+  cd backend && venv/Scripts/python.exe -m uvicorn app.main:app --reload --port 8000
+
+  # frontend  (separate terminal)
+  cd frontend && npm run dev
+
+  Frontend on http://localhost:3000, backend on http://localhost:8000.
+  
 
 ### 3. Start all services with Docker
 

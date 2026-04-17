@@ -13,6 +13,7 @@ from sqlalchemy.orm import selectinload
 
 from ...models.roadmap import Roadmap, RoadmapTask
 from ...models.profile import UserProfile
+from .curriculum_provider import get_curriculum_provider
 from .llm_client import get_llm_client
 from .skill_analyzer import SkillAnalyzer
 
@@ -21,11 +22,15 @@ logger = logging.getLogger(__name__)
 
 class RoadmapGenerator:
     """AI-powered learning roadmap generator."""
-    
+
     def __init__(self, db: AsyncSession):
         self.db = db
         self.llm = get_llm_client()
         self.skill_analyzer = SkillAnalyzer(db)
+        self.curriculum_provider = get_curriculum_provider(
+            hardcoded_fn=self._get_skill_curriculum,
+            llm_client=self.llm,
+        )
     
     async def generate_roadmap(
         self,
@@ -442,12 +447,85 @@ Generate {num_weeks} weeks with 7 days each. Make every task SPECIFIC and ACTION
                 logger.info(f"Successfully generated {len(result['weeks'])} weeks for {phase['phase_name']}")
                 return result
             else:
-                logger.warning(f"AI response missing weeks for {phase['phase_name']}, using defaults")
-                return self._generate_default_phase_weeks(target_role, phase, daily_minutes)
-                
+                logger.warning(f"AI response missing weeks for {phase['phase_name']}, trying per-skill LLM fallback")
+                return await self._llm_fallback_phase_weeks(target_role, phase, daily_minutes)
+
         except Exception as e:
             logger.error(f"Error generating phase {phase['phase_name']}: {str(e)}")
+            return await self._llm_fallback_phase_weeks(target_role, phase, daily_minutes)
+
+    async def _llm_fallback_phase_weeks(
+        self,
+        target_role: str,
+        phase: Dict[str, Any],
+        daily_minutes: int,
+    ) -> Dict[str, Any]:
+        """
+        AI-first fallback. Routes through the curriculum provider seam so the
+        secondary path is LLM-generated (simpler per-skill prompt) instead of
+        the legacy hardcoded curriculum. Drops to the hardcoded weekly
+        curriculum only if the provider cannot produce any weeks.
+        """
+        start_week = phase["start_week"]
+        end_week = phase["end_week"]
+        phase_skills = phase.get("skills") or [target_role]
+
+        weeks: List[Dict[str, Any]] = []
+        week_cursor = start_week
+
+        for skill in phase_skills:
+            if week_cursor > end_week:
+                break
+            try:
+                skill_weeks = await self.curriculum_provider.get_skill_curriculum(skill)
+            except Exception as exc:
+                logger.warning("Curriculum provider failed for skill %r: %s", skill, exc)
+                continue
+            for src_week in skill_weeks or []:
+                if week_cursor > end_week:
+                    break
+                topic = src_week.get("week_topic", skill)
+                days = []
+                for task_info in src_week.get("tasks", []):
+                    days.append({
+                        "day_number": task_info.get("day", len(days) + 1),
+                        "tasks": [{
+                            "title": task_info.get("title", "Learning task"),
+                            "description": task_info.get("desc", ""),
+                            "task_type": task_info.get("type", "reading"),
+                            "estimated_duration": daily_minutes,
+                            "difficulty": phase["phase_number"] + 1,
+                            "learning_objectives": [f"Complete: {task_info.get('title', '')}"],
+                            "success_criteria": "Task completed successfully",
+                            "prerequisites": [],
+                            "resources": self._get_resources_for_topic(topic),
+                        }],
+                    })
+                weeks.append({
+                    "week_number": week_cursor,
+                    "focus_area": f"Week {week_cursor}: {topic}",
+                    "learning_objectives": [topic],
+                    "days": days,
+                })
+                week_cursor += 1
+
+        if not weeks:
             return self._generate_default_phase_weeks(target_role, phase, daily_minutes)
+
+        while week_cursor <= end_week:
+            weeks.append(self._generate_generic_week(target_role, week_cursor, phase, daily_minutes))
+            week_cursor += 1
+
+        return {
+            "weeks": weeks,
+            "milestones": [{
+                "week_number": end_week,
+                "title": f"{phase['phase_name']} Complete",
+                "description": f"Completed weeks {start_week}-{end_week}",
+                "skills_demonstrated": phase_skills,
+                "deliverable": "Working projects pushed to GitHub",
+            }],
+        }
     
     def _get_detailed_topics_for_skill(self, skills: List[str], target_role: str) -> str:
         """Get detailed topic breakdown for skills."""

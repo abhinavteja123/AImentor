@@ -26,9 +26,17 @@ class Settings(BaseSettings):
         # Filter out empty strings
         return [origin for origin in origins if origin]
     
-    # Google Gemini API
+    # LLM providers — primary + fallback chain
+    LLM_PROVIDER: str = "groq"  # groq | cerebras | gemini
+    GROQ_API_KEY: str = ""
+    GROQ_MODEL: str = "llama-3.3-70b-versatile"
+    CEREBRAS_API_KEY: str = ""
+    CEREBRAS_MODEL: str = "llama3.1-8b"
     GOOGLE_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-2.0-flash-exp"
+    GEMINI_MODEL: str = "gemini-2.0-flash"
+
+    # Feature flags
+    USE_LLM_CURRICULUM: bool = True  # When True, roadmap curriculum is LLM-generated with hardcoded fallback
     
     # PostgreSQL Database
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/aimentor"

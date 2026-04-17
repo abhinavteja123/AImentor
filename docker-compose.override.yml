@@ -1,8 +1,6 @@
 # docker-compose.override.yml
 # Development overrides - auto-loaded with docker-compose.yml
 
-version: '3.8'
-
 services:
   backend:
     # Enable hot reload for development

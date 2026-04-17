@@ -9,23 +9,30 @@ pydantic-settings==2.1.0
 email-validator==2.1.0
 
 # Database
-sqlalchemy==2.0.25
-asyncpg==0.29.0
-alembic==1.13.1
-pymongo==4.6.1
-motor==3.3.2
-redis==5.0.1
+sqlalchemy>=2.0.25
+asyncpg>=0.30.0
+alembic>=1.13.1
+redis>=5.0.1
 
 # Authentication
-python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
-bcrypt==4.1.2
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+bcrypt>=4.1.2,<4.3
 
-# AI/ML - Google Gemini
-google-generativeai==0.8.3
-httpx==0.26.0
+# LLM providers — primary (Groq) + fallbacks (Cerebras, Gemini)
+# Groq + Cerebras speak the OpenAI REST shape; we call them via httpx directly.
+httpx>=0.26.0
+google-generativeai>=0.8.3
+
+# Test-only (optional for prod, required for CI)
+pytest>=9.0
+pytest-asyncio>=1.3
+aiosqlite>=0.22
 
 # Utils
 python-dotenv==1.0.0
 aiofiles==23.2.1
 tenacity==8.2.3
+
+# Resume/PDF parsing
+pypdf>=5.0

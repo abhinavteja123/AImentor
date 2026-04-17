@@ -2,7 +2,7 @@
 Profile API Endpoints
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ...database.postgres import get_db
@@ -13,10 +13,14 @@ from ...schemas.profile import (
     OnboardingData
 )
 from ...services.profile_service import ProfileService
+from ...services.resume_parser import extract_text_from_pdf, parse_profile_from_text
 from ...utils.security import get_current_user
 from ...models.user import User
 
 router = APIRouter()
+
+# Cap the upload size — we only need to read the first ~15k chars of text anyway
+MAX_RESUME_BYTES = 5 * 1024 * 1024  # 5 MB
 
 
 @router.post("/onboarding", response_model=ProfileResponse)
@@ -71,6 +75,46 @@ async def update_profile(
     profile_service = ProfileService(db)
     profile = await profile_service.update_profile(current_user.id, updates)
     return profile
+
+
+@router.post("/parse-resume")
+async def parse_resume(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Stateless resume parser. Accepts a PDF upload, returns a JSON suggestion
+    payload the frontend can show for user review. Does NOT write to the
+    database — the user saves via the existing PUT /profile/update endpoint.
+    """
+    if file.content_type not in {"application/pdf", "application/octet-stream"}:
+        raise HTTPException(
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            detail="Only PDF uploads are supported.",
+        )
+
+    data = await file.read()
+    if not data:
+        raise HTTPException(status_code=400, detail="Empty file.")
+    if len(data) > MAX_RESUME_BYTES:
+        raise HTTPException(status_code=413, detail="Resume is larger than 5 MB.")
+
+    text = extract_text_from_pdf(data)
+    if not text:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                "Could not extract text from this PDF (it may be a scanned image). "
+                "Please paste your resume content manually, or upload a text-based PDF."
+            ),
+        )
+
+    suggestions = await parse_profile_from_text(text)
+    return {
+        "suggestions": suggestions,
+        "extracted_field_count": len(suggestions),
+        "text_length": len(text),
+    }
 
 
 @router.post("/skills")

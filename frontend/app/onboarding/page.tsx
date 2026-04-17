@@ -199,6 +199,34 @@ export default function OnboardingPage() {
                                                 }}
                                             />
                                         </div>
+                                        {data.goalRole.trim().length > 0 && (
+                                            <button
+                                                type="button"
+                                                disabled={isSubmitting}
+                                                onClick={async () => {
+                                                    setIsSubmitting(true)
+                                                    try {
+                                                        await profileApi.completeOnboarding({
+                                                            goal_role: data.goalRole.trim(),
+                                                            experience_level: 'beginner',
+                                                            time_per_day: 30,
+                                                            preferred_learning_style: 'mixed',
+                                                            current_skills: [],
+                                                        })
+                                                        toast.success('Set up — you can refine this later in your profile.')
+                                                        reset()
+                                                        router.push('/dashboard')
+                                                    } catch (error: any) {
+                                                        toast.error(error.response?.data?.detail || 'Could not save. Try again.')
+                                                    } finally {
+                                                        setIsSubmitting(false)
+                                                    }
+                                                }}
+                                                className="w-full text-sm text-muted-foreground hover:text-primary underline underline-offset-4 disabled:opacity-50"
+                                            >
+                                                Skip the rest — I&apos;ll fill in the details later
+                                            </button>
+                                        )}
                                     </div>
                                 )}
 

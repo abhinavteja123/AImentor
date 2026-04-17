@@ -9,10 +9,11 @@ from .skill import SkillMaster, UserSkill, RoleTemplate
 from .roadmap import Roadmap, RoadmapTask
 from .progress import ProgressLog, Achievement, UserStreak
 from .resume import Resume
+from .chat_session import ChatSession
 
 __all__ = [
     "User",
-    "UserProfile", 
+    "UserProfile",
     "SkillMaster",
     "UserSkill",
     "RoleTemplate",
@@ -21,5 +22,6 @@ __all__ = [
     "ProgressLog",
     "Achievement",
     "UserStreak",
-    "Resume"
+    "Resume",
+    "ChatSession",
 ]
