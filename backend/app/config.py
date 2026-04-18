@@ -41,10 +41,6 @@ class Settings(BaseSettings):
     # PostgreSQL Database
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/aimentor"
     
-    # MongoDB
-    MONGODB_URL: str = "mongodb://localhost:27017"
-    MONGODB_DB: str = "aimentor"
-    
     # Redis
     REDIS_URL: str = "redis://localhost:6379"
     
@@ -53,9 +49,6 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440  # 24 hours
     REFRESH_TOKEN_EXPIRE_DAYS: int = 30
-    
-    # ChromaDB
-    CHROMA_PERSIST_DIRECTORY: str = "./chroma_db"
     
     class Config:
         env_file = ".env"
