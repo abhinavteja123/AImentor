@@ -13,6 +13,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688.svg)](https://fastapi.tiangolo.com)
 [![License](https://img.shields.io/badge/license-MIT-yellow.svg)](#license)
 
+
 ---
 
 ## Table of contents
