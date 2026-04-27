@@ -109,3 +109,10 @@ backend/research/paper/*.pdf
 # Code-review-graph (local index)
 # =====================================================================
 .code-review-graph/
+
+# =====================================================================
+# IDE / editor config dirs (local-only, must never be pushed)
+# =====================================================================
+.claude/
+.cursor/
+.kiro/
