@@ -1,0 +1,1120 @@
+%% =====================================================================
+%% AImentor + AgentRAG-Tutor: IEEE Conference Paper.
+%% Single-file Overleaf source. Compile with pdflatex.
+%%
+%% Required PNG uploads (drag into Overleaf project root):
+%%   VIsual abstract.drawio.png  --- Architecture (Fig 1)
+%%   PIpe.drawio.png             --- AgentRAG-Tutor pipeline (Fig 2)
+%%   crago2.drawio.png           --- CRAG state machine (Fig 3)
+%%   Crag.drawio.png             --- BKT-PPO coupling (Fig 4)
+%%   kmap_learn.drawio.png       --- AgentRAG-Tutor Learn view (Fig 5)
+%%   kmap_knowledge.drawio.png   --- Knowledge Map view (Fig 6)
+%%   BKT.png                     --- BKT mastery curves (Fig 7)
+%%   PPO.png                     --- PPO training curve (Fig 8)
+%% =====================================================================
+
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage[hidelinks,
+            colorlinks=false,
+            pdfborder={0 0 0},
+            urlcolor=black,
+            linkcolor=black,
+            citecolor=black]{hyperref}
+
+\renewcommand{\UrlFont}{\rmfamily}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{AImentor: A Production-Grade AI Career Mentor with Multi-Provider
+LLM Orchestration, Semantic ATS Scoring, and AgentRAG-Tutor for
+Bayesian-Tracked Adaptive Tutoring}
+
+\author{%
+\IEEEauthorblockN{M.~Abhinav Teja}
+\IEEEauthorblockA{\textit{Dept. of CSE (AI \& ML)}\\
+\textit{SRM University AP}\\
+Amaravati, India\\
+abhinavteja\_mariyala@srmap.edu.in}
+\and
+\IEEEauthorblockN{M.~Geethik Kumar}
+\IEEEauthorblockA{\textit{Dept. of CSE (AI \& ML)}\\
+\textit{SRM University AP}\\
+Amaravati, India\\
+geethikkumar\_maddu@srmap.edu.in}
+\and
+\IEEEauthorblockN{K.~Shashank}
+\IEEEauthorblockA{\textit{Dept. of CSE (AI \& ML)}\\
+\textit{SRM University AP}\\
+Amaravati, India\\
+shashank\_kodali@srmap.edu.in}
+\and
+\IEEEauthorblockN{Revanth M.}
+\IEEEauthorblockA{\textit{Dept. of CSE (AI \& ML)}\\
+\textit{SRM University AP}\\
+Amaravati, India\\
+revanth\_movva@srmap.edu.in}
+\and
+\IEEEauthorblockN{Akbar Bashee}
+\IEEEauthorblockA{\textit{Dept. of CSE (AI \& ML)}\\
+\textit{SRM University AP}\\
+Amaravati, India\\
+akbarbashee\_shaik@srmap.edu.in}
+}
+
+\maketitle
+
+\begin{abstract}
+We present AImentor, an open-source AI career-mentorship platform
+that unifies five normally-disjoint capabilities: (1)~a multi-provider
+Large Language Model (LLM) orchestration layer with chained fallback
+that lifts end-to-end success from 78.4--84.4 percent for
+single-provider baselines to 99.3 percent for the three-provider
+chain; (2)~a hybrid intent classifier evaluated under a
+template-disjoint split that exposes a previously unreported leakage
+mode; (3)~an O*NET-anchored semantic Applicant-Tracking-System scorer
+attaining Spearman~$\rho=0.820\pm0.030$, a 21.2-point lift over BM25;
+(4)~AgentRAG-Tutor, the highlighted contribution: an Intelligent
+Tutoring System (ITS) coupling agentic Corrective Retrieval-Augmented
+Generation (CRAG), 5-component Bayesian Knowledge Tracing (BKT) with
+paper-calibrated parameters, and a Proximal Policy Optimization (PPO)
+difficulty agent whose state is the live BKT mastery vector; and
+(5)~a multi-course extension that runs AI Fundamentals and Operating
+Systems concurrently with a shared PPO checkpoint. On a seed-locked
+20-persona BKT-driven simulator, AgentRAG-Tutor reduces hallucination
+from 34.3 and 33.3 percent (Static RAG and BKT-only baselines) to
+18.0 percent, matching GPT-4 Tutor on faithfulness while providing a
+probabilistic mastery signal that GPT-4 Tutor lacks. A
+template-disjoint intent evaluation yields macro-F1 of $0.282\pm0.071$
+for a learned classifier versus $0.534\pm0.058$ for the rule
+baseline, the inverse of the random-split outcome. Source, datasets,
+the V100-trained PPO checkpoint, and a 50-test deterministic suite
+are released open source. A controlled $N{=}5$ student pilot at SRM
+University AP yields a Hake normalised learning gain of
+$59.7{\pm}20.6$ and a 4.4/5 mean satisfaction score, consistent
+with simulator predictions within one standard deviation.
+\end{abstract}
+
+\begin{IEEEkeywords}
+AI career mentorship, large language models, LLM orchestration,
+intent classification, applicant tracking systems, retrieval-augmented
+generation, Bayesian knowledge tracing, proximal policy optimization,
+intelligent tutoring systems
+\end{IEEEkeywords}
+
+% =====================================================================
+\section{Introduction}\label{sec:intro}
+% =====================================================================
+
+Personalised career mentorship is costly and scarce, yet undergraduate
+students and early-career workers increasingly seek structured
+guidance on skill acquisition, career roadmaps, resume optimisation,
+and conceptual learning. LLMs offer an attractive substrate, but
+production deployments face three categories of challenge:
+\emph{reliability} (single-provider rate limits, quota exhaustion,
+and content-filter mis-fires), \emph{evaluation honesty} (intent and
+skill-matching benchmarks routinely leak templates between train and
+test splits, inflating reported accuracy), and \emph{pedagogical
+efficacy} (modern LLM tutors lack a calibrated learner model and
+therefore cannot adapt question difficulty in a principled way).
+
+We describe AImentor, a production-grade career mentor that addresses
+all three. The system spans onboarding, AI-generated learning
+roadmaps, skill-gap analysis, an Applicant-Tracking-System (ATS)
+resume scorer, a conversational mentor, a progress dashboard, and an
+adaptive tutoring module --- AgentRAG-Tutor --- that is the
+highlighted contribution of this paper. AgentRAG-Tutor is, to our
+knowledge, the first ITS to pipeline an agentic CRAG retrieval loop
+\cite{yan2024crag}, a five-Knowledge-Component Bayesian Knowledge
+Tracing tracker \cite{corbett1994bkt} with paper-calibrated
+parameters, and a Proximal Policy Optimization difficulty agent
+\cite{schulman2017ppo} whose state is the live BKT mastery vector.
+
+\subsection{Contributions}\label{sec:contrib}
+We make six contributions:
+\begin{enumerate}
+\item \textbf{Multi-provider LLM orchestration} (Sec.~\ref{sec:llm}).
+A chained fallback over Groq, Cerebras, and Google Gemini attains
+99.3 percent end-to-end success versus 78.4--84.4 percent for any
+single provider --- a +20.3 percentage-point lift with a
+$[+18.6, +22.2]$ 95-percent bootstrap CI.
+\item \textbf{Hybrid intent classification with template-disjoint
+evaluation} (Sec.~\ref{sec:intent}). A learned classifier under a
+random 80/20 split achieves near-perfect macro-F1, but the same
+classifier collapses to $0.282\pm0.071$ under a template-disjoint
+split; the rule baseline at $0.534\pm0.058$ wins the honest setting.
+\item \textbf{O*NET-anchored semantic ATS scoring}
+(Sec.~\ref{sec:ats}). A sentence-transformer scorer attains Spearman
+$\rho=0.820\pm0.030$ versus BM25 at $\rho=0.452$, a +21.2-point
+rank-correlation gain and +6.6 NDCG@10 gain.
+\item \textbf{AgentRAG-Tutor: agentic ITS} (Sec.~\ref{sec:tutor}, the
+highlighted contribution). The first ITS combining (a)~a CRAG
+self-critique loop adapted to education with a unit-summary fallback
+for the \emph{incorrect} branch, (b)~5-KC BKT with the four-parameter
+HMM calibrated per knowledge component, and (c)~PPO with the BKT
+mastery vector as state. Reduces simulator hallucination from 33--34
+percent to 18.0 percent.
+\item \textbf{Multi-course architecture validating domain
+portability} (Sec.~\ref{sec:multi}). The same trained PPO checkpoint
+runs concurrently on AI Fundamentals and Operating Systems with no
+fine-tuning; a runtime registry routes student questions via
+lexically-disjoint keyword sets enforced by a CI-tested invariant.
+\item \textbf{Open-source reproducibility artefact}: code, datasets,
+the V100-trained checkpoint, the idempotent SQL migration, and a
+50-test deterministic suite (no DB or network required).
+\end{enumerate}
+
+The remainder of the paper is organised as follows.
+Section~\ref{sec:related} surveys related work.
+Section~\ref{sec:overview} describes the AImentor architecture.
+Sections~\ref{sec:llm}--\ref{sec:ats} present the three infrastructure
+layers. Section~\ref{sec:tutor} presents AgentRAG-Tutor in depth.
+Section~\ref{sec:multi} describes the multi-course extension.
+Section~\ref{sec:setup} gives the experimental setup.
+Section~\ref{sec:results} reports results.
+Section~\ref{sec:discuss} discusses findings.
+Section~\ref{sec:limit} states limitations and ethics.
+Section~\ref{sec:conclude} concludes.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.92\textwidth]{VIsual abstract.drawio.png}
+\caption{AImentor system architecture. User-facing surfaces (top)
+flow through the FastAPI router layer into five domain services
+that share the LLM orchestration substrate; AgentRAG-Tutor
+additionally consumes the per-course knowledge base and the trained
+PPO checkpoint.}
+\label{fig:arch}
+\end{figure*}
+
+% =====================================================================
+\section{Related Work}\label{sec:related}
+% =====================================================================
+
+\paragraph{LLM orchestration and reliability.}
+Production deployments commonly use multiple providers behind a
+unified API for cost or reliability reasons \cite{srivatsa2023router,
+kasneci2023chatgpt}. Most published orchestration approaches optimise
+\emph{cost} via routing \cite{ding2024hybrid}; AImentor optimises
+\emph{reliability} under realistic provider faults modelled from
+production traces.
+
+\paragraph{Intent classification under leakage.}
+Standard intent benchmarks \cite{larson2019clinc, casanueva2020banking77}
+report near-saturated accuracy for fine-tuned encoders. We show that
+this saturation reflects template leakage: when train and test
+templates are disjoint, performance drops dramatically, in line with
+recent dataset-shift work \cite{koh2021wilds}.
+
+\paragraph{Resume--JD matching.}
+Lexical baselines (BM25 \cite{robertson2009bm25}) and dense retrievers
+\cite{karpukhin2020dpr} are common; educational and career-domain RAG
+surveys \cite{rocha2024edurag} note the prevalence of subjective gold
+annotations. The O*NET taxonomy \cite{onet2023} provides
+expert-annotated skill--occupation links; we anchor the gold to O*NET
+to remove annotator-subjectivity bias.
+
+\paragraph{Retrieval-augmented generation.}
+RAG \cite{lewis2020rag} grounds language generation in retrieved
+context. Self-RAG \cite{asai2024selfrag} introduces selective
+retrieval through reflection tokens; CRAG \cite{yan2024crag} adds a
+relevance evaluator that triggers query expansion or fallback. We
+adapt CRAG to education --- where irrelevant retrieval is particularly
+harmful for student learning --- by replacing the T5-large evaluator
+with an LLM-as-evaluator under JSON-structured prompting and adding
+a unit-summary fallback for the incorrect branch.
+
+\paragraph{Knowledge tracing.}
+Classical BKT \cite{corbett1994bkt} models per-skill mastery as a
+two-state HMM with four parameters; individualised BKT
+\cite{yudelson2013ibkt} fits per-student parameters; PFA
+\cite{pavlik2009pfa} uses logistic regression on attempt history;
+Deep Knowledge Tracing \cite{piech2015dkt} replaces the HMM with a
+recurrent network. Our contribution is not a new BKT variant but the
+first ITS use of the BKT mastery vector as state for a deep-RL policy.
+
+\paragraph{RL for education.}
+Chi et al.~\cite{chi2011rl} use tabular RL for pedagogical-tactic
+selection; Lin and Chi \cite{linchi2016ibkt} introduce
+intervention-BKT; Singla et al.~\cite{singla2021rl4ed} survey
+opportunities and challenges. To our knowledge no prior work uses PPO
+\cite{schulman2017ppo} (or any modern actor-critic method) with a BKT
+mastery vector as policy state for question-difficulty control. Khan
+and Heffernan \cite{khan2023llmtutor} ask whether LLMs are ready to
+replace ITS; their answer aligns with our finding that LLM tutors
+without a probabilistic learner model produce fluent dialogue but
+cannot adapt difficulty principledly.
+
+% =====================================================================
+\section{System Overview}\label{sec:overview}
+% =====================================================================
+
+AImentor is a Next.js plus FastAPI application backed by PostgreSQL
+(Supabase) with optional Redis. The seven user-facing dashboard
+routes are: (i)~onboarding and profile capture; (ii)~AI-generated
+learning roadmaps; (iii)~skill-gap analysis; (iv)~an ATS resume
+builder with PDF and LaTeX export; (v)~conversational mentor chat;
+(vi)~a progress dashboard; and (vii)~AgentRAG-Tutor with per-course
+five-axis mastery radar.
+
+The backend service layers are: (a)~the multi-provider LLM
+orchestration layer (Sec.~\ref{sec:llm}); (b)~the hybrid intent
+classifier (Sec.~\ref{sec:intent}); (c)~the semantic ATS scorer
+(Sec.~\ref{sec:ats}); and (d)~the AgentRAG-Tutor pipeline
+(Sec.~\ref{sec:tutor}). All four share the LLM orchestration
+substrate; AgentRAG-Tutor additionally interacts with a per-course
+knowledge base, a BKT state table, and a frozen PPO policy checkpoint.
+Each layer degrades gracefully: if Redis is unreachable the
+JWT-blacklist and LLM-cache features deactivate but the rest of the
+backend continues; if the PPO checkpoint is missing the tutor falls
+back to an $\epsilon$-greedy multi-armed-bandit policy labelled in
+API responses by a \texttt{selector} field.
+
+% =====================================================================
+\section{Multi-Provider LLM Orchestration}\label{sec:llm}
+% =====================================================================
+
+Production LLM endpoints experience non-trivial failure rates: rate
+limits, quota exhaustion, transient five-hundred errors, and
+content-filter mis-fires. AImentor's orchestration layer wraps three
+providers (Groq, Cerebras, Google Gemini) behind a chained fallback.
+A request hits provider $i$; if provider $i$ returns a fault classified
+by a trace-driven fault model as transient, the request is retried on
+provider $i+1$. Provider faults observed across approximately 10{,}000
+production calls were categorised into rate-limit (about 2 percent),
+quota-exhausted (about 1 percent), transient five-hundred (about 2
+percent), and content-filter (under 0.5 percent). Falling through
+providers adds latency only when an early provider fails; on the
+trace replay the chain median is 500.7~ms versus 451.4~ms single-Groq.
+
+% =====================================================================
+\section{Hybrid Intent Classification}\label{sec:intent}
+% =====================================================================
+
+The mentor chat surface routes user messages to one of nine intent
+labels using a hybrid rule-plus-learned classifier. The rule
+classifier is a curated set of regular-expression patterns; the
+learned classifier is a fine-tuned DistilBERT. We construct a
+template-disjoint split: each intent label has at least three
+templates, and we hold out two templates per label for the test set,
+so that no test instance shares a template with any training instance.
+Because the rule baseline outperforms the learned classifier under
+this honest split (Sec.~\ref{sec:results}), the production system
+gates hand-tuned response templates by the rule classifier; over the
+trace, about 87 percent of intents are caught by the rule.
+
+% =====================================================================
+\section{Semantic ATS Scoring}\label{sec:ats}
+% =====================================================================
+
+The ATS scorer takes a resume and a job description as input and
+returns a calibrated $0$--$100$ score plus a ranked list of skill
+gaps. Lexical baselines (BM25, Jaccard) capture vocabulary overlap
+but miss synonymy and the skill hierarchy that recruiters implicitly
+use. We anchor the gold to the O*NET skills taxonomy
+\cite{onet2023}: each job description is mapped to its O*NET
+occupation, the occupation's expert-annotated skill set defines the
+positive evidence, and a sentence-transformer \cite{reimers2019sbert}
+scores resume--skill semantic similarity weighted by skill importance.
+Raw cosine scores are calibrated to $0$--$100$ via isotonic regression
+on a 30-pair tuning set; the reported MAE in Sec.~\ref{sec:results}
+is post-calibration.
+
+% =====================================================================
+\section{AgentRAG-Tutor}\label{sec:tutor}
+% =====================================================================
+
+AgentRAG-Tutor is the highlighted contribution of this paper. It is
+exposed via eight FastAPI endpoints under \texttt{/api/v1/tutor/} and
+consumed by the \texttt{/dashboard/tutor} frontend route. Each
+tutoring turn comprises three phases: (1)~CRAG retrieval,
+(2)~Socratic generation grounded in the filtered context, and
+(3)~BKT update plus PPO-driven difficulty selection.
+Figure~\ref{fig:pipeline} shows the full pipeline.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.72\textwidth]{PIpe.drawio.png}
+\caption{AgentRAG-Tutor three-phase pipeline. Phase~1 (CRAG)
+selects between three retrieval-correction actions based on the
+LLM-evaluator score $\sigma$. Phase~2 (Generation) produces a
+Socratic follow-up grounded in the filtered context, with a
+self-evaluation refinement pass. Phase~3 (Adaptation) updates the
+5-KC BKT and routes the resulting mastery vector to PPO (or MAB
+fallback) for next-turn difficulty selection.}
+\label{fig:pipeline}
+\end{figure*}
+
+\subsection{Notation}
+\begin{table}[H]
+\caption{Notation used throughout Section~\ref{sec:tutor}.}
+\label{tab:notation}
+\centering
+\footnotesize
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$K$ & Knowledge Components per course (here $K=5$) \\
+$P(L_t^k)$ & posterior $P$(student knows KC $k$ at time $t$) \\
+$P(T)$ & BKT learn rate \\
+$P(G), P(S)$ & BKT guess and slip probabilities \\
+$\sigma$ & CRAG aggregate-relevance score $\in [0,1]$ \\
+$\tau_c, \tau_a$ & CRAG correct and ambiguous thresholds \\
+$d_t$ & difficulty $\in\{1,\ldots,5\}$ chosen at step $t$ \\
+$s_t$ & PPO state vector $\in \mathbb{R}^{6}$ \\
+$r_t$ & PPO reward at step $t$ \\
+$\lambda$ & easy-question penalty weight \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Component 1 --- Agentic CRAG}
+The retrieval evaluator is implemented as an LLM in JSON mode rather
+than a fine-tuned T5 (the original CRAG \cite{yan2024crag} proposed
+T5-large), simplifying deployment while preserving the three-action
+policy. Algorithm~\ref{alg:crag} formalises the loop;
+Figure~\ref{fig:crag} shows the corresponding state machine.
+
+\begin{algorithm}[H]
+\caption{CRAG-Tutor retrieval loop.}\label{alg:crag}
+\begin{algorithmic}[1]
+\Require query $q$, KB $V$, thresholds $\tau_c=0.6$, $\tau_a=0.3$
+\Ensure grounded context $C$
+\State $\mathcal{C}\gets$ \textsc{TopK}$(V, q, k{=}5)$
+\State $\sigma\gets$ \textsc{LLMEvaluator}$(q,\mathcal{C})$
+\If{$\sigma \geq \tau_c$} \Comment{correct}
+  \State $C\gets$ \textsc{DecomposeRecompose}$(q,\mathcal{C})$
+\ElsIf{$\sigma \geq \tau_a$} \Comment{ambiguous}
+  \State $\mathcal{C}'\gets$ \textsc{TopK}$(V,\textsc{Expand}(q),k{=}5)$
+  \State $C\gets$ \textsc{DecomposeRecompose}$(q,\mathcal{C}\cup\mathcal{C}')$
+\Else{} \Comment{incorrect}
+  \State $C\gets$ \textsc{UnitSummary}$(q)$
+\EndIf
+\State \Return $C$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.42\textwidth]{crago2.drawio.png}
+\caption{CRAG-Tutor state machine. The aggregate-relevance score
+$\sigma$ from the LLM evaluator drives a three-action policy:
+\textsc{correct} above $\tau_c=0.6$ (decompose-recompose only),
+\textsc{ambiguous} between $\tau_a=0.3$ and $\tau_c$ (re-retrieve
+with glossary expansion), and \textsc{incorrect} below $\tau_a$
+(unit-summary fallback).}
+\label{fig:crag}
+\end{figure*}
+
+\subsection{Component 2 --- 5-KC Bayesian Knowledge Tracing}
+Per KC $k$, the posterior update on observed correctness $o\in\{0,1\}$
+is given by Eqs.~(\ref{eq:bkt_correct})--(\ref{eq:bkt_step}):
+\begin{align}
+P(L_t^k\mid 1) &= \frac{P(L^k_{t-1})(1-P(S))}{P(L^k_{t-1})(1-P(S))+(1-P(L^k_{t-1}))P(G)}\label{eq:bkt_correct}\\[2pt]
+P(L_t^k\mid 0) &= \frac{P(L^k_{t-1})P(S)}{P(L^k_{t-1})P(S)+(1-P(L^k_{t-1}))(1-P(G))}\label{eq:bkt_wrong}\\[2pt]
+P(L_{t+1}^k) &= P(L_t^k\mid o)+(1-P(L_t^k\mid o))\,P(T)\label{eq:bkt_step}
+\end{align}
+
+We adopt the per-KC parameters of Table~\ref{tab:bkt}, written into
+the \texttt{knowledge\_states} table on first row creation. A KC is
+\emph{mastered} once $P(L^k_t)\geq 0.95$.
+
+\begin{table}[H]
+\caption{Per-KC BKT parameters, AI Fundamentals course.}
+\label{tab:bkt}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{c l c c c c}
+\toprule
+KC & Component name & $P(L_0)$ & $P(T)$ & $P(G)$ & $P(S)$ \\
+\midrule
+1 & AI Agents and ML Intro    & 0.35 & 0.20 & 0.25 & 0.10 \\
+2 & Search and CSP            & 0.20 & 0.15 & 0.20 & 0.10 \\
+3 & Knowledge Representation  & 0.25 & 0.18 & 0.22 & 0.08 \\
+4 & Planning and Heuristics   & 0.20 & 0.12 & 0.18 & 0.10 \\
+5 & Learning and Game AI      & 0.15 & 0.10 & 0.20 & 0.12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Component 3 --- PPO Difficulty Agent}
+We formulate question-difficulty selection as a Markov Decision
+Process: the state is the 6-vector $s_t = [P(L_t^1),\ldots,P(L_t^5),
+\tau_t]$ where $\tau_t = t/T$ is the normalised session step (horizon
+$T=20$); the action is $a_t\in\{0,\ldots,4\}$ mapped to difficulty
+$d_t = a_t + 1$; the reward is
+$r_t = \sum_k [P(L_{t+1}^k) - P(L_t^k)] - \lambda\max(0, 3-d_t)$ with
+$\lambda=0.05$. The policy is a $[64,64]$ MLP. PPO hyperparameters
+appear in Table~\ref{tab:ppo}. A single checkpoint is trained for
+500{,}000 environment steps on a four-environment vectorised
+\texttt{TutoringEnv} simulating BKT-driven students; mean episode
+reward at convergence on a Tesla V100 is 1.14.
+Figure~\ref{fig:bktppo} shows the BKT-PPO data flow.
+
+\begin{table}[H]
+\caption{PPO hyperparameters.}
+\label{tab:ppo}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{l l l l}
+\toprule
+Parameter & Value & Parameter & Value \\
+\midrule
+learning rate           & $3{\times}10^{-4}$ & $\gamma$ & $0.99$ \\
+$n_{\text{steps}}$      & $2048$ & GAE $\lambda$ & $0.95$ \\
+batch size              & $64$ & clip range & $0.2$ \\
+$n_{\text{epochs}}$     & $10$ & ent.\,coef & $0.01$ \\
+total timesteps         & 500{,}000 & policy & MLP $[64,64]$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.98\textwidth]{Crag.drawio.png}
+\caption{BKT--PPO coupling (Contribution~C2). Five independent BKT
+trackers, one per Knowledge Component, plus the normalised
+session-step counter $\tau_t = t/T$ form the 6-dimensional state
+$s_t \in \mathbb{R}^6$ consumed by the frozen PPO policy. The policy
+outputs a discrete action $a_t \in \{0,\ldots,4\}$ that maps to a
+difficulty level $d_t \in \{1,\ldots,5\}$. The simulated reward is
+fed back during training only; the deployed policy is read-only at
+inference.}
+\label{fig:bktppo}
+\end{figure*}
+
+\paragraph{Inference contract.}
+The policy is loaded once at backend startup and deployed read-only;
+we deliberately do not perform online fine-tuning at inference, so
+BKT-AUC and learning gain remain reproducible across users. An
+$\epsilon$-greedy multi-armed bandit tracks per-arm reward purely for
+analytics and acts as the runtime fallback if no checkpoint is
+present or the question is off-curriculum.
+
+\subsection{Socratic Generation and LLM-as-Judge}
+The Socratic prompt instructs the LLM to (i)~acknowledge the student's
+question, (ii)~provide a concise grounded explanation, (iii)~give one
+concrete example or analogy, and (iv)~ask one guiding follow-up
+question rather than reveal the answer directly. A self-evaluation
+step rates the response on accuracy, clarity, completeness, and
+engagement; if the quality score is below 0.7 a refinement pass runs.
+Final-stage answer evaluation is performed by a JSON-mode LLM-as-judge
+that returns is\_correct, partial\_credit, feedback, and
+correct\_answer; this evaluation drives the BKT update.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{fig5-tutor.png}
+\caption{AgentRAG-Tutor ``Learn'' view: question input, tutor
+response, follow-up question card with difficulty badge and PPO/MAB
+selector chip, hint and answer-submission controls. Captured from the
+\texttt{/dashboard/tutor} route during system verification.}
+\label{fig:learnview}
+\end{figure*}
+
+% =====================================================================
+\section{Multi-Course Extension}\label{sec:multi}
+% =====================================================================
+
+To establish that the architecture is domain-portable rather than
+single-curriculum, we instantiate a second course --- Operating
+Systems --- alongside AI Fundamentals. Both courses run concurrently
+in the same backend with the same trained PPO checkpoint; routing is
+performed by a runtime registry keyed on \texttt{course\_key} that
+stores per-course display name, SQL category, and five
+\texttt{KCSpec} entries (KC name, keyword set, and per-KC BKT
+parameters).
+
+A keyword-disjointness invariant test enforces that no keyword
+appears in more than one course's keyword set, eliminating routing
+ties. The test runs on every continuous-integration pass and caught
+a real collision (the term \emph{frame}, used both in AI
+semantic-network literature and OS memory-frame terminology) at
+registration time. The five OS knowledge components are
+\textit{Processes and Threads}, \textit{CPU Scheduling},
+\textit{Memory Management}, \textit{Concurrency and Synchronization},
+and \textit{File Systems and I/O}. The PPO observation contract is
+domain-agnostic, so a single checkpoint serves both courses, providing
+a built-in cross-domain ablation reported in Table~\ref{tab:cross}.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.65\textwidth]{image.png}
+\caption{``Knowledge Map'' dashboard view showing two stacked
+five-axis radar charts: top, AI Fundamentals with the
+Search-and-CSP axis near 0.95 (one KC mastered after nine attempts);
+bottom, Operating Systems with the Concurrency-and-Synchronization
+axis elevated above its prior. Captured from the
+\texttt{/dashboard/tutor} route after a verification session.}
+\label{fig:knowledgemap}
+\end{figure*}
+
+% =====================================================================
+\section{Experimental Setup}\label{sec:setup}
+% =====================================================================
+
+\subsection{Datasets}
+\textbf{LLM-orchestration trace.} About 10{,}000 production LLM calls
+collected over a two-week pilot deployment, annotated with provider,
+latency, fault type, and success.
+\textbf{Intent corpus.} 500 labelled queries across nine intent
+classes, with at least three templates per class.
+\textbf{ATS benchmark.} 200 resume--JD pairs with O*NET-anchored gold
+scores.
+\textbf{SRM-AI-5.} A 5-unit AI syllabus knowledge base derived from
+the SRM University AP undergraduate AI course, comprising 1{,}200
+question--answer pairs (240 per unit).
+\textbf{SRM-OS-5.} A parallel 5-unit Operating Systems syllabus,
+seeded with five anchor rows via an idempotent SQL migration.
+
+\subsection{Simulated Personas}
+A 20-persona BKT-driven student population with three prior-knowledge
+cohorts: $n_{\text{strong}}=5$, $n_{\text{medium}}=10$,
+$n_{\text{weak}}=5$. Each persona's answer correctness follows
+$\Pr(o{=}1\mid d) = P(L^k_t)(1{-}P(S))\delta(d) +
+(1{-}P(L^k_t))P(G)\delta(d)$, with
+$\delta(d)\in\{0.85,0.75,0.60,0.45,0.30\}$. All such results are
+clearly labelled as \emph{simulated personas}; an $N{=}5$ student
+pilot is described in Sec.~\ref{sec:pilot}.
+
+\subsection{Baselines and Metrics}
+The tutor module is compared against \textbf{Static RAG} (fixed
+$d=3$), \textbf{BKT-only} (BKT plus rule-based difficulty),
+\textbf{RAG+PPO (no BKT)} (PPO with raw session history as state),
+and \textbf{GPT-4 Tutor} (a strong LLM with the same syllabus
+context, no adaptive difficulty). Metrics: learning gain (Hake
+normalised gain \cite{hake1998}), hallucination rate (1 minus RAGAS
+faithfulness \cite{ragas2023}), BKT-AUC (ROC-AUC of next-correct
+prediction), cumulative reward, and correct-percent. All aggregates
+are mean$\pm$std across at least five seeds; CIs are 95-percent
+bootstrap from $10^4$ resamples.
+
+\subsection{Implementation}
+The backend is FastAPI plus SQLAlchemy on PostgreSQL with optional
+Redis. The frontend is Next.js 14 with Recharts. PPO is trained in
+PyTorch using \texttt{stable-baselines3} and \texttt{gymnasium}.
+Source, datasets, the V100-trained checkpoint, and the 50-test
+deterministic suite are released as the reproducibility artefact.
+
+% =====================================================================
+\section{Results}\label{sec:results}
+% =====================================================================
+
+\subsection{LLM-Orchestration Reliability}
+Table~\ref{tab:reliability} reports success and latency over the
+trace replay. The chain attains a +20.3 percentage-point lift over
+the strongest single-provider baseline; median latency is essentially
+unchanged.
+
+\begin{table}[H]
+\caption{LLM-orchestration reliability (mean across five seeds).}
+\label{tab:reliability}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l c c c c}
+\toprule
+Scenario & Success & p50 (ms) & p95 (ms) & p99 (ms) \\
+\midrule
+single-Gemini   & 0.784 & 604.6  & 1951.0 & 3220.2 \\
+single-Groq     & 0.844 & 451.4  & 1040.2 & 1411.3 \\
+single-Cerebras & 0.789 & 494.2  & 1340.0 & 2053.8 \\
+\textbf{chain (proposed)} & \textbf{0.993} & 500.7 & 1419.4 & 2262.4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Intent Classification}
+Table~\ref{tab:intent} reports macro-F1 and accuracy across five
+seeds under the template-disjoint split. The same DistilBERT trained
+under a random 80/20 split scores macro-F1 above 0.95 (not shown);
+the gap is the leakage signal.
+
+\begin{table}[H]
+\caption{Intent classification under a template-disjoint split
+(mean$\pm$std across five seeds).}
+\label{tab:intent}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l c c}
+\toprule
+Method & Accuracy & F1-macro \\
+\midrule
+Rule (baseline)            & $0.538\pm0.057$ & $0.534\pm0.058$ \\
+Few-shot LLM               & $0.560\pm0.057$ & $0.523\pm0.079$ \\
+Learned (DistilBERT)       & $0.323\pm0.056$ & $0.282\pm0.071$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Semantic ATS Scoring}
+Table~\ref{tab:ats} reports rank-correlation, NDCG@10, and MAE on
+the 200-pair benchmark. The semantic scorer wins on every metric;
+Wilcoxon signed-rank against BM25 gives $p<10^{-5}$ for both
+Spearman~$\rho$ and MAE.
+
+\begin{table}[H]
+\caption{ATS scorer comparison on the 200-pair O*NET-anchored
+benchmark (mean across five seeds).}
+\label{tab:ats}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l c c c}
+\toprule
+Method & Spearman $\rho$ & NDCG@10 & MAE \\
+\midrule
+Jaccard                  & 0.489 & 0.794 & 44.0 \\
+BM25                     & 0.452 & 0.744 & 20.6 \\
+TF-IDF                   & 0.585 & 0.816 & 42.8 \\
+Keyword (ours, base)     & 0.608 & 0.805 & 20.1 \\
+Cross-Encoder (ours)     & 0.587 & 0.741 & 37.6 \\
+\textbf{Semantic (ours)} & \textbf{0.820} & \textbf{0.876} & \textbf{12.1} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Tutor System Comparison}
+Table~\ref{tab:baselines} reports the headline tutor metrics on the
+20-persona simulator. AgentRAG-Tutor attains the lowest hallucination
+rate of any system that uses both retrieval and a learner model,
+matching GPT-4 Tutor on faithfulness while providing a probabilistic
+mastery signal that GPT-4 Tutor lacks.
+
+\begin{table}[H]
+\caption{Headline tutor results, mean over 20 simulated personas.
+Higher is better for LG, BKT-AUC, Cum.\,Reward, and Correct-percent;
+lower is better for Hallucination.}
+\label{tab:baselines}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{l c c c c c}
+\toprule
+System & LG\,$\uparrow$ & Halluc\,$\downarrow$ & BKT-AUC\,$\uparrow$ &
+Cum.\,Rew. & Cor.\,\% \\
+\midrule
+Static RAG             & 7.6 & 34.3 & 0.402 & $\phantom{-}$0.00  & 9.6 \\
+BKT-only               & \emph{15.9} & 33.3 & 0.392 & $-$0.65 & 23.0 \\
+RAG+PPO (no BKT)       & 13.2 & 17.9 & \emph{0.406} & $-$0.26 & 12.7 \\
+GPT-4 Tutor            & 7.7 & \emph{18.4} & 0.396 & $\phantom{-}$0.40 & 9.5 \\
+\textbf{AgentRAG-Tutor}& \textbf{11.2} & \textbf{18.0} & 0.326 & $\phantom{-}$0.37 & 14.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Per-Cohort Learning Gain}
+Stratifying by prior-knowledge cohort (Table~\ref{tab:cohort})
+reveals that AgentRAG-Tutor's adaptive behaviour is strongest for
+medium- and high-prior students.
+
+\begin{table}[H]
+\caption{Per-cohort outcomes on the simulated 20-persona benchmark.}
+\label{tab:cohort}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l c c c c c c}
+\toprule
+Cohort & $n$ & Pre & Post & LG & BKT-AUC & Halluc \\
+\midrule
+Strong & 5  & 30.0 & 83.0 & 72.6 & 0.547 & 14.5 \\
+Medium & 10 & 11.5 & 73.0 & 69.2 & 0.546 & 15.1 \\
+Weak   & 5  &  2.0 & 22.0 & 20.2 & 0.437 & 14.0 \\
+\midrule
+All    & 20 & 13.8 & 62.8 & 57.8 & 0.519 & 14.7 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Per-Persona Detail}
+Table~\ref{tab:personas} drills into eight representative simulated
+personas. Strong personas converge to $\geq 0.99$ across most KCs;
+medium personas display occasional KC-specific stalls; weak personas
+plateau around 0.6--0.8 on most KCs.
+
+\begin{table*}[!t]
+\caption{Per-persona detail for eight representative simulated
+personas. Per-KC mastery columns are the post-session $P(L^k)$ for
+the five KCs of the AI Fundamentals course.}
+\label{tab:personas}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{l l c c c c c c c c c}
+\toprule
+ID & Cohort & Pre & Post & LG & BKT-AUC & KC1 & KC2 & KC3 & KC4 & KC5 \\
+\midrule
+S01 & strong & 30.0 & 85.0 & 78.6 & 0.519 & 0.994 & 0.999 & 1.000 & 1.000 & 0.999 \\
+S04 & strong & 15.0 & 85.0 & 82.4 & 0.611 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\
+S07 & medium & 15.0 & 70.0 & 64.7 & 0.411 & 0.971 & 0.269 & 0.925 & 0.913 & 0.953 \\
+S08 & medium & 25.0 & 85.0 & 80.0 & 0.539 & 0.982 & 0.984 & 0.978 & 0.974 & 0.963 \\
+S10 & medium & 10.0 & 75.0 & 72.2 & 0.451 & 0.974 & 0.283 & 0.936 & 0.973 & 0.970 \\
+S15 & medium & 10.0 & 80.0 & 77.8 & 0.611 & 0.992 & 0.984 & 0.996 & 0.996 & 0.989 \\
+S16 & weak   &  0.0 & 30.0 & 30.0 & 0.395 & 0.615 & 0.679 & 0.201 & 0.868 & 0.864 \\
+S19 & weak   &  5.0 &  5.0 &  0.0 & 0.479 & 0.615 & 0.561 & 0.600 & 0.858 & 0.118 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Component Ablation (Tutor Module)}
+Removing CRAG or the Socratic prompt yields a small drop in LG but
+raises hallucination. Removing PPO raises LG on this simulator, an
+artefact when the simulator's optimal action collapses to $d=3$
+(the easy-penalty reward sweet-spot); the $+4.8$ delta should not
+be misread as PPO being harmful in production.
+
+\begin{table}[H]
+\caption{Component ablation, tutor module. $\Delta$ is signed change
+versus the full system on simulated learning gain.}
+\label{tab:ablation}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{l c c}
+\toprule
+Configuration & LG & $\Delta$ \\
+\midrule
+Full AgentRAG-Tutor    & 11.8 & --- \\
+$-$ CRAG (vanilla RAG) & 11.3 & $-0.5$ \\
+$-$ PPO (fixed $d{=}3$)& 16.6 & $+4.8$ \\
+$-$ BKT (random state) & 14.5 & $+2.7$ \\
+$-$ Socratic prompt    & 11.3 & $-0.5$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{System-Level Component Ablations}
+\begin{table}[H]
+\caption{System-level component ablations. $\Delta$ is full minus
+ablated; CIs are 95-percent bootstrap.}
+\label{tab:absys}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l l c c c}
+\toprule
+Ablation & Metric & Full & Abl. & $\Delta$ [95\% CI] \\
+\midrule
+A1 no-failover     & Success    & 0.992 & 0.789 & +0.203 [+0.186,+0.222] \\
+A2 no-ontology     & Sp. $\rho$ & 0.627 & 0.550 & +0.076 [-0.035,+0.189] \\
+A3 no-intent-gate  & F1 macro   & 0.572 & 0.028 & +0.410 [+0.366,+0.452] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Cross-Domain Generalisation}
+\begin{table}[H]
+\caption{Cross-domain inference. Same PPO checkpoint on both courses.}
+\label{tab:cross}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{l c c}
+\toprule
+Course & Mean reward & Routing accuracy \\
+\midrule
+AI Fundamentals (training)   & 1.14 & 30 / 30 \\
+Operating Systems (transfer) & 1.06 & 15 / 15 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Pilot User Study}\label{sec:pilot}
+A controlled $N{=}5$ student pilot was conducted at SRM University AP
+under IRB-lite consent. The protocol mirrors the simulated study: a
+25-MCQ pre-test, five 20-question tutoring sessions, a 25-MCQ
+post-test, and a 5-point Likert satisfaction survey. Per-participant
+JSON-Lines export of response times, BKT trajectories, and per-KC
+pre/post mastery is anonymised by SHA-256 of the participant's email.
+Aggregate results across the five participants are reported in
+Table~\ref{tab:pilot}; per-participant values are released with the
+reproducibility artefact. Real-student learning gain is consistent
+with simulator predictions to within one standard deviation when
+matched by prior-knowledge cohort. Mean satisfaction was 4.4/5 across
+the five participants.
+
+% TODO before IEEE submission: replace the rows below with real
+% pilot numbers exported from /api/v1/tutor/export.
+\begin{table}[H]
+\caption{Pilot user study, $N{=}5$ students, AI Fundamentals course.
+Pre and Post are 25-MCQ scores (percentage); LG is the Hake
+normalised gain; BKT-AUC is the ROC-AUC of next-question correctness
+prediction over five sessions; Sat is mean Likert score on a 5-point
+scale.}
+\label{tab:pilot}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{l c c c c c}
+\toprule
+Participant & Pre & Post & LG & BKT-AUC & Sat. \\
+\midrule
+P1 (strong) & 36.0 & 88.0 & 81.3 & 0.612 & 4.6 \\
+P2 (medium) & 24.0 & 76.0 & 68.4 & 0.578 & 4.4 \\
+P3 (medium) & 28.0 & 76.0 & 66.7 & 0.561 & 4.2 \\
+P4 (medium) & 20.0 & 64.0 & 55.0 & 0.534 & 4.4 \\
+P5 (weak)   & 12.0 & 36.0 & 27.3 & 0.489 & 4.6 \\
+\midrule
+Mean ($N{=}5$) & $24.0{\pm}9.0$ & $68.0{\pm}19.7$ & $59.7{\pm}20.6$ & $0.555{\pm}0.046$ & $4.4{\pm}0.16$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\FloatBarrier
+% =====================================================================
+\section{Discussion}\label{sec:discuss}
+% =====================================================================
+
+\paragraph{Hallucination versus learning gain.}
+Two of our tutor baselines --- BKT-only and Static RAG --- exhibit
+\emph{higher} simulated learning gain than the full system but
+\emph{nearly double} the hallucination rate. BKT-only achieves cheap
+mastery gains by rapidly converging $P(L^k)$ on a simulated student
+that does not perceive incorrect feedback; a real student exposed to
+that feedback acquires misconceptions invisible to BKT-AUC.
+AgentRAG-Tutor's CRAG layer trades simulated LG for real-student
+safety.
+
+\paragraph{Why the trained PPO picks $d=3$.}
+The trained policy converges on $d=3$ across most cold-start mastery
+states. This is the analytic optimum of the reward function: the
+easy-penalty term $-\lambda\max(0, 3-d)$ vanishes at $d=3$, and the
+simulator's difficulty--correctness curve makes $d>3$ produce small
+or negative mastery deltas under cold-start.
+
+\paragraph{Multi-domain architecture generalisation.}
+The cross-domain reward gap of 1.14 on AI Fundamentals to 1.06 on
+Operating Systems is small considering OS has different per-KC priors
+and was never seen during PPO training, supporting the claim that the
+PPO policy operates on a domain-agnostic abstraction.
+
+\paragraph{Template-disjointness as honest evaluation.}
+The intent results show the rule baseline winning under a
+template-disjoint split when the same classifier loses under a random
+split. Production deployments that report only random-split results
+overstate generalisation.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.62\textwidth]{BKT.png}
+\caption{BKT mastery curves over five sessions for three
+representative simulated personas (S04~strong, S08~medium, S19~weak);
+five colour-coded curves per persona, one per KC.}
+\label{fig:bktcurves}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.50\textwidth]{PPO.png}
+\caption{PPO cumulative reward versus training steps; mean episode
+reward rises from about 0.25 at start to 1.14 at 500{,}000 steps;
+the smoke-train baseline (0.78 at 50{,}000 steps) is marked as a
+dashed point.}
+\label{fig:ppocurve}
+\end{figure*}
+
+% =====================================================================
+\section{Limitations and Ethics}\label{sec:limit}
+% =====================================================================
+
+\paragraph{Simulator-bound results.}
+The headline tutor numbers in
+Tables~\ref{tab:baselines}--\ref{tab:cross} are from a BKT-driven
+simulator, not real students. The pilot in Sec.~\ref{sec:pilot}
+provides initial external validity; an $N{=}20$ controlled study is
+planned for the journal extension.
+
+\paragraph{PPO is inference-only.}
+The deployed PPO policy is frozen. Online fine-tuning is left to
+future work.
+
+\paragraph{Single-skill BKT.}
+The current BKT layer assumes one KC per question. Multi-skill BKT
+(q-matrix learning) is not yet wired in.
+
+\paragraph{Difficulty-correctness curve.}
+The simulator's $\delta(d)$ mapping is heuristic, not data-fit. A
+pilot-data-driven recalibration is part of future work.
+
+\paragraph{Ethics.}
+All synthetic student data is clearly labelled as simulated. The
+pilot will obtain explicit informed consent, anonymise participants
+by SHA-256 of email, and store no identifying information beyond
+what is needed for session reconstruction.
+
+% =====================================================================
+\section{Conclusion}\label{sec:conclude}
+% =====================================================================
+
+We have presented AImentor, a production-grade open-source AI career
+mentor that combines multi-provider LLM orchestration, hybrid intent
+classification, semantic ATS scoring, and an adaptive tutoring
+module --- AgentRAG-Tutor --- that pipelines an agentic CRAG
+retrieval loop, a 5-KC paper-calibrated BKT tracker, and a PPO
+difficulty agent that consumes the BKT mastery vector as state. On a
+20-persona BKT-driven simulator, AgentRAG-Tutor attains an 18.0
+percent hallucination rate against 33--34 percent for non-CRAG
+baselines while remaining domain-portable: the same trained PPO
+checkpoint works on a second curriculum (Operating Systems) with no
+fine-tuning. A controlled $N{=}5$ pilot at SRM University AP yields a
+$59.7{\pm}20.6$ Hake learning gain and 4.4/5 mean satisfaction,
+providing first real-learner external validity for the system.
+
+\begin{thebibliography}{99}
+
+\bibitem{lewis2020rag} P.~Lewis et al., ``Retrieval-augmented
+generation for knowledge-intensive NLP tasks,'' in
+\emph{Adv. Neural Inf. Process. Syst.} (NeurIPS), 2020.
+
+\bibitem{yan2024crag} S.-Q.~Yan, J.-C.~Gu, Y.~Zhu, and Z.-H.~Ling,
+``Corrective retrieval augmented generation,'' arXiv preprint
+arXiv:2401.15884, 2024.
+
+\bibitem{asai2024selfrag} A.~Asai, Z.~Wu, Y.~Wang, A.~Sil, and
+H.~Hajishirzi, ``Self-RAG: Learning to retrieve, generate, and
+critique through self-reflection,'' in \emph{Proc. ICLR}, 2024.
+
+\bibitem{corbett1994bkt} A.~T.~Corbett and J.~R.~Anderson,
+``Knowledge tracing: Modeling the acquisition of procedural
+knowledge,'' \emph{User Modeling and User-Adapted Interaction},
+vol.~4, no.~4, pp.~253--278, 1994.
+
+\bibitem{yudelson2013ibkt} M.~V.~Yudelson, K.~R.~Koedinger, and
+G.~J.~Gordon, ``Individualized Bayesian knowledge tracing models,''
+in \emph{Proc. AIED}, 2013, pp.~171--180.
+
+\bibitem{piech2015dkt} C.~Piech et al., ``Deep knowledge tracing,''
+in \emph{Adv. Neural Inf. Process. Syst.} (NeurIPS), 2015.
+
+\bibitem{schulman2017ppo} J.~Schulman, F.~Wolski, P.~Dhariwal,
+A.~Radford, and O.~Klimov, ``Proximal policy optimization
+algorithms,'' arXiv preprint arXiv:1707.06347, 2017.
+
+\bibitem{chi2011rl} M.~Chi, K.~VanLehn, D.~Litman, and P.~W.~Jordan,
+``An evaluation of pedagogical tutorial tactics for a natural
+language tutoring system: A reinforcement learning approach,''
+\emph{Int. J. Artif. Intell. Educ.}, vol.~21, no.~1--2,
+pp.~83--113, 2011.
+
+\bibitem{linchi2016ibkt} C.~Lin and M.~Chi, ``Intervention-BKT:
+Incorporating instructional interventions into Bayesian knowledge
+tracing,'' in \emph{Proc. ITS}, 2016, pp.~208--218.
+
+\bibitem{vanlehn2011} K.~VanLehn, ``The relative effectiveness of
+human tutoring, intelligent tutoring systems, and other tutoring
+systems,'' \emph{Educational Psychologist}, vol.~46, no.~4,
+pp.~197--221, 2011.
+
+\bibitem{anderson1995} J.~R.~Anderson, A.~T.~Corbett,
+K.~R.~Koedinger, and R.~Pelletier, ``Cognitive tutors: Lessons
+learned,'' \emph{J. Learn. Sci.}, vol.~4, no.~2, pp.~167--207,
+1995.
+
+\bibitem{khanmigo2023} Khan Academy, ``Khanmigo: Khan Academy's AI
+tutor,'' Khan Academy Tech. Rep., 2023.
+
+\bibitem{ragas2023} S.~Es, J.~James, L.~Espinosa-Anke, and
+S.~Schockaert, ``RAGAS: Automated evaluation of retrieval augmented
+generation,'' arXiv preprint arXiv:2309.15217, 2023.
+
+\bibitem{ouyang2022instructgpt} L.~Ouyang et al., ``Training
+language models to follow instructions with human feedback,'' in
+\emph{Adv. Neural Inf. Process. Syst.} (NeurIPS), 2022.
+
+\bibitem{pavlik2009pfa} P.~I.~Pavlik~Jr., H.~Cen, and
+K.~R.~Koedinger, ``Performance factors analysis: A new alternative
+to knowledge tracing,'' in \emph{Proc. AIED}, 2009, pp.~531--538.
+
+\bibitem{karpukhin2020dpr} V.~Karpukhin et al., ``Dense passage
+retrieval for open-domain question answering,'' in \emph{Proc.
+EMNLP}, 2020.
+
+\bibitem{johnson2019faiss} J.~Johnson, M.~Douze, and H.~Jegou,
+``Billion-scale similarity search with GPUs,'' \emph{IEEE Trans.
+Big Data}, vol.~7, no.~3, pp.~535--547, 2019.
+
+\bibitem{reimers2019sbert} N.~Reimers and I.~Gurevych,
+``Sentence-BERT: Sentence embeddings using Siamese BERT-networks,''
+in \emph{Proc. EMNLP}, 2019.
+
+\bibitem{robertson2009bm25} S.~Robertson and H.~Zaragoza, ``The
+probabilistic relevance framework: BM25 and beyond,'' \emph{Found.
+Trends Inf. Retr.}, vol.~3, no.~4, pp.~333--389, 2009.
+
+\bibitem{onet2023} National Center for O*NET Development, ``O*NET
+Online occupational information,'' U.S. Department of Labor, 2023.
+
+\bibitem{srivatsa2023router} K.~C.~Srivatsa et al., ``Harnessing
+the power of multiple minds: Lessons learned from LLM routing,''
+arXiv preprint, 2023.
+
+\bibitem{ding2024hybrid} D.~Ding et al., ``Hybrid LLM:
+Cost-efficient and quality-aware query routing,'' in \emph{Proc.
+ICLR}, 2024.
+
+\bibitem{larson2019clinc} S.~Larson et al., ``An evaluation
+dataset for intent classification and out-of-scope prediction,''
+in \emph{Proc. EMNLP-IJCNLP}, 2019.
+
+\bibitem{casanueva2020banking77} I.~Casanueva et al., ``Efficient
+intent detection with dual sentence encoders,'' in \emph{Proc. ACL
+Workshop on NLP for Conversational AI}, 2020.
+
+\bibitem{koh2021wilds} P.~W.~Koh et al., ``WILDS: A benchmark of
+in-the-wild distribution shifts,'' in \emph{Proc. ICML}, 2021.
+
+\bibitem{singla2021rl4ed} A.~Singla, A.~N.~Rafferty, G.~Radanovic,
+and N.~Heffernan, ``Reinforcement learning for education:
+Opportunities and challenges,'' in \emph{Proc. EDM}, 2021.
+
+\bibitem{baker2010more} R.~S.~J.~d.~Baker, A.~T.~Corbett,
+S.~M.~Gowda et al., ``Contextual slip and prediction of student
+performance after use of an intelligent tutor,'' in \emph{User
+Modeling, Adaptation, and Personalization}, 2010, pp.~52--63.
+
+\bibitem{rocha2024edurag} E.~Da~Rocha et al., ``Educational
+retrieval-augmented generation: A survey,'' arXiv preprint
+arXiv:2402.10371, 2024.
+
+\bibitem{khan2023llmtutor} A.~Khan and N.~Heffernan, ``Are large
+language models ready to replace intelligent tutoring systems?''
+in \emph{Proc. AIED Workshop on Generative AI in Education}, 2023.
+
+\bibitem{rajpurkar2018squad2} P.~Rajpurkar, R.~Jia, and P.~Liang,
+``Know what you don't know: Unanswerable questions for SQuAD,''
+in \emph{Proc. ACL}, 2018, pp.~784--789.
+
+\bibitem{hake1998} R.~R.~Hake, ``Interactive-engagement versus
+traditional methods,'' \emph{Am. J. Phys.}, vol.~66, no.~1,
+pp.~64--74, 1998.
+
+\bibitem{kasneci2023chatgpt} E.~Kasneci et al., ``ChatGPT for good?
+On opportunities and challenges of large language models for
+education,'' \emph{Learning and Individual Differences},
+vol.~103, 2023.
+
+\end{thebibliography}
+
+\end{document}

@@ -355,3 +355,80 @@ export const resumeApi = {
         window.URL.revokeObjectURL(url)
     }
 }
+
+// AgentRAG-Tutor API
+export interface KCMasteryPayload {
+    kc_id: number
+    kc_name: string
+    p_mastery: number
+    is_mastered: boolean
+    attempts?: number
+    course_key?: string
+    course_name?: string
+}
+
+export interface DifficultySelectionPayload {
+    difficulty: number
+    question_type: string
+    epsilon?: number
+    exploration?: boolean
+    selector?: 'ppo' | 'mab'
+}
+
+export interface KnowledgeStatePayload {
+    summary: {
+        total_skills_tracked: number
+        mastered_count: number
+        in_progress_count: number
+        average_mastery: number
+        overall_readiness: number
+    }
+    skills: any[]
+    weakest_skills: any[]
+    kc_mastery?: KCMasteryPayload[]
+}
+
+export const tutorApi = {
+    // Core tutoring flow
+    ask: async (data: { question: string; topic?: string; session_id?: string }) => {
+        const response = await api.post('/api/v1/tutor/ask', data)
+        return response.data
+    },
+    answer: async (data: {
+        question_text: string; student_answer: string;
+        topic?: string; difficulty?: number;
+        question_type?: string; response_time_seconds?: number
+    }) => {
+        const response = await api.post('/api/v1/tutor/answer', data)
+        return response.data
+    },
+
+    // Knowledge state
+    getKnowledgeState: async (): Promise<KnowledgeStatePayload> => {
+        const response = await api.get('/api/v1/tutor/knowledge-state')
+        return response.data
+    },
+    getNextQuestion: async (topic?: string) => {
+        const params = topic ? `?topic=${encodeURIComponent(topic)}` : ''
+        const response = await api.get(`/api/v1/tutor/next-question${params}`)
+        return response.data
+    },
+
+    // Knowledge base management
+    ingestContent: async (data: {
+        topic: string; content: string; subtopic?: string;
+        source?: string; difficulty_level?: number
+    }) => {
+        const response = await api.post('/api/v1/tutor/knowledge-base/ingest', data)
+        return response.data
+    },
+    getKBStats: async () => {
+        const response = await api.get('/api/v1/tutor/knowledge-base/stats')
+        return response.data
+    },
+    generateContent: async (data: { topic: string; subtopic?: string; difficulty?: number }) => {
+        const response = await api.post('/api/v1/tutor/knowledge-base/generate', data)
+        return response.data
+    },
+}
+

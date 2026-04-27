@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import {
     Sparkles, Target, BookOpen, MessageCircle, FileText,
     TrendingUp, Clock, Flame, Award, ChevronRight, Play,
-    LayoutDashboard, User, Settings, LogOut, Menu, X
+    LayoutDashboard, User, Settings, LogOut, Menu, X, Brain
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -21,6 +21,7 @@ const navItems = [
     { href: '/dashboard/roadmap', label: 'My Roadmap', icon: Target },
     { href: '/dashboard/skills', label: 'Skills', icon: TrendingUp },
     { href: '/dashboard/chat', label: 'AI Mentor', icon: MessageCircle },
+    { href: '/dashboard/tutor', label: 'RAG Tutor', icon: Brain },
     { href: '/dashboard/progress', label: 'Progress', icon: BookOpen },
     { href: '/dashboard/resume', label: 'Resume', icon: FileText },
     { href: '/dashboard/profile', label: 'Profile', icon: User },
@@ -366,6 +367,7 @@ export default function DashboardPage() {
                             <CardContent className="space-y-2">
                                 {[
                                     { label: 'Skill Gap Analysis', href: '/dashboard/skills', icon: Target },
+                                    { label: 'Adaptive Tutor', href: '/dashboard/tutor', icon: Brain },
                                     { label: 'Update Resume', href: '/dashboard/resume', icon: FileText },
                                     { label: 'View Achievements', href: '/dashboard/progress', icon: Award },
                                 ].map((action, index) => (

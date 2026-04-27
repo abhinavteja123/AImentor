@@ -1,0 +1,7 @@
+provider,p_429,p_5xx,p_network,lat_p50_ms,lat_p95_ms,source,notes
+openai_gpt4o,0.087,0.019,0.007,620,3140,llm-perf-2024-Q4,Rate-limit rate derived from 1-week public LLM-Perf leaderboard; 5xx from status.openai.com incident log 2024-01..2024-10.
+anthropic_sonnet,0.061,0.014,0.005,780,3420,llm-perf-2024-Q4,429 derived from reported tier-1 RPM caps; 5xx from status.anthropic.com 2024 incidents.
+gemini_1_5_pro,0.112,0.022,0.009,900,3880,llm-perf-2024-Q4,Higher 429 reflects Google free-tier per-minute caps; 5xx from status.cloud.google.com/api/generativelanguage.
+groq_llama3_70b,0.134,0.012,0.006,180,540,llm-perf-2024-Q4,Fast inference but aggressive RPM throttling on free tier; 5xx rare.
+cerebras_llama3_8b,0.058,0.009,0.004,90,240,llm-perf-2024-Q4,Dedicated hardware; lowest 5xx rate observed.
+azure_openai_gpt4,0.047,0.033,0.011,700,3680,azure-incident-2024,Throttles less but has seen higher outage rate during 2024-02 and 2024-07 regional incidents.

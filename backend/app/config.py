@@ -4,7 +4,7 @@ Uses Pydantic Settings for environment variable management
 """
 
 from functools import lru_cache
-from typing import List
+from typing import List, Literal
 from pydantic_settings import BaseSettings
 
 
@@ -37,6 +37,11 @@ class Settings(BaseSettings):
 
     # Feature flags
     USE_LLM_CURRICULUM: bool = True  # When True, roadmap curriculum is LLM-generated with hardcoded fallback
+
+    # Research-harness seams (default-off so production behaviour is unchanged).
+    USE_SEMANTIC_ATS: bool = False
+    INTENT_STRATEGY: Literal["rule", "fewshot", "learned"] = "rule"
+    INTENT_CHECKPOINT_PATH: str = ""
     
     # PostgreSQL Database
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/aimentor"

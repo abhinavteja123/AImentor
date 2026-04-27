@@ -24,8 +24,9 @@ if not _is_sqlite and not _is_tx_pooler:
     _engine_kwargs["max_overflow"] = 20
 
 if _url.startswith("postgresql+asyncpg") and not _is_sqlite and not _is_local:
-    # Managed Postgres (Supabase, Neon, RDS, etc.) — require TLS.
-    _connect_args: dict = {"ssl": "require"}
+    # Managed Postgres — disable SSL for networks that block it.
+    # Set to "require" for production deployments with proper TLS.
+    _connect_args: dict = {"ssl": False}
     if _is_tx_pooler:
         # pgBouncer transaction mode: no server-side prepared statements.
         _connect_args["statement_cache_size"] = 0
@@ -53,7 +54,7 @@ async def init_db():
     """Initialize database - create tables."""
     async with engine.begin() as conn:
         # Import models to register them
-        from ..models import user, profile, skill, roadmap, progress, resume
+        from ..models import user, profile, skill, roadmap, progress, resume, tutor
         await conn.run_sync(Base.metadata.create_all)
 
 

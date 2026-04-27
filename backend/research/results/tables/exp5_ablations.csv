@@ -1,0 +1,5 @@
+Ablation,Metric,Full,Ablated,Delta [95% CI],time_ms
+A1: no-failover,Success rate,0.9920,0.7890,+0.2030 [+0.1855; +0.2215],3336.000
+A2: no-ontology,Spearman rho,0.6266,0.5505,+0.0761 [-0.0353; +0.1886],4949.900
+A2: no-ontology,MAE,19.82,36.98,—,4949.900
+A3: no-intent-gate,F1 macro,0.5718,0.0280,+0.4100 [+0.3660; +0.4520],848.500

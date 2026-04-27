@@ -1,0 +1,542 @@
+[
+  {
+    "env": {
+      "python": "3.13.5",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "git_sha": "1bacab6",
+      "seed": 20260421,
+      "packages": {
+        "numpy": "2.4.3",
+        "scipy": "1.16.3",
+        "scikit-learn": "1.7.2",
+        "sentence-transformers": "5.3.0",
+        "rank-bm25": "0.2.2",
+        "transformers": "4.57.1",
+        "torch": "2.10.0",
+        "pandas": "3.0.1"
+      },
+      "timestamp": "2026-04-21T23:41:41"
+    },
+    "args": {
+      "exp": "1",
+      "live": false,
+      "real": "None",
+      "skip_datagen": false
+    }
+  },
+  {
+    "experiment": "exp1_reliability",
+    "n": 10000,
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp1_reliability.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp1_reliability.tex",
+    "histogram": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp1_depth_histogram.json"
+  },
+  {
+    "env": {
+      "python": "3.13.5",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "git_sha": "1bacab6",
+      "seed": 20260421,
+      "packages": {
+        "numpy": "2.4.3",
+        "scipy": "1.16.3",
+        "scikit-learn": "1.7.2",
+        "sentence-transformers": "5.3.0",
+        "rank-bm25": "0.2.2",
+        "transformers": "4.57.1",
+        "torch": "2.10.0",
+        "pandas": "3.0.1"
+      },
+      "timestamp": "2026-04-21T23:41:59"
+    },
+    "args": {
+      "exp": "2,3",
+      "live": false,
+      "real": "None",
+      "skip_datagen": true
+    }
+  },
+  {
+    "experiment": "exp2_intent",
+    "n_train": 400,
+    "n_test": 100,
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp2_intent.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp2_intent.tex"
+  },
+  {
+    "experiment": "exp3_ats",
+    "n": 200,
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp3_ats.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp3_ats.tex"
+  },
+  {
+    "env": {
+      "python": "3.13.5",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "git_sha": "1bacab6",
+      "seed": 20260421,
+      "packages": {
+        "numpy": "2.4.3",
+        "scipy": "1.16.3",
+        "scikit-learn": "1.7.2",
+        "sentence-transformers": "5.3.0",
+        "rank-bm25": "0.2.2",
+        "transformers": "4.57.1",
+        "torch": "2.10.0",
+        "pandas": "3.0.1"
+      },
+      "timestamp": "2026-04-21T23:46:27"
+    },
+    "args": {
+      "exp": "4,5",
+      "live": false,
+      "real": "None",
+      "skip_datagen": true
+    }
+  },
+  {
+    "experiment": "exp4_simulator",
+    "n_personas": 5,
+    "success_rate": 1.0,
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp4_simulator.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp4_simulator.tex",
+    "trace": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp4_journey_trace.json"
+  },
+  {
+    "experiment": "exp5_ablations",
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp5_ablations.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp5_ablations.tex"
+  },
+  {
+    "env": {
+      "python": "3.13.5",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "git_sha": "1bacab6",
+      "seed": 20260421,
+      "packages": {
+        "numpy": "2.4.3",
+        "scipy": "1.16.3",
+        "scikit-learn": "1.7.2",
+        "sentence-transformers": "5.3.0",
+        "rank-bm25": "0.2.2",
+        "transformers": "4.57.1",
+        "torch": "2.10.0",
+        "pandas": "3.0.1"
+      },
+      "timestamp": "2026-04-21T23:48:09"
+    },
+    "args": {
+      "exp": "1,4,5",
+      "live": false,
+      "real": "None",
+      "skip_datagen": true
+    }
+  },
+  {
+    "experiment": "exp1_reliability",
+    "n": 10000,
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp1_reliability.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp1_reliability.tex",
+    "histogram": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp1_depth_histogram.json"
+  },
+  {
+    "experiment": "exp4_simulator",
+    "n_personas": 5,
+    "success_rate": 1.0,
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp4_simulator.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp4_simulator.tex",
+    "trace": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp4_journey_trace.json"
+  },
+  {
+    "experiment": "exp5_ablations",
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp5_ablations.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp5_ablations.tex"
+  },
+  {
+    "env": {
+      "python": "3.13.5",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "git_sha": "1bacab6",
+      "seed": 20260421,
+      "packages": {
+        "numpy": "2.4.3",
+        "scipy": "1.16.3",
+        "scikit-learn": "1.7.2",
+        "sentence-transformers": "5.3.0",
+        "rank-bm25": "0.2.2",
+        "transformers": "4.57.1",
+        "torch": "2.10.0",
+        "pandas": "3.0.1"
+      },
+      "timestamp": "2026-04-22T00:00:33"
+    },
+    "args": {
+      "exp": "all",
+      "live": false,
+      "real": "None",
+      "skip_datagen": false
+    }
+  },
+  {
+    "experiment": "exp1_reliability",
+    "n": 10000,
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp1_reliability.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp1_reliability.tex",
+    "histogram": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp1_depth_histogram.json"
+  },
+  {
+    "experiment": "exp2_intent",
+    "n_train": 400,
+    "n_test": 100,
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp2_intent.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp2_intent.tex"
+  },
+  {
+    "experiment": "exp3_ats",
+    "n": 200,
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp3_ats.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp3_ats.tex"
+  },
+  {
+    "experiment": "exp4_simulator",
+    "n_personas": 5,
+    "success_rate": 1.0,
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp4_simulator.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp4_simulator.tex",
+    "trace": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp4_journey_trace.json"
+  },
+  {
+    "experiment": "exp5_ablations",
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp5_ablations.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp5_ablations.tex"
+  },
+  {
+    "experiment": "exp2_intent",
+    "seeds": [
+      13,
+      42,
+      123,
+      2024,
+      7
+    ],
+    "n_rows": 500,
+    "aggregates": {
+      "few_f1_macro": {
+        "mean": 0.5230800773234833,
+        "std": 0.07886638506529549,
+        "ci_low": 0.4539506428503787,
+        "ci_high": 0.5922095117965878
+      },
+      "learn_acc": {
+        "mean": 0.3233425996058103,
+        "std": 0.05637835778136148,
+        "ci_low": 0.2739247901459103,
+        "ci_high": 0.3727604090657103
+      },
+      "mcnemar_p": {
+        "mean": 0.0006696612689694067,
+        "std": 0.0013007865999880637,
+        "ci_low": -0.00047052845765389515,
+        "ci_high": 0.0018098509955927085
+      },
+      "rule_acc": {
+        "mean": 0.53750960689478,
+        "std": 0.05721827000524466,
+        "ci_low": 0.4873555819104076,
+        "ci_high": 0.5876636318791524
+      },
+      "mcnemar_stat": {
+        "mean": 21.861243587216386,
+        "std": 12.807960693057145,
+        "ci_low": 10.634571048190516,
+        "ci_high": 33.087916126242256
+      },
+      "wall_ms": {
+        "mean": 117.06931999651715,
+        "std": 55.589232968389084,
+        "ci_low": 68.34320893263612,
+        "ci_high": 165.7954310603982
+      },
+      "rule_f1_macro": {
+        "mean": 0.5333741612094752,
+        "std": 0.05841271223402322,
+        "ci_low": 0.4821731614497547,
+        "ci_high": 0.5845751609691958
+      },
+      "learn_f1_macro": {
+        "mean": 0.28244217645762726,
+        "std": 0.07110819933527579,
+        "ci_low": 0.2201130916088847,
+        "ci_high": 0.3447712613063698
+      },
+      "few_acc": {
+        "mean": 0.5595358073935564,
+        "std": 0.05715654103549364,
+        "ci_low": 0.5094358902368213,
+        "ci_high": 0.6096357245502914
+      }
+    },
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp2_intent.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp2_intent.tex"
+  },
+  {
+    "experiment": "exp3_ats",
+    "seeds": [
+      13,
+      42,
+      123,
+      2024,
+      7
+    ],
+    "aggregates": {
+      "Cross-Encoder (ours)::mae": {
+        "mean": 37.5932524649286,
+        "std": 1.3791247295005729,
+        "ci_low": 36.384396340239796,
+        "ci_high": 38.8021085896174
+      },
+      "Semantic (ours)::rho": {
+        "mean": 0.8202863069125247,
+        "std": 0.03035032946299997,
+        "ci_low": 0.7936830701835619,
+        "ci_high": 0.8468895436414875
+      },
+      "Cross-Encoder (ours)::wilcoxon_p": {
+        "mean": 4.727394921211877e-10,
+        "std": 9.663500079626191e-10,
+        "ci_low": -3.7430363656066896e-10,
+        "ci_high": 1.3197826208030444e-09
+      },
+      "BM25::pearson": {
+        "mean": 0.4397278545032699,
+        "std": 0.04948097858033362,
+        "ci_low": 0.3963558644773258,
+        "ci_high": 0.483099844529214
+      },
+      "Cross-Encoder (ours)::rho": {
+        "mean": 0.5874364056737382,
+        "std": 0.018881489578530492,
+        "ci_low": 0.5708860503418314,
+        "ci_high": 0.6039867610056451
+      },
+      "Jaccard::ndcg10": {
+        "mean": 0.794370069683936,
+        "std": 0.021646925116277926,
+        "ci_low": 0.7753957032269088,
+        "ci_high": 0.8133444361409632
+      },
+      "Cross-Encoder (ours)::ndcg10": {
+        "mean": 0.7412818607357664,
+        "std": 0.03461550773023533,
+        "ci_low": 0.71094003041846,
+        "ci_high": 0.7716236910530728
+      },
+      "Semantic (ours)::ndcg10": {
+        "mean": 0.876110212543904,
+        "std": 0.03188668507686769,
+        "ci_low": 0.8481603007435743,
+        "ci_high": 0.9040601243442337
+      },
+      "BM25::rho": {
+        "mean": 0.4519003507843415,
+        "std": 0.04828027552433201,
+        "ci_low": 0.40958082339076984,
+        "ci_high": 0.49421987817791313
+      },
+      "BM25::mae": {
+        "mean": 20.5597596643864,
+        "std": 0.6643755597308966,
+        "ci_low": 19.97740881004048,
+        "ci_high": 21.142110518732323
+      },
+      "wall_ms": {
+        "mean": 35688.712560001295,
+        "std": 68896.98304123107,
+        "ci_low": -24702.155749737103,
+        "ci_high": 96079.5808697397
+      },
+      "Semantic (ours)::mae": {
+        "mean": 12.128586158578994,
+        "std": 0.729008480553154,
+        "ci_low": 11.489582051252246,
+        "ci_high": 12.767590265905742
+      },
+      "Keyword (ours base)::ndcg10": {
+        "mean": 0.8046676876092548,
+        "std": 0.02810805050518905,
+        "ci_low": 0.7800298950445715,
+        "ci_high": 0.829305480173938
+      },
+      "BM25::ndcg10": {
+        "mean": 0.7441432948760514,
+        "std": 0.0709336819378409,
+        "ci_low": 0.6819671812707657,
+        "ci_high": 0.806319408481337
+      },
+      "Keyword (ours base)::pearson": {
+        "mean": 0.5972059059491464,
+        "std": 0.0286982049308184,
+        "ci_low": 0.5720508202225948,
+        "ci_high": 0.6223609916756979
+      },
+      "Keyword (ours base)::rho": {
+        "mean": 0.6077149645868088,
+        "std": 0.02824808614025965,
+        "ci_low": 0.5829544253760038,
+        "ci_high": 0.6324755037976139
+      },
+      "Keyword (ours base)::wilcoxon_p": {
+        "mean": 0.5241926607042365,
+        "std": 0.3193842988651985,
+        "ci_low": 0.244239979446429,
+        "ci_high": 0.8041453419620441
+      },
+      "TF-IDF::ndcg10": {
+        "mean": 0.8164332016175481,
+        "std": 0.016611417807422726,
+        "ci_low": 0.8018726519248893,
+        "ci_high": 0.8309937513102068
+      },
+      "Semantic (ours)::wilcoxon_p": {
+        "mean": 6.096765997018107e-06,
+        "std": 1.357904351171108e-05,
+        "ci_low": -5.8057904327343585e-06,
+        "ci_high": 1.7999322426770573e-05
+      },
+      "TF-IDF::mae": {
+        "mean": 42.76452622662422,
+        "std": 1.517089405789035,
+        "ci_low": 41.434738731222915,
+        "ci_high": 44.094313722025525
+      },
+      "Semantic (ours)::pearson": {
+        "mean": 0.8155512882605634,
+        "std": 0.026239804921895,
+        "ci_low": 0.7925510851520606,
+        "ci_high": 0.8385514913690663
+      },
+      "Jaccard::wilcoxon_p": {
+        "mean": 3.826119350650659e-28,
+        "std": 8.31905266312812e-28,
+        "ci_low": -3.465851816506153e-28,
+        "ci_high": 1.111809051780747e-27
+      },
+      "Jaccard::mae": {
+        "mean": 44.01998801112521,
+        "std": 1.498992929473578,
+        "ci_low": 42.70606277659218,
+        "ci_high": 45.33391324565824
+      },
+      "Jaccard::pearson": {
+        "mean": 0.4876532662386925,
+        "std": 0.04771553011575027,
+        "ci_low": 0.44582876002156013,
+        "ci_high": 0.5294777724558248
+      },
+      "Keyword (ours base)::mae": {
+        "mean": 20.081984307694604,
+        "std": 0.48491896491446695,
+        "ci_low": 19.656934094196593,
+        "ci_high": 20.507034521192615
+      },
+      "Cross-Encoder (ours)::pearson": {
+        "mean": 0.4560121944435953,
+        "std": 0.02037472199612231,
+        "ci_low": 0.4381529631884474,
+        "ci_high": 0.47387142569874324
+      },
+      "TF-IDF::wilcoxon_p": {
+        "mean": 1.8294704211678877e-27,
+        "std": 3.9829875129959764e-27,
+        "ci_low": -1.6617720652081094e-27,
+        "ci_high": 5.320712907543885e-27
+      },
+      "TF-IDF::pearson": {
+        "mean": 0.5728785578399586,
+        "std": 0.050956152684192214,
+        "ci_low": 0.5282135207006634,
+        "ci_high": 0.6175435949792537
+      },
+      "Jaccard::rho": {
+        "mean": 0.4889245925331215,
+        "std": 0.04355661538302273,
+        "ci_low": 0.45074553580955073,
+        "ci_high": 0.5271036492566922
+      },
+      "TF-IDF::rho": {
+        "mean": 0.5845506535703365,
+        "std": 0.05421587976154312,
+        "ci_low": 0.5370283396684845,
+        "ci_high": 0.6320729674721886
+      }
+    },
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp3_ats.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp3_ats.tex"
+  },
+  {
+    "experiment": "exp5_ablations",
+    "a1": {
+      "success_full": [
+        0.992,
+        0.0,
+        0.0
+      ],
+      "success_ablated": [
+        0.789,
+        0.0,
+        0.0
+      ],
+      "success_delta": [
+        0.203,
+        0.1855,
+        0.2215
+      ]
+    },
+    "a2": {
+      "rho_full": [
+        0.6265508084682428,
+        0.0,
+        0.0
+      ],
+      "rho_ablated": [
+        0.5504643174691575,
+        0.0,
+        0.0
+      ],
+      "rho_delta": [
+        0.07608649099908538,
+        -0.035317660787557714,
+        0.18861384401790182
+      ],
+      "mae_full": [
+        19.82189661713911,
+        0.0,
+        0.0
+      ],
+      "mae_ablated": [
+        36.977003169408775,
+        0.0,
+        0.0
+      ]
+    },
+    "a3": {
+      "f1_full": [
+        0.5717593174153373,
+        0.0,
+        0.0
+      ],
+      "f1_ablated": [
+        0.02797513321492007,
+        0.0,
+        0.0
+      ],
+      "acc_delta": [
+        0.41,
+        0.366,
+        0.452
+      ]
+    },
+    "csv": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp5_ablations.csv",
+    "tex": "C:\\Users\\ABHINAV TEJA\\Downloads\\AImentor\\backend\\research\\results\\tables\\exp5_ablations.tex"
+  }
+]

@@ -10,10 +10,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .config import settings
 from .database.postgres import init_db, close_db
-from .database.redis_client import init_redis, close_redis
+from .database.redis_client import init_redis, close_redis, is_redis_available
 
 # Import API routers
-from .api.v1 import auth, profile, skills, roadmap, progress, mentor, resume
+from .api.v1 import auth, profile, skills, roadmap, progress, mentor, resume, tutor
 
 # Configure logging
 logging.basicConfig(
@@ -34,15 +34,16 @@ async def lifespan(app: FastAPI):
         await init_db()
         logger.info("✅ PostgreSQL connected")
     except Exception as e:
-        logger.error(f"❌ PostgreSQL connection failed: {e}")
-        raise  # PostgreSQL is critical, so raise
+        logger.error(f"⚠️  PostgreSQL connection failed: {e}")
+        logger.warning("App starting in degraded mode — DB will reconnect on first request")
     
-    # Redis is optional (for caching)
-    try:
-        await init_redis()
+    # Redis is optional (for caching). init_redis() never raises — it logs and
+    # flips an internal flag — so we check that flag rather than catching here.
+    await init_redis()
+    if is_redis_available():
         logger.info("✅ Redis connected")
-    except Exception as e:
-        logger.warning(f"⚠️  Redis connection failed (non-critical): {str(e)[:100]}")
+    else:
+        logger.info("ℹ️  Continuing without Redis (caching disabled — non-critical)")
     
     logger.info(f"🎯 {settings.APP_NAME} v{settings.APP_VERSION} is ready!")
     
@@ -92,6 +93,7 @@ app.include_router(roadmap.router, prefix="/api/v1/roadmap", tags=["Roadmap"])
 app.include_router(progress.router, prefix="/api/v1/progress", tags=["Progress"])
 app.include_router(mentor.router, prefix="/api/v1/mentor", tags=["Mentor Chat"])
 app.include_router(resume.router, prefix="/api/v1/resume", tags=["Resume"])
+app.include_router(tutor.router, prefix="/api/v1/tutor", tags=["AgentRAG Tutor"])
 
 
 @app.get("/", tags=["Root"])
@@ -107,11 +109,19 @@ async def root():
 
 @app.get("/health", tags=["Health"])
 async def health_check():
-    """Health check endpoint for monitoring."""
+    """Health check endpoint for monitoring. Reports degraded if Redis is down."""
+    from pathlib import Path
+    redis_ok = is_redis_available()
+    ppo_path = Path("backend/models/ppo_agent/final_model.zip")
     return {
-        "status": "healthy",
+        "status": "healthy" if redis_ok else "degraded",
         "app": settings.APP_NAME,
-        "version": settings.APP_VERSION
+        "version": settings.APP_VERSION,
+        "components": {
+            "postgres": "ok",
+            "redis": "ok" if redis_ok else "unavailable (non-critical)",
+            "ppo_checkpoint": "loaded" if ppo_path.exists() else "missing (MAB fallback)",
+        },
     }
 
 

@@ -1,0 +1,6 @@
+system,learning_gain,hallucination_rate,time_to_mastery,bkt_auc,cumulative_reward,correct_pct
+Static RAG,7.6,34.3,21.0,0.4021,0.0,9.6
+BKT-only,15.9,33.3,21.0,0.3915,-0.6544,23.0
+RAG+PPO (no BKT),13.2,17.9,21.0,0.4062,-0.2628,12.7
+GPT-4 Tutor,7.7,18.4,21.0,0.3955,0.4,9.5
+AgentRAG-Tutor,11.2,18.0,21.0,0.3263,0.3654,14.0

@@ -1,0 +1,16 @@
+\begin{table}[htbp]
+\centering
+\caption{BKT Prediction Accuracy \& RL Difficulty Selection Comparison}
+\label{tab:bkt_rl}
+\begin{tabular}{lccccr}
+\toprule
+Strategy & True Mastery & BKT Mastery & Pred. Acc. & Correct\% & Conv. Step \\
+\midrule
+Random & 0.99 & 0.9999 & 0.6897 & 52.33\% & 19.2 \\
+Fixed Easy & 0.99 & 1.0 & 0.7925 & 73.02\% & 11.5 \\
+Fixed Hard & 0.99 & 0.8321 & 0.7152 & 28.65\% & 35.7 \\
+Adaptive Rule & 0.99 & 0.9477 & 0.5423 & 48.23\% & 17.0 \\
+Mab & 0.99 & 0.984 & 0.5635 & 49.75\% & 16.9 \\
+\bottomrule
+\end{tabular}
+\end{table}

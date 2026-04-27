@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -70,7 +70,7 @@ const taskTypeColors: { [key: string]: string } = {
     project: 'from-emerald-500 to-teal-500',
 }
 
-export default function RoadmapPage() {
+function RoadmapContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const focusTaskId = searchParams?.get('task') ?? null
@@ -594,5 +594,20 @@ export default function RoadmapPage() {
                 </motion.div>
             </AnimatePresence>
         </div>
+    )
+}
+
+export default function RoadmapPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-background">
+                <div className="text-center">
+                    <Loader2 className="h-12 w-12 text-primary mx-auto animate-spin" />
+                    <p className="mt-4 text-muted-foreground">Loading roadmap...</p>
+                </div>
+            </div>
+        }>
+            <RoadmapContent />
+        </Suspense>
     )
 }

@@ -1,0 +1,332 @@
+[
+  {
+    "persona_id": "p1_junior_frontend",
+    "journey_ok": true,
+    "steps": [
+      {
+        "name": "profile",
+        "ok": true,
+        "latency_ms": 0.0,
+        "tokens": 10,
+        "depth": 0,
+        "extra": {}
+      },
+      {
+        "name": "skill_gap",
+        "ok": true,
+        "latency_ms": 468.14,
+        "tokens": 11,
+        "depth": 0,
+        "extra": {
+          "missing": [
+            "React",
+            "TypeScript",
+            "Testing",
+            "Git"
+          ],
+          "severity": "medium"
+        }
+      },
+      {
+        "name": "roadmap",
+        "ok": true,
+        "latency_ms": 142.2,
+        "tokens": 11,
+        "depth": 0,
+        "extra": {
+          "weeks": 4
+        }
+      },
+      {
+        "name": "chat",
+        "ok": true,
+        "latency_ms": 2158.15,
+        "tokens": 35,
+        "depth": 1,
+        "extra": {
+          "intents": [
+            "asking_next_steps",
+            "asking_for_help",
+            "requesting_resources"
+          ],
+          "n_turns": 3
+        }
+      },
+      {
+        "name": "resume_tailor",
+        "ok": true,
+        "latency_ms": 173.28,
+        "tokens": 11,
+        "depth": 0,
+        "extra": {
+          "kw_score": 59.48,
+          "semantic_score": 81.23
+        }
+      }
+    ]
+  },
+  {
+    "persona_id": "p2_career_switcher",
+    "journey_ok": true,
+    "steps": [
+      {
+        "name": "profile",
+        "ok": true,
+        "latency_ms": 0.0,
+        "tokens": 9,
+        "depth": 0,
+        "extra": {}
+      },
+      {
+        "name": "skill_gap",
+        "ok": true,
+        "latency_ms": 468.1,
+        "tokens": 12,
+        "depth": 0,
+        "extra": {
+          "missing": [
+            "Python",
+            "Pandas",
+            "NumPy",
+            "scikit-learn",
+            "Statistics",
+            "Matplotlib"
+          ],
+          "severity": "high"
+        }
+      },
+      {
+        "name": "roadmap",
+        "ok": true,
+        "latency_ms": 142.19,
+        "tokens": 11,
+        "depth": 0,
+        "extra": {
+          "weeks": 6
+        }
+      },
+      {
+        "name": "chat",
+        "ok": true,
+        "latency_ms": 2158.15,
+        "tokens": 33,
+        "depth": 1,
+        "extra": {
+          "intents": [
+            "general_chat",
+            "general_chat",
+            "asking_next_steps"
+          ],
+          "n_turns": 3
+        }
+      },
+      {
+        "name": "resume_tailor",
+        "ok": true,
+        "latency_ms": 172.63,
+        "tokens": 11,
+        "depth": 0,
+        "extra": {
+          "kw_score": 23.09,
+          "semantic_score": 67.87
+        }
+      }
+    ]
+  },
+  {
+    "persona_id": "p3_bootcamp_grad",
+    "journey_ok": true,
+    "steps": [
+      {
+        "name": "profile",
+        "ok": true,
+        "latency_ms": 0.0,
+        "tokens": 13,
+        "depth": 0,
+        "extra": {}
+      },
+      {
+        "name": "skill_gap",
+        "ok": true,
+        "latency_ms": 468.1,
+        "tokens": 12,
+        "depth": 0,
+        "extra": {
+          "missing": [
+            "PostgreSQL",
+            "Docker"
+          ],
+          "severity": "medium"
+        }
+      },
+      {
+        "name": "roadmap",
+        "ok": true,
+        "latency_ms": 142.19,
+        "tokens": 11,
+        "depth": 0,
+        "extra": {
+          "weeks": 4
+        }
+      },
+      {
+        "name": "chat",
+        "ok": true,
+        "latency_ms": 2158.15,
+        "tokens": 37,
+        "depth": 1,
+        "extra": {
+          "intents": [
+            "asking_next_steps",
+            "general_chat",
+            "asking_next_steps"
+          ],
+          "n_turns": 3
+        }
+      },
+      {
+        "name": "resume_tailor",
+        "ok": true,
+        "latency_ms": 171.48,
+        "tokens": 12,
+        "depth": 0,
+        "extra": {
+          "kw_score": 79.53,
+          "semantic_score": 94.86
+        }
+      }
+    ]
+  },
+  {
+    "persona_id": "p4_senior_backend",
+    "journey_ok": true,
+    "steps": [
+      {
+        "name": "profile",
+        "ok": true,
+        "latency_ms": 0.0,
+        "tokens": 15,
+        "depth": 0,
+        "extra": {}
+      },
+      {
+        "name": "skill_gap",
+        "ok": true,
+        "latency_ms": 468.1,
+        "tokens": 12,
+        "depth": 0,
+        "extra": {
+          "missing": [
+            "Distributed Systems",
+            "Leadership",
+            "Observability"
+          ],
+          "severity": "medium"
+        }
+      },
+      {
+        "name": "roadmap",
+        "ok": true,
+        "latency_ms": 142.19,
+        "tokens": 11,
+        "depth": 0,
+        "extra": {
+          "weeks": 4
+        }
+      },
+      {
+        "name": "chat",
+        "ok": true,
+        "latency_ms": 2158.15,
+        "tokens": 31,
+        "depth": 1,
+        "extra": {
+          "intents": [
+            "general_chat",
+            "asking_next_steps",
+            "asking_progress"
+          ],
+          "n_turns": 3
+        }
+      },
+      {
+        "name": "resume_tailor",
+        "ok": true,
+        "latency_ms": 171.45,
+        "tokens": 11,
+        "depth": 0,
+        "extra": {
+          "kw_score": 62.5,
+          "semantic_score": 73.22
+        }
+      }
+    ]
+  },
+  {
+    "persona_id": "p5_ds_aspirant",
+    "journey_ok": true,
+    "steps": [
+      {
+        "name": "profile",
+        "ok": true,
+        "latency_ms": 0.0,
+        "tokens": 13,
+        "depth": 0,
+        "extra": {}
+      },
+      {
+        "name": "skill_gap",
+        "ok": true,
+        "latency_ms": 468.11,
+        "tokens": 12,
+        "depth": 0,
+        "extra": {
+          "missing": [
+            "PyTorch",
+            "TensorFlow",
+            "Docker",
+            "MLOps",
+            "Kubernetes"
+          ],
+          "severity": "high"
+        }
+      },
+      {
+        "name": "roadmap",
+        "ok": true,
+        "latency_ms": 142.19,
+        "tokens": 11,
+        "depth": 0,
+        "extra": {
+          "weeks": 5
+        }
+      },
+      {
+        "name": "chat",
+        "ok": true,
+        "latency_ms": 2158.15,
+        "tokens": 36,
+        "depth": 1,
+        "extra": {
+          "intents": [
+            "requesting_resources",
+            "general_chat",
+            "seeking_motivation"
+          ],
+          "n_turns": 3
+        }
+      },
+      {
+        "name": "resume_tailor",
+        "ok": true,
+        "latency_ms": 171.61,
+        "tokens": 12,
+        "depth": 0,
+        "extra": {
+          "kw_score": 36.89,
+          "semantic_score": 76.81
+        }
+      }
+    ]
+  }
+]
