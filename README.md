@@ -5,7 +5,7 @@
 [![Tech Stack](https://img.shields.io/badge/Stack-Python%20%7C%20FastAPI%20%7C%20Next.js%20%7C%20AI-blue)](#-tech-stack)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-**LINK : https://ai-mentor-eta-weld.vercel.app/**
+
 ---
 
 ## 📋 Table of Contents
