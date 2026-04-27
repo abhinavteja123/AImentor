@@ -310,3 +310,148 @@ async def optimize_section_for_ats(
         request
     )
     return result
+
+# ==================== EXPORT ENDPOINTS ====================
+
+@router.get("/export/pdf")
+async def export_resume_pdf(
+    version_id: UUID = None,
+    template: str = "modern",
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Export resume to PDF using LaTeX compilation.
+    
+    Query Parameters:
+    - version_id: Optional specific version to export (uses active if not provided)
+    - template: Template style (modern, classic, minimal)
+    
+    Returns:
+    - PDF file as streaming response
+    """
+    import base64
+    from io import BytesIO
+    
+    resume_service = ResumeService(db)
+    result = await resume_service.export_resume_pdf(
+        user_id=current_user.id,
+        version_id=version_id,
+        template=template
+    )
+    
+    # Decode base64 PDF data
+    pdf_bytes = base64.b64decode(result["pdf_data"])
+    pdf_stream = BytesIO(pdf_bytes)
+    
+    return StreamingResponse(
+        pdf_stream,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="{result["filename"]}"',
+            "X-Version-Id": result["version_id"],
+            "X-Generated-At": result["generated_at"]
+        }
+    )
+
+
+@router.get("/export/latex")
+async def export_resume_latex(
+    version_id: UUID = None,
+    template: str = "modern",
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Get LaTeX source code for resume.
+    
+    Query Parameters:
+    - version_id: Optional specific version (uses active if not provided)
+    - template: Template style
+    
+    Returns:
+    - LaTeX source code as plain text
+    """
+    resume_service = ResumeService(db)
+    result = await resume_service.preview_latex(
+        user_id=current_user.id,
+        version_id=version_id,
+        template=template
+    )
+    
+    from fastapi.responses import PlainTextResponse
+    return PlainTextResponse(
+        content=result["latex_source"],
+        media_type="text/plain",
+        headers={
+            "Content-Disposition": f'attachment; filename="resume_{result["version_id"]}.tex"',
+            "X-Version-Id": result["version_id"],
+            "X-Generated-At": result["generated_at"]
+        }
+    )
+
+
+@router.post("/validate-latex")
+async def validate_latex_content(
+    latex_content: str,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Validate LaTeX content for syntax errors.
+    
+    Body:
+    - latex_content: Raw LaTeX source code to validate
+    
+    Returns:
+    - is_valid: Boolean indicating if LaTeX is valid
+    - errors: List of error messages
+    - warnings: List of warning messages
+    """
+    resume_service = ResumeService(db)
+    result = await resume_service.validate_latex(latex_content)
+    return result
+
+
+@router.get("/export/preview")
+async def get_export_preview(
+    version_id: UUID = None,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Get a preview of the resume data formatted for export.
+    This is useful for showing users what will be exported before they download.
+    
+    Returns:
+    - Resume sections in export-ready format
+    """
+    resume_service = ResumeService(db)
+    resume = None
+    
+    if version_id:
+        resume = await resume_service.get_version_by_id(current_user.id, version_id)
+    else:
+        resume = await resume_service.get_current_resume(current_user.id)
+    
+    if not resume:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Resume not found"
+        )
+    
+    return {
+        "id": str(resume.id),
+        "version": resume.version,
+        "summary": resume.summary,
+        "skills_section": resume.skills_section,
+        "education_section": resume.education_section,
+        "experience_section": resume.experience_section,
+        "projects_section": resume.projects_section,
+        "certifications_section": resume.certifications_section,
+        "contact_info": resume.contact_info,
+        "created_at": resume.created_at.isoformat(),
+        "updated_at": resume.updated_at.isoformat(),
+        "available_formats": ["pdf", "latex", "docx"],
+        "available_templates": ["modern", "classic", "minimal"]
+    }

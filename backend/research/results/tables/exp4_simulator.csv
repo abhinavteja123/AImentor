@@ -1,0 +1,6 @@
+Persona,Goal role,End-to-end OK,Total latency (ms),Total tokens,Max depth
+p1_junior_frontend,Frontend Developer,yes,2941.800,78,1
+p2_career_switcher,Data Scientist,yes,2941.100,76,1
+p3_bootcamp_grad,Full Stack Developer,yes,2939.900,85,1
+p4_senior_backend,Staff Engineer,yes,2939.900,80,1
+p5_ds_aspirant,Machine Learning Engineer,yes,2940.100,84,1

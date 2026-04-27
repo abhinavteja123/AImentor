@@ -1,0 +1,16 @@
+\begin{table}[htbp]
+\centering
+\caption{Main Results: AgentRAG-Tutor vs Baselines (47 Simulated Sessions)}
+\label{tab:main_results}
+\begin{tabular}{lccccc}
+\toprule
+System & LG (\%) & Halluc. (\%) & TTM (q) & BKT AUC & Reward \\
+\midrule
+Static RAG & 7.6 & 34.3 & 21.0 & 0.4021 & 0.0 \\
+BKT-only & 15.9 & 33.3 & 21.0 & 0.3915 & -0.6544 \\
+RAG+PPO (no BKT) & 13.2 & 17.9 & 21.0 & 0.4062 & -0.2628 \\
+GPT-4 Tutor & 7.7 & 18.4 & 21.0 & 0.3955 & 0.4 \\
+\textbf{AgentRAG-Tutor} & \textbf{11.2} & \textbf{18.0} & \textbf{21.0} & \textbf{0.3263} & \textbf{0.3654} \\
+\bottomrule
+\end{tabular}
+\end{table}

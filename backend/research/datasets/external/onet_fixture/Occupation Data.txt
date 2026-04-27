@@ -1,0 +1,6 @@
+O*NET-SOC Code	Title	Description
+15-1252.00	Software Developers	Research, design, and develop computer and network software.
+15-1211.00	Computer Systems Analysts	Analyze and design information systems.
+15-2051.00	Data Scientists	Develop and implement models that use data to derive insights.
+11-9041.00	Architectural and Engineering Managers	Plan, direct, or coordinate engineering activities.
+13-1161.00	Market Research Analysts and Marketing Specialists	Research market conditions; gather customer preferences.

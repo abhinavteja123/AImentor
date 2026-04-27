@@ -1,15 +1,18 @@
 """
 Security Utilities - Password hashing and JWT tokens
+
+Uses bcrypt directly instead of passlib, which is unmaintained and
+incompatible with bcrypt>=4.1 on Python 3.13.
 """
 
 from datetime import datetime, timedelta
 from typing import Optional, Union
 from uuid import UUID
 
+import bcrypt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -18,21 +21,26 @@ from ..database.postgres import get_db
 from ..database.redis_client import is_token_blacklisted
 from ..models.user import User
 
-# Password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 # OAuth2
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 
 
 def hash_password(password: str) -> str:
-    """Hash a password using bcrypt."""
-    return pwd_context.hash(password)
+    """Hash a password using bcrypt (direct, no passlib)."""
+    # bcrypt enforces max 72 bytes; truncate to be safe
+    pwd_bytes = password.encode("utf-8")[:72]
+    salt = bcrypt.gensalt(rounds=12)
+    return bcrypt.hashpw(pwd_bytes, salt).decode("utf-8")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify a password against its hash."""
-    return pwd_context.verify(plain_password, hashed_password)
+    """Verify a password against its bcrypt hash."""
+    try:
+        pwd_bytes = plain_password.encode("utf-8")[:72]
+        hash_bytes = hashed_password.encode("utf-8")
+        return bcrypt.checkpw(pwd_bytes, hash_bytes)
+    except (ValueError, TypeError):
+        return False
 
 
 def create_access_token(

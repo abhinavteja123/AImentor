@@ -17,7 +17,8 @@ import {
     Sparkles,
     User,
     Menu,
-    Target
+    Target,
+    Brain
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/lib/store'
@@ -28,6 +29,7 @@ const navItems = [
     { href: '/dashboard/skills', icon: Target, label: 'Skills' },
     { href: '/dashboard/progress', icon: TrendingUp, label: 'Progress' },
     { href: '/dashboard/chat', icon: MessageSquare, label: 'AI Mentor' },
+    { href: '/dashboard/tutor', icon: Brain, label: 'RAG Tutor' },
     { href: '/dashboard/resume', icon: FileText, label: 'Resume' },
 ]
 

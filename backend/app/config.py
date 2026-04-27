@@ -4,7 +4,7 @@ Uses Pydantic Settings for environment variable management
 """
 
 from functools import lru_cache
-from typing import List
+from typing import List, Literal
 from pydantic_settings import BaseSettings
 
 
@@ -26,16 +26,25 @@ class Settings(BaseSettings):
         # Filter out empty strings
         return [origin for origin in origins if origin]
     
-    # Google Gemini API
+    # LLM providers — primary + fallback chain
+    LLM_PROVIDER: str = "groq"  # groq | cerebras | gemini
+    GROQ_API_KEY: str = ""
+    GROQ_MODEL: str = "llama-3.3-70b-versatile"
+    CEREBRAS_API_KEY: str = ""
+    CEREBRAS_MODEL: str = "llama3.1-8b"
     GOOGLE_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-2.0-flash-exp"
+    GEMINI_MODEL: str = "gemini-2.0-flash"
+
+    # Feature flags
+    USE_LLM_CURRICULUM: bool = True  # When True, roadmap curriculum is LLM-generated with hardcoded fallback
+
+    # Research-harness seams (default-off so production behaviour is unchanged).
+    USE_SEMANTIC_ATS: bool = False
+    INTENT_STRATEGY: Literal["rule", "fewshot", "learned"] = "rule"
+    INTENT_CHECKPOINT_PATH: str = ""
     
     # PostgreSQL Database
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/aimentor"
-    
-    # MongoDB
-    MONGODB_URL: str = "mongodb://localhost:27017"
-    MONGODB_DB: str = "aimentor"
     
     # Redis
     REDIS_URL: str = "redis://localhost:6379"
@@ -45,9 +54,6 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440  # 24 hours
     REFRESH_TOKEN_EXPIRE_DAYS: int = 30
-    
-    # ChromaDB
-    CHROMA_PERSIST_DIRECTORY: str = "./chroma_db"
     
     class Config:
         env_file = ".env"

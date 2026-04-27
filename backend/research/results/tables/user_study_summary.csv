@@ -1,0 +1,5 @@
+group,n,pre_score,post_score,learning_gain,normalized_gain,correct_pct,bkt_auc,halluc_rate
+Strong,5,30.0,83.0,72.6,72.6,56.0,0.5465,14.5
+Medium,10,11.5,73.0,69.2,69.2,37.6,0.5455,15.1
+Weak,5,2.0,22.0,20.2,20.2,14.0,0.4367,14.0
+All,20,13.8,62.8,57.8,57.8,36.3,0.5185,14.7

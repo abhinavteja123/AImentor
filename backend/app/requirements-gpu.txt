@@ -1,0 +1,10 @@
+# Additive on top of backend/app/requirements-research.txt.
+# Install with a CUDA-matching torch wheel, e.g.
+#     pip install --index-url https://download.pytorch.org/whl/cu121 torch
+# on V100 / T4 / A100 machines.
+
+torch>=2.2
+transformers>=4.40
+accelerate>=0.30
+datasets>=2.19
+huggingface_hub[hf_xet]>=0.24

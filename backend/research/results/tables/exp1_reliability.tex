@@ -1,0 +1,15 @@
+\begin{table}[t]
+\centering
+\caption{End-to-end LLM-call reliability under injected faults (n=10\,000).}
+\label{tab:reliability}
+\begin{tabular}{lrrrrr}
+\hline
+Scenario & Success rate & p50 (ms) & p95 (ms) & p99 (ms) & Mean (ms) \\
+\hline
+single\_gemini & 0.784 & 604.629 & 1951.037 & 3220.189 & 781.000 \\
+single\_groq & 0.844 & 451.399 & 1040.219 & 1411.259 & 511.175 \\
+single\_cerebras & 0.789 & 494.227 & 1339.958 & 2053.797 & 592.107 \\
+chain\_proposed & 0.993 & 500.684 & 1419.425 & 2262.430 & 620.946 \\
+\hline
+\end{tabular}
+\end{table}

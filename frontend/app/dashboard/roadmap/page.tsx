@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
     Map, ChevronLeft, ChevronRight, Calendar, Clock, CheckCircle2,
@@ -70,8 +70,10 @@ const taskTypeColors: { [key: string]: string } = {
     project: 'from-emerald-500 to-teal-500',
 }
 
-export default function RoadmapPage() {
+function RoadmapContent() {
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const focusTaskId = searchParams?.get('task') ?? null
     const { isAuthenticated, checkAuth } = useAuthStore()
     const [roadmap, setRoadmap] = useState<Roadmap | null>(null)
     const [weekData, setWeekData] = useState<Week | null>(null)
@@ -79,6 +81,7 @@ export default function RoadmapPage() {
     const [isLoading, setIsLoading] = useState(true)
     const [isGenerating, setIsGenerating] = useState(false)
     const [completingTask, setCompletingTask] = useState<string | null>(null)
+    const [focusedTaskId, setFocusedTaskId] = useState<string | null>(null)
 
     useEffect(() => {
         checkAuth()
@@ -100,10 +103,29 @@ export default function RoadmapPage() {
         }
     }, [selectedWeek, roadmap])
 
+    // When the week loads and a ?task=<id> is pending, scroll to it and flash.
+    useEffect(() => {
+        if (!focusTaskId || !weekData) return
+        const el = document.getElementById(`task-${focusTaskId}`)
+        if (!el) return
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        setFocusedTaskId(focusTaskId)
+        const timer = setTimeout(() => setFocusedTaskId(null), 2500)
+        return () => clearTimeout(timer)
+    }, [weekData, focusTaskId])
+
     const fetchRoadmap = async () => {
         try {
             const data = await roadmapApi.getCurrent()
             setRoadmap(data)
+            // If the URL points at a specific task, land on its week.
+            if (focusTaskId && Array.isArray(data.tasks)) {
+                const target = data.tasks.find((t: any) => t.id === focusTaskId)
+                if (target?.week_number) {
+                    setSelectedWeek(target.week_number)
+                    return
+                }
+            }
             setSelectedWeek(data.current_week || 1)
         } catch (error) {
             console.log('No active roadmap')
@@ -457,13 +479,16 @@ export default function RoadmapPage() {
                                                     return (
                                                         <motion.div
                                                             key={task.id}
+                                                            id={`task-${task.id}`}
                                                             initial={{ opacity: 0, y: 20 }}
                                                             animate={{ opacity: 1, y: 0 }}
                                                             transition={{ delay: idx * 0.05 }}
                                                         >
-                                                            <Card className={`transition-all ${isComplete ? 'border-emerald-500/50 bg-emerald-500/5' :
-                                                                    isSkipped ? 'border-orange-500/50 bg-orange-500/5 opacity-60' :
-                                                                        'hover:border-primary/50'
+                                                            <Card className={`transition-all ${
+                                                                focusedTaskId === task.id ? 'ring-2 ring-primary shadow-lg' :
+                                                                isComplete ? 'border-emerald-500/50 bg-emerald-500/5' :
+                                                                isSkipped ? 'border-orange-500/50 bg-orange-500/5 opacity-60' :
+                                                                'hover:border-primary/50'
                                                                 }`}>
                                                                 <CardContent className="py-4">
                                                                     <div className="flex items-start gap-4">
@@ -473,13 +498,13 @@ export default function RoadmapPage() {
                                                                         </div>
 
                                                                         {/* Content */}
-                                                                        <div className="flex-1 min-w-0">
+                                                                        <div className="flex-1 min-w-0 overflow-hidden">
                                                                             <div className="flex items-start justify-between gap-4">
-                                                                                <div>
+                                                                                <div className="flex-1 min-w-0">
                                                                                     <h4 className={`font-medium ${isComplete ? 'line-through text-muted-foreground' : ''}`}>
                                                                                         {task.task_title}
                                                                                     </h4>
-                                                                                    <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                                                                                    <p className="text-sm text-muted-foreground mt-1 whitespace-pre-line break-words">
                                                                                         {task.task_description}
                                                                                     </p>
                                                                                 </div>
@@ -569,5 +594,20 @@ export default function RoadmapPage() {
                 </motion.div>
             </AnimatePresence>
         </div>
+    )
+}
+
+export default function RoadmapPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-background">
+                <div className="text-center">
+                    <Loader2 className="h-12 w-12 text-primary mx-auto animate-spin" />
+                    <p className="mt-4 text-muted-foreground">Loading roadmap...</p>
+                </div>
+            </div>
+        }>
+            <RoadmapContent />
+        </Suspense>
     )
 }

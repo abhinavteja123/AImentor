@@ -1,0 +1,28 @@
+# Research-only dependencies for backend/research/*.
+# Install separately so the production image stays lean:
+#   pip install -r app/requirements-research.txt
+
+numpy>=1.26
+scipy>=1.11
+scikit-learn>=1.4
+rank-bm25>=0.2
+pyyaml>=6.0
+pandas>=2.1
+tqdm>=4.66
+matplotlib>=3.8
+
+# Semantic ATS + cross-encoder — medium install (~400 MB incl. torch).
+# Every experiment degrades gracefully if these are absent.
+sentence-transformers>=2.6
+
+# Optional fine-tune stack for the DistilBERT intent classifier.
+# Uncomment only if GPU/adequate RAM available; sklearn fallback otherwise.
+# transformers>=4.40
+# torch>=2.2
+
+# PPO trainer for the adaptive-difficulty agent (Paper Section 5.3).
+# Required to run train_ppo_tutor.py and to load the checkpoint at runtime.
+# The runtime backend falls back to MAB if these are absent.
+stable-baselines3>=2.3
+gymnasium>=0.29
+tensorboard>=2.15

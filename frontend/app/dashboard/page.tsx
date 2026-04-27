@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import {
     Sparkles, Target, BookOpen, MessageCircle, FileText,
     TrendingUp, Clock, Flame, Award, ChevronRight, Play,
-    LayoutDashboard, User, Settings, LogOut
+    LayoutDashboard, User, Settings, LogOut, Menu, X, Brain
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -21,6 +21,7 @@ const navItems = [
     { href: '/dashboard/roadmap', label: 'My Roadmap', icon: Target },
     { href: '/dashboard/skills', label: 'Skills', icon: TrendingUp },
     { href: '/dashboard/chat', label: 'AI Mentor', icon: MessageCircle },
+    { href: '/dashboard/tutor', label: 'RAG Tutor', icon: Brain },
     { href: '/dashboard/progress', label: 'Progress', icon: BookOpen },
     { href: '/dashboard/resume', label: 'Resume', icon: FileText },
     { href: '/dashboard/profile', label: 'Profile', icon: User },
@@ -37,6 +38,7 @@ export default function DashboardPage() {
     const { user, isAuthenticated, checkAuth, logout } = useAuthStore()
     const [data, setData] = useState<DashboardData | null>(null)
     const [isLoading, setIsLoading] = useState(true)
+    const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
     useEffect(() => {
         checkAuth()
@@ -99,11 +101,47 @@ export default function DashboardPage() {
 
     return (
         <div className="min-h-screen bg-background">
-            {/* Sidebar */}
-            <aside className="fixed left-0 top-0 h-full w-64 bg-card border-r border-border p-4 hidden lg:block">
-                <div className="flex items-center space-x-2 mb-8">
-                    <Sparkles className="h-8 w-8 text-primary" />
-                    <span className="text-xl font-bold text-gradient">AI Mentor</span>
+            {/* Mobile top bar */}
+            <header className="lg:hidden sticky top-0 z-30 flex items-center justify-between px-4 h-14 bg-card/90 backdrop-blur border-b border-border">
+                <div className="flex items-center space-x-2">
+                    <Sparkles className="h-6 w-6 text-primary" />
+                    <span className="font-bold text-gradient">AI Mentor</span>
+                </div>
+                <button
+                    onClick={() => setMobileNavOpen(true)}
+                    className="p-2 rounded-lg hover:bg-muted"
+                    aria-label="Open navigation"
+                >
+                    <Menu className="h-5 w-5" />
+                </button>
+            </header>
+
+            {/* Mobile nav overlay */}
+            {mobileNavOpen && (
+                <div
+                    className="lg:hidden fixed inset-0 z-40 bg-black/60"
+                    onClick={() => setMobileNavOpen(false)}
+                />
+            )}
+
+            {/* Sidebar — fixed on desktop, drawer on mobile */}
+            <aside
+                className={`fixed left-0 top-0 h-full w-64 bg-card border-r border-border p-4 z-50 transition-transform lg:translate-x-0 ${
+                    mobileNavOpen ? 'translate-x-0' : '-translate-x-full'
+                }`}
+            >
+                <div className="flex items-center justify-between mb-8">
+                    <div className="flex items-center space-x-2">
+                        <Sparkles className="h-8 w-8 text-primary" />
+                        <span className="text-xl font-bold text-gradient">AI Mentor</span>
+                    </div>
+                    <button
+                        onClick={() => setMobileNavOpen(false)}
+                        className="lg:hidden p-2 rounded-lg hover:bg-muted"
+                        aria-label="Close navigation"
+                    >
+                        <X className="h-5 w-5" />
+                    </button>
                 </div>
 
                 <nav className="space-y-2">
@@ -111,6 +149,7 @@ export default function DashboardPage() {
                         <Link
                             key={item.href}
                             href={item.href}
+                            onClick={() => setMobileNavOpen(false)}
                             className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-colors ${item.href === '/dashboard'
                                     ? 'bg-primary/10 text-primary'
                                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -134,7 +173,7 @@ export default function DashboardPage() {
             </aside>
 
             {/* Main Content */}
-            <main className="lg:ml-64 p-6">
+            <main className="lg:ml-64 p-4 md:p-6">
                 {/* Header */}
                 <div className="mb-8">
                     <motion.div
@@ -224,24 +263,51 @@ export default function DashboardPage() {
                                         <div className="bg-muted/50 rounded-xl p-4">
                                             <h4 className="font-medium mb-2">Today's Focus</h4>
                                             <div className="space-y-2">
-                                                {[
-                                                    { title: 'Continue learning fundamentals', duration: '30 min', type: 'reading' },
-                                                    { title: 'Practice coding exercises', duration: '45 min', type: 'coding' },
-                                                ].map((task, index) => (
-                                                    <div
-                                                        key={index}
-                                                        className="flex items-center justify-between bg-background rounded-lg p-3"
-                                                    >
-                                                        <div className="flex items-center space-x-3">
-                                                            <Play className="h-5 w-5 text-primary" />
-                                                            <div>
-                                                                <p className="font-medium text-sm">{task.title}</p>
-                                                                <p className="text-xs text-muted-foreground">{task.duration}</p>
+                                                {(() => {
+                                                    const allTasks = (data?.roadmap?.tasks ?? []) as Array<{
+                                                        id: string
+                                                        task_title: string
+                                                        estimated_duration?: number
+                                                        task_type?: string
+                                                        status?: string
+                                                    }>
+                                                    const pending = allTasks
+                                                        .filter(t => t.status !== 'completed')
+                                                        .slice(0, 2)
+                                                    if (pending.length === 0) {
+                                                        return (
+                                                            <p className="text-sm text-muted-foreground">
+                                                                All tasks complete — nice work!
+                                                            </p>
+                                                        )
+                                                    }
+                                                    return pending.map(task => (
+                                                        <div
+                                                            key={task.id}
+                                                            className="flex items-center justify-between bg-background rounded-lg p-3"
+                                                        >
+                                                            <div className="flex items-center space-x-3">
+                                                                <Play className="h-5 w-5 text-primary" />
+                                                                <div>
+                                                                    <p className="font-medium text-sm">{task.task_title}</p>
+                                                                    <p className="text-xs text-muted-foreground">
+                                                                        {task.estimated_duration ?? 30} min
+                                                                    </p>
+                                                                </div>
                                                             </div>
+                                                            <Button
+                                                                size="sm"
+                                                                onClick={() =>
+                                                                    router.push(
+                                                                        `/dashboard/roadmap?task=${task.id}`
+                                                                    )
+                                                                }
+                                                            >
+                                                                Start
+                                                            </Button>
                                                         </div>
-                                                        <Button size="sm">Start</Button>
-                                                    </div>
-                                                ))}
+                                                    ))
+                                                })()}
                                             </div>
                                         </div>
                                     </div>
@@ -301,6 +367,7 @@ export default function DashboardPage() {
                             <CardContent className="space-y-2">
                                 {[
                                     { label: 'Skill Gap Analysis', href: '/dashboard/skills', icon: Target },
+                                    { label: 'Adaptive Tutor', href: '/dashboard/tutor', icon: Brain },
                                     { label: 'Update Resume', href: '/dashboard/resume', icon: FileText },
                                     { label: 'View Achievements', href: '/dashboard/progress', icon: Award },
                                 ].map((action, index) => (

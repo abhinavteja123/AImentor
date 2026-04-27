@@ -1,0 +1,122 @@
+skill,category,aliases
+Python,languages,python3;py
+JavaScript,languages,js;ecmascript
+TypeScript,languages,ts
+Java,languages,
+Go,languages,golang
+Rust,languages,
+C++,languages,cpp;cplusplus
+C#,languages,csharp;dotnet
+Ruby,languages,
+PHP,languages,
+Kotlin,languages,
+Swift,languages,
+SQL,languages,
+Bash,languages,shell;sh
+HTML,languages,html5
+CSS,languages,css3;scss
+React,frameworks,reactjs;react.js
+Vue,frameworks,vuejs;vue.js
+Angular,frameworks,angularjs
+Next.js,frameworks,nextjs
+Svelte,frameworks,sveltekit
+Django,frameworks,
+Flask,frameworks,
+FastAPI,frameworks,
+Spring,frameworks,springboot;spring-boot
+Express,frameworks,expressjs
+NestJS,frameworks,nest.js
+Rails,frameworks,rubyonrails;ror
+Laravel,frameworks,
+Node.js,frameworks,nodejs;node
+TensorFlow,frameworks,tf
+PyTorch,frameworks,torch
+Keras,frameworks,
+scikit-learn,frameworks,sklearn
+XGBoost,frameworks,xgb
+PostgreSQL,databases,postgres;psql
+MySQL,databases,
+MongoDB,databases,mongo
+Redis,databases,
+SQLite,databases,
+Cassandra,databases,
+DynamoDB,databases,
+Elasticsearch,databases,elastic;es
+Neo4j,databases,
+BigQuery,databases,
+Snowflake,databases,
+AWS,cloud,amazonwebservices
+GCP,cloud,googlecloud
+Azure,cloud,msazure
+Lambda,cloud,awslambda
+S3,cloud,
+EC2,cloud,
+Cloudflare,cloud,
+Vercel,cloud,
+Docker,devops,
+Kubernetes,devops,k8s
+Terraform,devops,iac
+Ansible,devops,
+Jenkins,devops,
+GitHub Actions,devops,gha;github-actions
+CircleCI,devops,
+GitLab CI,devops,gitlabci
+Prometheus,devops,
+Grafana,devops,
+Datadog,devops,dd
+Sentry,devops,
+Git,tools,
+Linux,tools,
+Vim,tools,neovim
+VSCode,tools,
+Figma,tools,
+Jira,tools,
+Agile,soft_skills,scrum;kanban
+Communication,soft_skills,
+Problem Solving,soft_skills,problemsolving
+Teamwork,soft_skills,collaboration
+Leadership,soft_skills,
+Time Management,soft_skills,
+Machine Learning,ai_ml,ml
+Deep Learning,ai_ml,dl
+Natural Language Processing,ai_ml,nlp
+Computer Vision,ai_ml,cv
+Reinforcement Learning,ai_ml,rl
+LLM,ai_ml,largelanguagemodels;llms
+Prompt Engineering,ai_ml,
+LangChain,ai_ml,
+Hugging Face,ai_ml,huggingface;hf
+Pandas,data,
+NumPy,data,
+Matplotlib,data,
+Seaborn,data,
+Airflow,data,apache-airflow
+Spark,data,apache-spark
+Kafka,data,apache-kafka
+dbt,data,
+Looker,data,
+Tableau,data,
+Power BI,data,powerbi
+REST API,backend,rest;api
+GraphQL,backend,gql
+gRPC,backend,
+WebSockets,backend,ws
+Microservices,backend,
+OAuth2,security,oauth
+JWT,security,
+OWASP,security,
+Penetration Testing,security,pentest
+Threat Modeling,security,
+React Native,mobile,rn
+Flutter,mobile,
+iOS,mobile,
+Android,mobile,
+Testing,testing,unittest;unit-testing
+Pytest,testing,
+Jest,testing,
+Cypress,testing,
+Playwright,testing,
+TDD,testing,test-driven
+CI/CD,devops,cicd
+Scrum,soft_skills,
+Mentoring,soft_skills,

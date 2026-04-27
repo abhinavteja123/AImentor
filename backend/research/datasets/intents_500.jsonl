@@ -1,0 +1,500 @@
+{"text": "hmm interesting.", "intent": "general_chat", "template_id": "general_chat#2"}
+{"text": "Quick question \u2014 i'm behind on python.", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "Where can I learn Python", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "What's on my plate today?", "intent": "asking_next_steps", "template_id": "asking_next_steps#9"}
+{"text": "Quick question \u2014 thanks!", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "How does Python compare to CSS grid?", "intent": "requesting_explanation", "template_id": "requesting_explanation#3"}
+{"text": "Share learning resources for TypeScript.", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "Good morning.", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "Hey, could you describe typescript in simple terms?", "intent": "requesting_explanation", "template_id": "requesting_explanation#4"}
+{"text": "what's my streak?", "intent": "asking_progress", "template_id": "asking_progress#3"}
+{"text": "I finished Git, what next", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "I'm behind on TensorFlow. thanks", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "I'm behind on TensorFlow...", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "how am i doing?", "intent": "asking_progress", "template_id": "asking_progress#0"}
+{"text": "I'm behind on TensorFlow.", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "Good morning. thanks", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "Where can I learn TypeScript", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "Explain how TensorFlow works. thanks", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "what's on my plate today?", "intent": "asking_next_steps", "template_id": "asking_next_steps#9"}
+{"text": "Thanks!", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "WHERE CAN I LEARN PYTHON?", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "SQL is really difficult for me...", "intent": "reporting_struggle", "template_id": "reporting_struggle#2"}
+{"text": "Hey, i've been stuck on promises for hours.", "intent": "asking_for_help", "template_id": "asking_for_help#6"}
+{"text": "where can i learn python?", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "Hey, elaborate on tensorflow.", "intent": "requesting_explanation", "template_id": "requesting_explanation#9"}
+{"text": "Hey, how many tasks did i complete this week?", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "could you help me figure out python?", "intent": "asking_for_help", "template_id": "asking_for_help#1"}
+{"text": "Explain how TensorFlow works.", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "Share learning resources for TypeScript...", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "i finished pandas, what next?", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "Hey, been stuck on javascript all week.", "intent": "reporting_struggle", "template_id": "reporting_struggle#7"}
+{"text": "What's my next task today?", "intent": "asking_next_steps", "template_id": "asking_next_steps#1"}
+{"text": "Why should I keep going?", "intent": "seeking_motivation", "template_id": "seeking_motivation#5"}
+{"text": "Should I move to TypeScript now?", "intent": "asking_next_steps", "template_id": "asking_next_steps#3"}
+{"text": "I'm struggling with async/await...", "intent": "reporting_struggle", "template_id": "reporting_struggle#0"}
+{"text": "Why does GraphQL matter?", "intent": "requesting_explanation", "template_id": "requesting_explanation#2"}
+{"text": "Quick question \u2014 what now?", "intent": "asking_next_steps", "template_id": "asking_next_steps#4"}
+{"text": "SQL is really difficult for me.", "intent": "reporting_struggle", "template_id": "reporting_struggle#2"}
+{"text": "I finished Git, what next? thanks", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "What comes after this?", "intent": "asking_next_steps", "template_id": "asking_next_steps#6"}
+{"text": "Quick question \u2014 nice work mentor.", "intent": "general_chat", "template_id": "general_chat#7"}
+{"text": "I'm blocked on TensorFlow, guidance", "intent": "asking_for_help", "template_id": "asking_for_help#9"}
+{"text": "I need assistance with REST APIs.", "intent": "asking_for_help", "template_id": "asking_for_help#4"}
+{"text": "Hey, i can't seem to grasp recursion.", "intent": "reporting_struggle", "template_id": "reporting_struggle#1"}
+{"text": "Quick question \u2014 good morning.", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "Quick question \u2014 i finished git, what next?", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "This is hard, I might quit.", "intent": "seeking_motivation", "template_id": "seeking_motivation#1"}
+{"text": "I can't seem to grasp recursion...", "intent": "reporting_struggle", "template_id": "reporting_struggle#1"}
+{"text": "ELABORATE ON TENSORFLOW.", "intent": "requesting_explanation", "template_id": "requesting_explanation#9"}
+{"text": "give me the 101 on closures.", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "good morning.", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "I'm finding Docker impossible.", "intent": "reporting_struggle", "template_id": "reporting_struggle#6"}
+{"text": "How far have I come?", "intent": "asking_progress", "template_id": "asking_progress#8"}
+{"text": "Quick question \u2014 i'm struggling with async/await.", "intent": "reporting_struggle", "template_id": "reporting_struggle#0"}
+{"text": "Quick question \u2014 how does python compare to css grid?", "intent": "requesting_explanation", "template_id": "requesting_explanation#3"}
+{"text": "I don't understand async/await, I'm confused...", "intent": "asking_for_help", "template_id": "asking_for_help#2"}
+{"text": "What now?", "intent": "asking_next_steps", "template_id": "asking_next_steps#4"}
+{"text": "point me at docs for rest apis.", "intent": "requesting_resources", "template_id": "requesting_resources#5"}
+{"text": "Any books on Pandas", "intent": "requesting_resources", "template_id": "requesting_resources#2"}
+{"text": "Tell me a joke about coding...", "intent": "general_chat", "template_id": "general_chat#8"}
+{"text": "I need assistance with REST APIs.", "intent": "asking_for_help", "template_id": "asking_for_help#4"}
+{"text": "could you describe typescript in simple terms?", "intent": "requesting_explanation", "template_id": "requesting_explanation#4"}
+{"text": "Share learning resources for TensorFlow.", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "I'm struggling with async/await. thanks", "intent": "reporting_struggle", "template_id": "reporting_struggle#0"}
+{"text": "I'm losing steam on this journey.", "intent": "seeking_motivation", "template_id": "seeking_motivation#4"}
+{"text": "Quick question \u2014 point me at docs for rest apis.", "intent": "requesting_resources", "template_id": "requesting_resources#5"}
+{"text": "i'm losing steam on this journey.", "intent": "seeking_motivation", "template_id": "seeking_motivation#4"}
+{"text": "Any books on Pandas?", "intent": "requesting_resources", "template_id": "requesting_resources#2"}
+{"text": "Hey, why should i keep going?", "intent": "seeking_motivation", "template_id": "seeking_motivation#5"}
+{"text": "How am I doing?", "intent": "asking_progress", "template_id": "asking_progress#0"}
+{"text": "Point me at docs for REST APIs.", "intent": "requesting_resources", "template_id": "requesting_resources#5"}
+{"text": "Quick question \u2014 how far have i come?", "intent": "asking_progress", "template_id": "asking_progress#8"}
+{"text": "Hey, this is hard, i might quit.", "intent": "seeking_motivation", "template_id": "seeking_motivation#1"}
+{"text": "Quick question \u2014 explain how tensorflow works.", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "Should I move to TypeScript now?", "intent": "asking_next_steps", "template_id": "asking_next_steps#3"}
+{"text": "Hey, where can i learn python?", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "My imposter syndrome is loud.", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "Quick question \u2014 check my stats.", "intent": "asking_progress", "template_id": "asking_progress#9"}
+{"text": "Show me my progress.", "intent": "asking_progress", "template_id": "asking_progress#1"}
+{"text": "I finished Git, what next?", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "my imposter syndrome is loud.", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "Could you describe TypeScript in simple terms?", "intent": "requesting_explanation", "template_id": "requesting_explanation#4"}
+{"text": "How does Python compare to CSS grid?", "intent": "requesting_explanation", "template_id": "requesting_explanation#3"}
+{"text": "Hey, i'm struggling with async/await.", "intent": "reporting_struggle", "template_id": "reporting_struggle#0"}
+{"text": "I've been stuck on promises for hours.", "intent": "asking_for_help", "template_id": "asking_for_help#6"}
+{"text": "Hmm interesting.", "intent": "general_chat", "template_id": "general_chat#2"}
+{"text": "My imposter syndrome is loud...", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "Hey, where can i learn typescript?", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "What's on my plate today?", "intent": "asking_next_steps", "template_id": "asking_next_steps#9"}
+{"text": "This is hard, I might quit.", "intent": "seeking_motivation", "template_id": "seeking_motivation#1"}
+{"text": "share learning resources for tensorflow.", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "Hey, ok got it.", "intent": "general_chat", "template_id": "general_chat#5"}
+{"text": "Hey, best videos on pandas?", "intent": "requesting_resources", "template_id": "requesting_resources#4"}
+{"text": "What's my next task today? thanks", "intent": "asking_next_steps", "template_id": "asking_next_steps#1"}
+{"text": "Tell me a joke about coding. thanks", "intent": "general_chat", "template_id": "general_chat#8"}
+{"text": "Share learning resources for TypeScript.", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "What's my streak?", "intent": "asking_progress", "template_id": "asking_progress#3"}
+{"text": "I'm blocked on TensorFlow, guidance? thanks", "intent": "asking_for_help", "template_id": "asking_for_help#9"}
+{"text": "Been stuck on JavaScript all week.", "intent": "reporting_struggle", "template_id": "reporting_struggle#7"}
+{"text": "Ok got it.", "intent": "general_chat", "template_id": "general_chat#5"}
+{"text": "Nice work mentor.", "intent": "general_chat", "template_id": "general_chat#7"}
+{"text": "Thanks!", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "I'm finding Docker impossible. thanks", "intent": "reporting_struggle", "template_id": "reporting_struggle#6"}
+{"text": "What's my next task today", "intent": "asking_next_steps", "template_id": "asking_next_steps#1"}
+{"text": "I'm losing steam on this journey. thanks", "intent": "seeking_motivation", "template_id": "seeking_motivation#4"}
+{"text": "Explain how TensorFlow works.", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "my imposter syndrome is loud.", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "Elaborate on TensorFlow. thanks", "intent": "requesting_explanation", "template_id": "requesting_explanation#9"}
+{"text": "Hey, i'm blocked on aws, guidance?", "intent": "asking_for_help", "template_id": "asking_for_help#9"}
+{"text": "Why should I keep going", "intent": "seeking_motivation", "template_id": "seeking_motivation#5"}
+{"text": "Could you describe TypeScript in simple terms", "intent": "requesting_explanation", "template_id": "requesting_explanation#4"}
+{"text": "How many tasks did I complete this week", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "I NEED ASSISTANCE WITH REST APIS.", "intent": "asking_for_help", "template_id": "asking_for_help#4"}
+{"text": "Hey, explain how python works.", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "Hey, how does python compare to css grid?", "intent": "requesting_explanation", "template_id": "requesting_explanation#3"}
+{"text": "help me with promises please.", "intent": "asking_for_help", "template_id": "asking_for_help#3"}
+{"text": "I CAN'T SEEM TO GRASP TRANSFORMERS.", "intent": "reporting_struggle", "template_id": "reporting_struggle#1"}
+{"text": "I'm blocked on TensorFlow, guidance?", "intent": "asking_for_help", "template_id": "asking_for_help#9"}
+{"text": "Any books on Pandas? thanks", "intent": "requesting_resources", "template_id": "requesting_resources#2"}
+{"text": "What's my streak", "intent": "asking_progress", "template_id": "asking_progress#3"}
+{"text": "My imposter syndrome is loud.", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "Hey, i'm blocked on tensorflow, guidance?", "intent": "asking_for_help", "template_id": "asking_for_help#9"}
+{"text": "tell me a joke about coding.", "intent": "general_chat", "template_id": "general_chat#8"}
+{"text": "SQL is really difficult for me.", "intent": "reporting_struggle", "template_id": "reporting_struggle#2"}
+{"text": "How does Python compare to CSS grid? thanks", "intent": "requesting_explanation", "template_id": "requesting_explanation#3"}
+{"text": "How far have I come?", "intent": "asking_progress", "template_id": "asking_progress#8"}
+{"text": "I'm struggling with async/await.", "intent": "reporting_struggle", "template_id": "reporting_struggle#0"}
+{"text": "Should I move to TypeScript now?", "intent": "asking_next_steps", "template_id": "asking_next_steps#3"}
+{"text": "Could you help me figure out Python?", "intent": "asking_for_help", "template_id": "asking_for_help#1"}
+{"text": "My imposter syndrome is loud.", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "Explain how TensorFlow works.", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "Hey, explain how tensorflow works.", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "Check my stats.", "intent": "asking_progress", "template_id": "asking_progress#9"}
+{"text": "What comes after this?", "intent": "asking_next_steps", "template_id": "asking_next_steps#6"}
+{"text": "What's on my plate today? thanks", "intent": "asking_next_steps", "template_id": "asking_next_steps#9"}
+{"text": "Hey, i'm behind on tensorflow.", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "I'm finding Docker impossible.", "intent": "reporting_struggle", "template_id": "reporting_struggle#6"}
+{"text": "Hey, feeling burned out, any words of encouragement?", "intent": "seeking_motivation", "template_id": "seeking_motivation#3"}
+{"text": "Hey, share learning resources for typescript.", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "Ok got it. thanks", "intent": "general_chat", "template_id": "general_chat#5"}
+{"text": "Give me the best SQL guide.", "intent": "requesting_resources", "template_id": "requesting_resources#8"}
+{"text": "why should i keep going?", "intent": "seeking_motivation", "template_id": "seeking_motivation#5"}
+{"text": "Quick question \u2014 give me the best sql guide.", "intent": "requesting_resources", "template_id": "requesting_resources#8"}
+{"text": "How am I doing? thanks", "intent": "asking_progress", "template_id": "asking_progress#0"}
+{"text": "Quick question \u2014 help me with promises please.", "intent": "asking_for_help", "template_id": "asking_for_help#3"}
+{"text": "Elaborate on TensorFlow...", "intent": "requesting_explanation", "template_id": "requesting_explanation#9"}
+{"text": "Feeling burned out, any words of encouragement", "intent": "seeking_motivation", "template_id": "seeking_motivation#3"}
+{"text": "My imposter syndrome is loud.", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "Explain how Python works.", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "What comes after this?", "intent": "asking_next_steps", "template_id": "asking_next_steps#6"}
+{"text": "Quick question \u2014 how many tasks did i complete this week?", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "How does Python compare to CSS grid", "intent": "requesting_explanation", "template_id": "requesting_explanation#3"}
+{"text": "Give me the 101 on closures.", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "How many tasks did I complete this week?", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "My imposter syndrome is loud. thanks", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "Any books on Pandas?", "intent": "requesting_resources", "template_id": "requesting_resources#2"}
+{"text": "I DON'T UNDERSTAND ASYNC/AWAIT, I'M CONFUSED.", "intent": "asking_for_help", "template_id": "asking_for_help#2"}
+{"text": "Hey, give me the 101 on closures.", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "Explain how TensorFlow works...", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "How many tasks did I complete this week?", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "Hey, my imposter syndrome is loud.", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "I'm blocked on TensorFlow, guidance?", "intent": "asking_for_help", "template_id": "asking_for_help#9"}
+{"text": "Help me with promises please. thanks", "intent": "asking_for_help", "template_id": "asking_for_help#3"}
+{"text": "I've been stuck on promises for hours.", "intent": "asking_for_help", "template_id": "asking_for_help#6"}
+{"text": "check my stats.", "intent": "asking_progress", "template_id": "asking_progress#9"}
+{"text": "Quick question \u2014 where can i learn python?", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "Feeling burned out, any words of encouragement?", "intent": "seeking_motivation", "template_id": "seeking_motivation#3"}
+{"text": "I'm struggling with async/await.", "intent": "reporting_struggle", "template_id": "reporting_struggle#0"}
+{"text": "How am I doing? thanks", "intent": "asking_progress", "template_id": "asking_progress#0"}
+{"text": "feeling burned out, any words of encouragement?", "intent": "seeking_motivation", "template_id": "seeking_motivation#3"}
+{"text": "Share learning resources for TensorFlow. thanks", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "Why does GraphQL matter", "intent": "requesting_explanation", "template_id": "requesting_explanation#2"}
+{"text": "Give me the 101 on closures. thanks", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "Why should I keep going? thanks", "intent": "seeking_motivation", "template_id": "seeking_motivation#5"}
+{"text": "I'm finding Docker impossible...", "intent": "reporting_struggle", "template_id": "reporting_struggle#6"}
+{"text": "Elaborate on TensorFlow.", "intent": "requesting_explanation", "template_id": "requesting_explanation#9"}
+{"text": "Good morning...", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "Hey, could you help me figure out python?", "intent": "asking_for_help", "template_id": "asking_for_help#1"}
+{"text": "Why does GraphQL matter?", "intent": "requesting_explanation", "template_id": "requesting_explanation#2"}
+{"text": "Help me with promises please.", "intent": "asking_for_help", "template_id": "asking_for_help#3"}
+{"text": "Help me with promises please.", "intent": "asking_for_help", "template_id": "asking_for_help#3"}
+{"text": "Quick question \u2014 i've been stuck on promises for hours.", "intent": "asking_for_help", "template_id": "asking_for_help#6"}
+{"text": "Good morning.", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "Hey, any chance you can unblock me on kubernetes?", "intent": "asking_for_help", "template_id": "asking_for_help#8"}
+{"text": "Where can I learn TypeScript?", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "I don't understand async/await, I'm confused.", "intent": "asking_for_help", "template_id": "asking_for_help#2"}
+{"text": "ANY BOOKS ON PANDAS?", "intent": "requesting_resources", "template_id": "requesting_resources#2"}
+{"text": "What's on my plate today?", "intent": "asking_next_steps", "template_id": "asking_next_steps#9"}
+{"text": "Should I move to TypeScript now", "intent": "asking_next_steps", "template_id": "asking_next_steps#3"}
+{"text": "Hey, my imposter syndrome is loud.", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "explain how tensorflow works.", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "Hey, sql is really difficult for me.", "intent": "reporting_struggle", "template_id": "reporting_struggle#2"}
+{"text": "I finished Pandas, what next?", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "I can't seem to grasp transformers. thanks", "intent": "reporting_struggle", "template_id": "reporting_struggle#1"}
+{"text": "What's my streak?", "intent": "asking_progress", "template_id": "asking_progress#3"}
+{"text": "Give me the 101 on closures.", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "Quick question \u2014 i need assistance with rest apis.", "intent": "asking_for_help", "template_id": "asking_for_help#4"}
+{"text": "Quick question \u2014 i can't seem to grasp recursion.", "intent": "reporting_struggle", "template_id": "reporting_struggle#1"}
+{"text": "How am I doing?", "intent": "asking_progress", "template_id": "asking_progress#0"}
+{"text": "Hey, what's on my plate today?", "intent": "asking_next_steps", "template_id": "asking_next_steps#9"}
+{"text": "Point me at docs for REST APIs. thanks", "intent": "requesting_resources", "template_id": "requesting_resources#5"}
+{"text": "how many tasks did i complete this week?", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "how am i doing?", "intent": "asking_progress", "template_id": "asking_progress#0"}
+{"text": "Hey, i'm finding docker impossible.", "intent": "reporting_struggle", "template_id": "reporting_struggle#6"}
+{"text": "Quick question \u2014 share learning resources for typescript.", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "Explain how Python works.", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "Give me the 101 on closures.", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "This is hard, I might quit...", "intent": "seeking_motivation", "template_id": "seeking_motivation#1"}
+{"text": "Give me the best SQL guide.", "intent": "requesting_resources", "template_id": "requesting_resources#8"}
+{"text": "Good morning.", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "Any chance you can unblock me on Kubernetes?", "intent": "asking_for_help", "template_id": "asking_for_help#8"}
+{"text": "I'm behind on Python.", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "Show me my progress.", "intent": "asking_progress", "template_id": "asking_progress#1"}
+{"text": "Could you describe TypeScript in simple terms?", "intent": "requesting_explanation", "template_id": "requesting_explanation#4"}
+{"text": "Quick question \u2014 what's my next task today?", "intent": "asking_next_steps", "template_id": "asking_next_steps#1"}
+{"text": "Nice work mentor...", "intent": "general_chat", "template_id": "general_chat#7"}
+{"text": "any chance you can unblock me on kubernetes?", "intent": "asking_for_help", "template_id": "asking_for_help#8"}
+{"text": "this is hard, i might quit.", "intent": "seeking_motivation", "template_id": "seeking_motivation#1"}
+{"text": "Point me at docs for REST APIs.", "intent": "requesting_resources", "template_id": "requesting_resources#5"}
+{"text": "should i move to typescript now?", "intent": "asking_next_steps", "template_id": "asking_next_steps#3"}
+{"text": "Hey, how am i doing?", "intent": "asking_progress", "template_id": "asking_progress#0"}
+{"text": "Why should I keep going?", "intent": "seeking_motivation", "template_id": "seeking_motivation#5"}
+{"text": "how many tasks did i complete this week?", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "nice work mentor.", "intent": "general_chat", "template_id": "general_chat#7"}
+{"text": "How far have I come", "intent": "asking_progress", "template_id": "asking_progress#8"}
+{"text": "Quick question \u2014 share learning resources for tensorflow.", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "Give me the 101 on closures...", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "Why should I keep going?", "intent": "seeking_motivation", "template_id": "seeking_motivation#5"}
+{"text": "HOW AM I DOING?", "intent": "asking_progress", "template_id": "asking_progress#0"}
+{"text": "what comes after this?", "intent": "asking_next_steps", "template_id": "asking_next_steps#6"}
+{"text": "Hey, should i move to typescript now?", "intent": "asking_next_steps", "template_id": "asking_next_steps#3"}
+{"text": "I finished Pandas, what next? thanks", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "Hey, what's my streak?", "intent": "asking_progress", "template_id": "asking_progress#3"}
+{"text": "How many tasks did I complete this week? thanks", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "Quick question \u2014 been stuck on javascript all week.", "intent": "reporting_struggle", "template_id": "reporting_struggle#7"}
+{"text": "Quick question \u2014 any chance you can unblock me on kubernetes?", "intent": "asking_for_help", "template_id": "asking_for_help#8"}
+{"text": "Hey, how many tasks did i complete this week?", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "i need a pep talk.", "intent": "seeking_motivation", "template_id": "seeking_motivation#9"}
+{"text": "Quick question \u2014 how am i doing?", "intent": "asking_progress", "template_id": "asking_progress#0"}
+{"text": "I'm blocked on TensorFlow, guidance?", "intent": "asking_for_help", "template_id": "asking_for_help#9"}
+{"text": "What comes after this? thanks", "intent": "asking_next_steps", "template_id": "asking_next_steps#6"}
+{"text": "Give me the 101 on closures. thanks", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "Feeling burned out, any words of encouragement?", "intent": "seeking_motivation", "template_id": "seeking_motivation#3"}
+{"text": "How am I doing?", "intent": "asking_progress", "template_id": "asking_progress#0"}
+{"text": "Hey, tell me a joke about coding.", "intent": "general_chat", "template_id": "general_chat#8"}
+{"text": "Check my stats. thanks", "intent": "asking_progress", "template_id": "asking_progress#9"}
+{"text": "I don't understand async/await, I'm confused. thanks", "intent": "asking_for_help", "template_id": "asking_for_help#2"}
+{"text": "OK GOT IT.", "intent": "general_chat", "template_id": "general_chat#5"}
+{"text": "Hey, what comes after this?", "intent": "asking_next_steps", "template_id": "asking_next_steps#6"}
+{"text": "Quick question \u2014 give me the 101 on closures.", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "Explain how Python works.", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "i don't understand async/await, i'm confused.", "intent": "asking_for_help", "template_id": "asking_for_help#2"}
+{"text": "where can i learn typescript?", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "How many tasks did I complete this week", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "Good morning...", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "I'm behind on Python.", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "Hey, thanks!", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "I can't seem to grasp recursion.", "intent": "reporting_struggle", "template_id": "reporting_struggle#1"}
+{"text": "I'm behind on Python.", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "Thanks!", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "i'm blocked on tensorflow, guidance?", "intent": "asking_for_help", "template_id": "asking_for_help#9"}
+{"text": "Quick question \u2014 give me the best sql guide.", "intent": "requesting_resources", "template_id": "requesting_resources#8"}
+{"text": "Tell me a joke about coding.", "intent": "general_chat", "template_id": "general_chat#8"}
+{"text": "Good morning. thanks", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "give me the best sql guide.", "intent": "requesting_resources", "template_id": "requesting_resources#8"}
+{"text": "Quick question \u2014 show me my progress.", "intent": "asking_progress", "template_id": "asking_progress#1"}
+{"text": "Good morning.", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "why does graphql matter?", "intent": "requesting_explanation", "template_id": "requesting_explanation#2"}
+{"text": "SQL is really difficult for me.", "intent": "reporting_struggle", "template_id": "reporting_struggle#2"}
+{"text": "i'm finding docker impossible.", "intent": "reporting_struggle", "template_id": "reporting_struggle#6"}
+{"text": "Hey, i finished git, what next?", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "Feeling burned out, any words of encouragement?", "intent": "seeking_motivation", "template_id": "seeking_motivation#3"}
+{"text": "Give me the 101 on closures.", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "show me my progress.", "intent": "asking_progress", "template_id": "asking_progress#1"}
+{"text": "Hey, why does graphql matter?", "intent": "requesting_explanation", "template_id": "requesting_explanation#2"}
+{"text": "Any chance you can unblock me on Kubernetes", "intent": "asking_for_help", "template_id": "asking_for_help#8"}
+{"text": "Quick question \u2014 my imposter syndrome is loud.", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "What comes after this", "intent": "asking_next_steps", "template_id": "asking_next_steps#6"}
+{"text": "Show me my progress. thanks", "intent": "asking_progress", "template_id": "asking_progress#1"}
+{"text": "I've been stuck on promises for hours...", "intent": "asking_for_help", "template_id": "asking_for_help#6"}
+{"text": "Been stuck on JavaScript all week.", "intent": "reporting_struggle", "template_id": "reporting_struggle#7"}
+{"text": "ok got it.", "intent": "general_chat", "template_id": "general_chat#5"}
+{"text": "I'm finding Docker impossible.", "intent": "reporting_struggle", "template_id": "reporting_struggle#6"}
+{"text": "Why does GraphQL matter? thanks", "intent": "requesting_explanation", "template_id": "requesting_explanation#2"}
+{"text": "explain how python works.", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "how does python compare to css grid?", "intent": "requesting_explanation", "template_id": "requesting_explanation#3"}
+{"text": "Nice work mentor. thanks", "intent": "general_chat", "template_id": "general_chat#7"}
+{"text": "How many tasks did I complete this week?", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "Hey, show me my progress.", "intent": "asking_progress", "template_id": "asking_progress#1"}
+{"text": "Thanks!", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "Quick question \u2014 what's my streak?", "intent": "asking_progress", "template_id": "asking_progress#3"}
+{"text": "Quick question \u2014 i don't understand async/await, i'm confused.", "intent": "asking_for_help", "template_id": "asking_for_help#2"}
+{"text": "Any chance you can unblock me on Kubernetes? thanks", "intent": "asking_for_help", "template_id": "asking_for_help#8"}
+{"text": "What now? thanks", "intent": "asking_next_steps", "template_id": "asking_next_steps#4"}
+{"text": "Thanks! thanks", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "How am I doing?", "intent": "asking_progress", "template_id": "asking_progress#0"}
+{"text": "Quick question \u2014 i'm behind on tensorflow.", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "Hey, feeling burned out, any words of encouragement?", "intent": "seeking_motivation", "template_id": "seeking_motivation#3"}
+{"text": "Feeling burned out, any words of encouragement?", "intent": "seeking_motivation", "template_id": "seeking_motivation#3"}
+{"text": "What now?", "intent": "asking_next_steps", "template_id": "asking_next_steps#4"}
+{"text": "Quick question \u2014 feeling burned out, any words of encouragement?", "intent": "seeking_motivation", "template_id": "seeking_motivation#3"}
+{"text": "Check my stats...", "intent": "asking_progress", "template_id": "asking_progress#9"}
+{"text": "I finished Pandas, what next", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "Feeling burned out, any words of encouragement? thanks", "intent": "seeking_motivation", "template_id": "seeking_motivation#3"}
+{"text": "Could you help me figure out Python?", "intent": "asking_for_help", "template_id": "asking_for_help#1"}
+{"text": "I need assistance with REST APIs...", "intent": "asking_for_help", "template_id": "asking_for_help#4"}
+{"text": "good morning.", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "Quick question \u2014 i finished pandas, what next?", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "Feeling burned out, any words of encouragement?", "intent": "seeking_motivation", "template_id": "seeking_motivation#3"}
+{"text": "What comes after this?", "intent": "asking_next_steps", "template_id": "asking_next_steps#6"}
+{"text": "Feeling burned out, any words of encouragement?", "intent": "seeking_motivation", "template_id": "seeking_motivation#3"}
+{"text": "been stuck on javascript all week.", "intent": "reporting_struggle", "template_id": "reporting_struggle#7"}
+{"text": "i can't seem to grasp recursion.", "intent": "reporting_struggle", "template_id": "reporting_struggle#1"}
+{"text": "Hey, share learning resources for tensorflow.", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "Check my stats.", "intent": "asking_progress", "template_id": "asking_progress#9"}
+{"text": "Good morning.", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "Hey, give me the best sql guide.", "intent": "requesting_resources", "template_id": "requesting_resources#8"}
+{"text": "thanks!", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "I finished Pandas, what next?", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "Quick question \u2014 hmm interesting.", "intent": "general_chat", "template_id": "general_chat#2"}
+{"text": "Been stuck on JavaScript all week. thanks", "intent": "reporting_struggle", "template_id": "reporting_struggle#7"}
+{"text": "I need a pep talk.", "intent": "seeking_motivation", "template_id": "seeking_motivation#9"}
+{"text": "Hmm interesting. thanks", "intent": "general_chat", "template_id": "general_chat#2"}
+{"text": "I can't seem to grasp recursion. thanks", "intent": "reporting_struggle", "template_id": "reporting_struggle#1"}
+{"text": "Where can I learn Python? thanks", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "I'm losing steam on this journey...", "intent": "seeking_motivation", "template_id": "seeking_motivation#4"}
+{"text": "I've been stuck on promises for hours. thanks", "intent": "asking_for_help", "template_id": "asking_for_help#6"}
+{"text": "Quick question \u2014 thanks!", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "I'm losing steam on this journey.", "intent": "seeking_motivation", "template_id": "seeking_motivation#4"}
+{"text": "Hmm interesting.", "intent": "general_chat", "template_id": "general_chat#2"}
+{"text": "Hmm interesting...", "intent": "general_chat", "template_id": "general_chat#2"}
+{"text": "Hey, nice work mentor.", "intent": "general_chat", "template_id": "general_chat#7"}
+{"text": "Quick question \u2014 give me the best sql guide.", "intent": "requesting_resources", "template_id": "requesting_resources#8"}
+{"text": "Hey, i need assistance with rest apis.", "intent": "asking_for_help", "template_id": "asking_for_help#4"}
+{"text": "I'm struggling with async/await.", "intent": "reporting_struggle", "template_id": "reporting_struggle#0"}
+{"text": "Explain how Python works...", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "GIVE ME THE BEST SQL GUIDE.", "intent": "requesting_resources", "template_id": "requesting_resources#8"}
+{"text": "What's my next task today?", "intent": "asking_next_steps", "template_id": "asking_next_steps#1"}
+{"text": "I finished Git, what next?", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "Hey, i finished pandas, what next?", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "My imposter syndrome is loud. thanks", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "Help me with promises please.", "intent": "asking_for_help", "template_id": "asking_for_help#3"}
+{"text": "i'm behind on tensorflow.", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "I need a pep talk...", "intent": "seeking_motivation", "template_id": "seeking_motivation#9"}
+{"text": "What comes after this?", "intent": "asking_next_steps", "template_id": "asking_next_steps#6"}
+{"text": "Explain how Python works. thanks", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "best videos on pandas?", "intent": "requesting_resources", "template_id": "requesting_resources#4"}
+{"text": "Could you help me figure out Python?", "intent": "asking_for_help", "template_id": "asking_for_help#1"}
+{"text": "This is hard, I might quit.", "intent": "seeking_motivation", "template_id": "seeking_motivation#1"}
+{"text": "I need a pep talk.", "intent": "seeking_motivation", "template_id": "seeking_motivation#9"}
+{"text": "How am I doing?", "intent": "asking_progress", "template_id": "asking_progress#0"}
+{"text": "Hey, what comes after this?", "intent": "asking_next_steps", "template_id": "asking_next_steps#6"}
+{"text": "Tell me a joke about coding.", "intent": "general_chat", "template_id": "general_chat#8"}
+{"text": "How many tasks did I complete this week? thanks", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "Where can I learn TypeScript? thanks", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "Quick question \u2014 any books on pandas?", "intent": "requesting_resources", "template_id": "requesting_resources#2"}
+{"text": "Best videos on Pandas?", "intent": "requesting_resources", "template_id": "requesting_resources#4"}
+{"text": "Quick question \u2014 give me the 101 on closures.", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "Hey, i can't seem to grasp transformers.", "intent": "reporting_struggle", "template_id": "reporting_struggle#1"}
+{"text": "Quick question \u2014 i'm blocked on tensorflow, guidance?", "intent": "asking_for_help", "template_id": "asking_for_help#9"}
+{"text": "Hey, point me at docs for rest apis.", "intent": "requesting_resources", "template_id": "requesting_resources#5"}
+{"text": "Hey, how far have i come?", "intent": "asking_progress", "template_id": "asking_progress#8"}
+{"text": "I don't understand async/await, I'm confused.", "intent": "asking_for_help", "template_id": "asking_for_help#2"}
+{"text": "i'm struggling with async/await.", "intent": "reporting_struggle", "template_id": "reporting_struggle#0"}
+{"text": "Hey, i need a pep talk.", "intent": "seeking_motivation", "template_id": "seeking_motivation#9"}
+{"text": "Where can I learn Python?", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "Feeling burned out, any words of encouragement? thanks", "intent": "seeking_motivation", "template_id": "seeking_motivation#3"}
+{"text": "Share learning resources for TensorFlow.", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "Tell me a joke about coding.", "intent": "general_chat", "template_id": "general_chat#8"}
+{"text": "Hey, i don't understand async/await, i'm confused.", "intent": "asking_for_help", "template_id": "asking_for_help#2"}
+{"text": "Where can I learn TypeScript?", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "what now?", "intent": "asking_next_steps", "template_id": "asking_next_steps#4"}
+{"text": "Nice work mentor.", "intent": "general_chat", "template_id": "general_chat#7"}
+{"text": "Quick question \u2014 my imposter syndrome is loud.", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "Hey, check my stats.", "intent": "asking_progress", "template_id": "asking_progress#9"}
+{"text": "My imposter syndrome is loud.", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "What's my streak? thanks", "intent": "asking_progress", "template_id": "asking_progress#3"}
+{"text": "Could you describe TypeScript in simple terms?", "intent": "requesting_explanation", "template_id": "requesting_explanation#4"}
+{"text": "What comes after this? thanks", "intent": "asking_next_steps", "template_id": "asking_next_steps#6"}
+{"text": "Share learning resources for TensorFlow...", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "Quick question \u2014 good morning.", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "Ok got it...", "intent": "general_chat", "template_id": "general_chat#5"}
+{"text": "Been stuck on JavaScript all week...", "intent": "reporting_struggle", "template_id": "reporting_struggle#7"}
+{"text": "Hey, help me with promises please.", "intent": "asking_for_help", "template_id": "asking_for_help#3"}
+{"text": "Best videos on Pandas?", "intent": "requesting_resources", "template_id": "requesting_resources#4"}
+{"text": "Hey, give me the 101 on closures.", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "how far have i come?", "intent": "asking_progress", "template_id": "asking_progress#8"}
+{"text": "Quick question \u2014 how many tasks did i complete this week?", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "I can't seem to grasp recursion.", "intent": "reporting_struggle", "template_id": "reporting_struggle#1"}
+{"text": "How far have I come? thanks", "intent": "asking_progress", "template_id": "asking_progress#8"}
+{"text": "Give me the 101 on closures.", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "i need assistance with rest apis.", "intent": "asking_for_help", "template_id": "asking_for_help#4"}
+{"text": "Thanks!", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "sql is really difficult for me.", "intent": "reporting_struggle", "template_id": "reporting_struggle#2"}
+{"text": "i'm blocked on aws, guidance?", "intent": "asking_for_help", "template_id": "asking_for_help#9"}
+{"text": "I can't seem to grasp recursion.", "intent": "reporting_struggle", "template_id": "reporting_struggle#1"}
+{"text": "Hey, good morning.", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "What now?", "intent": "asking_next_steps", "template_id": "asking_next_steps#4"}
+{"text": "share learning resources for typescript.", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "Tell me a joke about coding.", "intent": "general_chat", "template_id": "general_chat#8"}
+{"text": "Quick question \u2014 explain how python works.", "intent": "requesting_explanation", "template_id": "requesting_explanation#0"}
+{"text": "What now", "intent": "asking_next_steps", "template_id": "asking_next_steps#4"}
+{"text": "I'm blocked on AWS, guidance? thanks", "intent": "asking_for_help", "template_id": "asking_for_help#9"}
+{"text": "I'm behind on Python. thanks", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "i can't seem to grasp transformers.", "intent": "reporting_struggle", "template_id": "reporting_struggle#1"}
+{"text": "elaborate on tensorflow.", "intent": "requesting_explanation", "template_id": "requesting_explanation#9"}
+{"text": "Should I move to TypeScript now? thanks", "intent": "asking_next_steps", "template_id": "asking_next_steps#3"}
+{"text": "Quick question \u2014 this is hard, i might quit.", "intent": "seeking_motivation", "template_id": "seeking_motivation#1"}
+{"text": "SQL is really difficult for me. thanks", "intent": "reporting_struggle", "template_id": "reporting_struggle#2"}
+{"text": "i'm behind on python.", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "How am I doing", "intent": "asking_progress", "template_id": "asking_progress#0"}
+{"text": "Thanks! thanks", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "I need assistance with REST APIs. thanks", "intent": "asking_for_help", "template_id": "asking_for_help#4"}
+{"text": "feeling burned out, any words of encouragement?", "intent": "seeking_motivation", "template_id": "seeking_motivation#3"}
+{"text": "Quick question \u2014 i'm finding docker impossible.", "intent": "reporting_struggle", "template_id": "reporting_struggle#6"}
+{"text": "Share learning resources for TensorFlow.", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "Show me my progress...", "intent": "asking_progress", "template_id": "asking_progress#1"}
+{"text": "thanks!", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "what's my next task today?", "intent": "asking_next_steps", "template_id": "asking_next_steps#1"}
+{"text": "This is hard, I might quit. thanks", "intent": "seeking_motivation", "template_id": "seeking_motivation#1"}
+{"text": "Why does GraphQL matter?", "intent": "requesting_explanation", "template_id": "requesting_explanation#2"}
+{"text": "Share learning resources for TypeScript.", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "I'm losing steam on this journey.", "intent": "seeking_motivation", "template_id": "seeking_motivation#4"}
+{"text": "WHERE CAN I LEARN TYPESCRIPT?", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "I need a pep talk.", "intent": "seeking_motivation", "template_id": "seeking_motivation#9"}
+{"text": "Give me the best SQL guide. thanks", "intent": "requesting_resources", "template_id": "requesting_resources#8"}
+{"text": "Share learning resources for TypeScript. thanks", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "Nice work mentor.", "intent": "general_chat", "template_id": "general_chat#7"}
+{"text": "I'm blocked on AWS, guidance?", "intent": "asking_for_help", "template_id": "asking_for_help#9"}
+{"text": "Hey, what's my next task today?", "intent": "asking_next_steps", "template_id": "asking_next_steps#1"}
+{"text": "How does Python compare to CSS grid?", "intent": "requesting_explanation", "template_id": "requesting_explanation#3"}
+{"text": "Point me at docs for REST APIs...", "intent": "requesting_resources", "template_id": "requesting_resources#5"}
+{"text": "Thanks!", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "SHOW ME MY PROGRESS.", "intent": "asking_progress", "template_id": "asking_progress#1"}
+{"text": "How many tasks did I complete this week?", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "i've been stuck on promises for hours.", "intent": "asking_for_help", "template_id": "asking_for_help#6"}
+{"text": "I'm behind on TensorFlow.", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "Check my stats.", "intent": "asking_progress", "template_id": "asking_progress#9"}
+{"text": "Quick question \u2014 i need a pep talk.", "intent": "seeking_motivation", "template_id": "seeking_motivation#9"}
+{"text": "i finished git, what next?", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "Quick question \u2014 why does graphql matter?", "intent": "requesting_explanation", "template_id": "requesting_explanation#2"}
+{"text": "What's my streak?", "intent": "asking_progress", "template_id": "asking_progress#3"}
+{"text": "How many tasks did I complete this week?", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "Give me the 101 on closures...", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "Quick question \u2014 could you describe typescript in simple terms?", "intent": "requesting_explanation", "template_id": "requesting_explanation#4"}
+{"text": "Could you help me figure out Python? thanks", "intent": "asking_for_help", "template_id": "asking_for_help#1"}
+{"text": "Quick question \u2014 could you help me figure out python?", "intent": "asking_for_help", "template_id": "asking_for_help#1"}
+{"text": "Hey, i'm losing steam on this journey.", "intent": "seeking_motivation", "template_id": "seeking_motivation#4"}
+{"text": "Could you help me figure out Python", "intent": "asking_for_help", "template_id": "asking_for_help#1"}
+{"text": "what comes after this?", "intent": "asking_next_steps", "template_id": "asking_next_steps#6"}
+{"text": "Could you describe TypeScript in simple terms? thanks", "intent": "requesting_explanation", "template_id": "requesting_explanation#4"}
+{"text": "I've been stuck on promises for hours.", "intent": "asking_for_help", "template_id": "asking_for_help#6"}
+{"text": "Hey, what now?", "intent": "asking_next_steps", "template_id": "asking_next_steps#4"}
+{"text": "Quick question \u2014 i'm losing steam on this journey.", "intent": "seeking_motivation", "template_id": "seeking_motivation#4"}
+{"text": "I FINISHED GIT, WHAT NEXT?", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "I can't seem to grasp transformers...", "intent": "reporting_struggle", "template_id": "reporting_struggle#1"}
+{"text": "Any chance you can unblock me on Kubernetes?", "intent": "asking_for_help", "template_id": "asking_for_help#8"}
+{"text": "What comes after this?", "intent": "asking_next_steps", "template_id": "asking_next_steps#6"}
+{"text": "Hey, hmm interesting.", "intent": "general_chat", "template_id": "general_chat#2"}
+{"text": "Hey, any books on pandas?", "intent": "requesting_resources", "template_id": "requesting_resources#2"}
+{"text": "Hey, good morning.", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "Thanks!", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "I can't seem to grasp transformers.", "intent": "reporting_struggle", "template_id": "reporting_struggle#1"}
+{"text": "Help me with promises please...", "intent": "asking_for_help", "template_id": "asking_for_help#3"}
+{"text": "Quick question \u2014 should i move to typescript now?", "intent": "asking_next_steps", "template_id": "asking_next_steps#3"}
+{"text": "Give me the best SQL guide...", "intent": "requesting_resources", "template_id": "requesting_resources#8"}
+{"text": "I'm blocked on AWS, guidance?", "intent": "asking_for_help", "template_id": "asking_for_help#9"}
+{"text": "What's my next task today?", "intent": "asking_next_steps", "template_id": "asking_next_steps#1"}
+{"text": "Good morning.", "intent": "general_chat", "template_id": "general_chat#4"}
+{"text": "POINT ME AT DOCS FOR REST APIS.", "intent": "requesting_resources", "template_id": "requesting_resources#5"}
+{"text": "MY IMPOSTER SYNDROME IS LOUD.", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "Hey, share learning resources for typescript.", "intent": "requesting_resources", "template_id": "requesting_resources#3"}
+{"text": "My imposter syndrome is loud...", "intent": "seeking_motivation", "template_id": "seeking_motivation#8"}
+{"text": "Quick question \u2014 tell me a joke about coding.", "intent": "general_chat", "template_id": "general_chat#8"}
+{"text": "How far have I come?", "intent": "asking_progress", "template_id": "asking_progress#8"}
+{"text": "I'm behind on TensorFlow.", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "Quick question \u2014 why should i keep going?", "intent": "seeking_motivation", "template_id": "seeking_motivation#5"}
+{"text": "I finished Pandas, what next?", "intent": "asking_next_steps", "template_id": "asking_next_steps#7"}
+{"text": "Quick question \u2014 what's on my plate today?", "intent": "asking_next_steps", "template_id": "asking_next_steps#9"}
+{"text": "Quick question \u2014 sql is really difficult for me.", "intent": "reporting_struggle", "template_id": "reporting_struggle#2"}
+{"text": "Quick question \u2014 where can i learn typescript?", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "Hey, how am i doing?", "intent": "asking_progress", "template_id": "asking_progress#0"}
+{"text": "I'm blocked on AWS, guidance?", "intent": "asking_for_help", "template_id": "asking_for_help#9"}
+{"text": "Where can I learn Python?", "intent": "requesting_resources", "template_id": "requesting_resources#6"}
+{"text": "Hey, thanks!", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "What's on my plate today", "intent": "asking_next_steps", "template_id": "asking_next_steps#9"}
+{"text": "give me the 101 on closures.", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "I need a pep talk. thanks", "intent": "seeking_motivation", "template_id": "seeking_motivation#9"}
+{"text": "I'm behind on Python...", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "Thanks!", "intent": "general_chat", "template_id": "general_chat#0"}
+{"text": "Best videos on Pandas? thanks", "intent": "requesting_resources", "template_id": "requesting_resources#4"}
+{"text": "Been stuck on JavaScript all week.", "intent": "reporting_struggle", "template_id": "reporting_struggle#7"}
+{"text": "Hmm interesting.", "intent": "general_chat", "template_id": "general_chat#2"}
+{"text": "Best videos on Pandas?", "intent": "requesting_resources", "template_id": "requesting_resources#4"}
+{"text": "Hey, i'm behind on python.", "intent": "reporting_struggle", "template_id": "reporting_struggle#9"}
+{"text": "How many tasks did I complete this week?", "intent": "asking_progress", "template_id": "asking_progress#6"}
+{"text": "Quick question \u2014 what comes after this?", "intent": "asking_next_steps", "template_id": "asking_next_steps#6"}
+{"text": "Give me the 101 on closures.", "intent": "requesting_explanation", "template_id": "requesting_explanation#8"}
+{"text": "Any chance you can unblock me on Kubernetes?", "intent": "asking_for_help", "template_id": "asking_for_help#8"}
+{"text": "any books on pandas?", "intent": "requesting_resources", "template_id": "requesting_resources#2"}

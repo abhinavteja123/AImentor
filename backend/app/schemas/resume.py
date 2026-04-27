@@ -99,30 +99,36 @@ class TechnicalSkillsSection(BaseModel):
 
 
 class ResumeResponse(BaseModel):
-    """Schema for resume response."""
+    """Schema for resume response.
+
+    JSONB columns (every *_section + contact_info) are typed as raw
+    Dict/List so legacy rows with field-name or type drift (ints where strs
+    were expected, extra keys, missing required fields) still serialize.
+    The frontend's normalizeResumeData already handles shape variance.
+    """
     id: UUID
     user_id: UUID
-    version: int
-    is_active: bool
+    version: Optional[int] = 1
+    is_active: Optional[bool] = True
     draft_name: Optional[str] = None
-    is_base_version: bool = True
+    is_base_version: Optional[bool] = True
     parent_version_id: Optional[UUID] = None
     job_description: Optional[str] = None
-    summary: Optional[str]
-    skills_section: Optional[Dict[str, List[SkillItem]]]  # Grouped by category
-    coursework_section: Optional[List[CourseworkItem]]
-    projects_section: Optional[List[ProjectItem]]
-    experience_section: Optional[List[ExperienceItem]]
-    education_section: Optional[List[EducationItem]]
-    certifications_section: Optional[List[CertificationItem]]
-    extracurricular_section: Optional[List[ExtracurricularItem]]
-    technical_skills_section: Optional[TechnicalSkillsSection]
-    contact_info: Optional[ContactInfo]
-    tailored_for: Optional[str]
-    match_score: Optional[int]
+    summary: Optional[str] = None
+    skills_section: Optional[Dict[str, Any]] = None
+    coursework_section: Optional[List[Dict[str, Any]]] = None
+    projects_section: Optional[List[Dict[str, Any]]] = None
+    experience_section: Optional[List[Dict[str, Any]]] = None
+    education_section: Optional[List[Dict[str, Any]]] = None
+    certifications_section: Optional[List[Dict[str, Any]]] = None
+    extracurricular_section: Optional[List[Dict[str, Any]]] = None
+    technical_skills_section: Optional[Dict[str, Any]] = None
+    contact_info: Optional[Dict[str, Any]] = None
+    tailored_for: Optional[str] = None
+    match_score: Optional[int] = None
     created_at: datetime
     updated_at: datetime
-    
+
     class Config:
         from_attributes = True
 
@@ -246,3 +252,58 @@ class UpdateDraftRequest(BaseModel):
     """Schema for updating draft metadata."""
     draft_name: Optional[str] = None
     job_description: Optional[str] = None
+
+
+# Export Schemas
+class ExportPDFRequest(BaseModel):
+    """Schema for PDF export request."""
+    version_id: Optional[UUID] = None
+    template: str = "modern"  # modern, classic, minimal
+
+
+class ExportPDFResponse(BaseModel):
+    """Schema for PDF export response."""
+    pdf_data: str  # Base64 encoded PDF
+    filename: str
+    format: str = "pdf"
+    template: str
+    version_id: str
+    generated_at: str
+
+
+class ExportLaTeXResponse(BaseModel):
+    """Schema for LaTeX export response."""
+    latex_source: str
+    template: str
+    version_id: str
+    generated_at: str
+
+
+class LaTeXValidationRequest(BaseModel):
+    """Schema for LaTeX validation request."""
+    latex_content: str
+
+
+class LaTeXValidationResponse(BaseModel):
+    """Schema for LaTeX validation response."""
+    is_valid: bool
+    errors: List[str]
+    warnings: List[str]
+    latex_length: int
+
+
+class ExportPreviewResponse(BaseModel):
+    """Schema for export preview response."""
+    id: str
+    version: int
+    summary: Optional[str]
+    skills_section: Optional[Dict[str, Any]]
+    education_section: Optional[List[Dict[str, Any]]]
+    experience_section: Optional[List[Dict[str, Any]]]
+    projects_section: Optional[List[Dict[str, Any]]]
+    certifications_section: Optional[List[Dict[str, Any]]]
+    contact_info: Optional[Dict[str, Any]]
+    created_at: str
+    updated_at: str
+    available_formats: List[str]
+    available_templates: List[str]

@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "code-review-graph": {
+      "command": "code-review-graph",
+      "args": [
+        "serve"
+      ]
+    },
+    "drawio": {
+      "command": "npx",
+      "args": [
+        "@drawio/mcp"
+      ]
+    }
+  }
+}

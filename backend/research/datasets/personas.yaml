@@ -1,0 +1,62 @@
+# Scripted personas for the end-to-end user simulator (Exp.4).
+# Each persona produces one full journey: profile -> skill-gap -> roadmap -> chat -> resume.
+
+- id: p1_junior_frontend
+  full_name: Asha Rao
+  experience_level: beginner
+  goal_role: Frontend Developer
+  current_skills: [HTML, CSS, JavaScript]
+  learning_style: visual
+  time_per_day_min: 60
+  chat_turns:
+    - "I just finished a React tutorial, what should I do next?"
+    - "I'm stuck on props, can you explain?"
+    - "Any resources for CSS grid?"
+
+- id: p2_career_switcher
+  full_name: Daniel Kim
+  experience_level: beginner
+  goal_role: Data Scientist
+  current_skills: [Excel, SQL]
+  learning_style: mixed
+  time_per_day_min: 90
+  chat_turns:
+    - "I'm switching from marketing, is data science realistic for me?"
+    - "How long until I'm job-ready?"
+    - "Which Python libraries should I learn first?"
+
+- id: p3_bootcamp_grad
+  full_name: Priya Menon
+  experience_level: intermediate
+  goal_role: Full Stack Developer
+  current_skills: [JavaScript, React, Node.js, Git, Express]
+  learning_style: kinesthetic
+  time_per_day_min: 120
+  chat_turns:
+    - "What projects should I build for my portfolio?"
+    - "I feel like an imposter, is that normal?"
+    - "Give me the next step in my plan today."
+
+- id: p4_senior_backend
+  full_name: Marcus Johnson
+  experience_level: advanced
+  goal_role: Staff Engineer
+  current_skills: [Python, Go, Kubernetes, PostgreSQL, AWS, Terraform, System Design]
+  learning_style: reading
+  time_per_day_min: 45
+  chat_turns:
+    - "How do I prepare for a staff-engineer interview loop?"
+    - "Which distributed-systems papers should I read?"
+    - "Review my roadmap progress."
+
+- id: p5_ds_aspirant
+  full_name: Yuki Tanaka
+  experience_level: intermediate
+  goal_role: Machine Learning Engineer
+  current_skills: [Python, Pandas, scikit-learn, NumPy, SQL]
+  learning_style: auditory
+  time_per_day_min: 75
+  chat_turns:
+    - "I know classical ML, where do I start with deep learning?"
+    - "Suggest a project that uses PyTorch."
+    - "I'm tired and behind schedule, any motivation?"

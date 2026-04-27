@@ -1,0 +1,6 @@
+config,learning_gain,delta
+Full System,11.8,baseline
+Remove CRAG,11.3,-0.5
+Remove PPO,16.6,+4.8
+Remove BKT,14.5,+2.7
+Remove Socratic,11.3,-0.5
